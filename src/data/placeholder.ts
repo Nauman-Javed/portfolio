@@ -160,8 +160,7 @@ const skill = (category: string, names: string[]): Skill[] =>
   }));
 
 export const skills: Skill[] = [
-  ...skill("Languages", ["HTML", "CSS", "JavaScript", "TypeScript", "SASS"]),
-  ...skill("Frameworks", [
+  ...skill("Frontend", [
     "React",
     "Next.js",
     "Redux",
@@ -169,9 +168,16 @@ export const skills: Skill[] = [
     "Tailwind CSS",
     "Material UI",
     "Bootstrap 5",
+    "HTML",
+    "CSS",
+    "JavaScript",
+    "TypeScript",
+    "SASS",
   ]),
-  ...skill("Backend & Data", ["Firebase", "MySQL"]),
-  ...skill("Tools", ["Git", "GitHub", "VS Code", "Postman"]),
+  ...skill("Backend", ["Firebase"]),
+  ...skill("Databases", ["MySQL"]),
+  ...skill("Version control", ["Git", "GitHub"]),
+  ...skill("Tools & practices", ["VS Code", "Postman"]),
 ];
 
 export const publishedProjects = () =>

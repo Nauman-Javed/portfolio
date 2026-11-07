@@ -1,4 +1,4 @@
-import { abbreviation } from "@/data/site-content";
+import { abbreviation, groupSkills } from "@/data/site-content";
 import type { Skill } from "@/data/types";
 
 function Item({ name, hidden }: { name: string; hidden?: boolean }) {
@@ -46,13 +46,15 @@ function Row({
 export function SkillsMarquee({ skills }: { skills: Skill[] }) {
   if (skills.length === 0) return null;
 
+  const ordered = groupSkills(skills).flatMap(([, items]) => items);
+
   return (
     <section
       aria-label="Technologies"
       className="bg-band border-hairline marquee flex flex-col gap-3 overflow-hidden border-y py-6"
     >
-      <Row skills={skills} />
-      <Row skills={[...skills].reverse()} reverse />
+      <Row skills={ordered} />
+      <Row skills={[...ordered].reverse()} reverse />
     </section>
   );
 }

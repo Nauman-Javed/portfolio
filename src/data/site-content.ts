@@ -11,3 +11,32 @@ export function abbreviation(name: string) {
 
   return name.charAt(0).toUpperCase() + name.charAt(1).toLowerCase();
 }
+
+// Display order for skill categories on the home page. A category is placed by
+// the first pattern it matches, so "Frontend" and "Front-end" both come first.
+// Categories that match nothing follow, alphabetically.
+const CATEGORY_ORDER = [
+  /front/i,
+  /back/i,
+  /data|db/i,
+  /version|git/i,
+  /tool|practice/i,
+];
+
+function categoryRank(category: string) {
+  const index = CATEGORY_ORDER.findIndex((pattern) => pattern.test(category));
+  return index === -1 ? CATEGORY_ORDER.length : index;
+}
+
+/** Skills grouped by category in display order; items keep their saved order. */
+export function groupSkills<T extends { category: string; order: number }>(
+  skills: T[],
+): [string, T[]][] {
+  const groups = new Map<string, T[]>();
+  for (const skill of [...skills].sort((a, b) => a.order - b.order)) {
+    groups.set(skill.category, [...(groups.get(skill.category) ?? []), skill]);
+  }
+  return [...groups].sort(
+    ([a], [b]) => categoryRank(a) - categoryRank(b) || a.localeCompare(b),
+  );
+}

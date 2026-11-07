@@ -11,6 +11,7 @@ import {
 } from "@/actions/skills";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { groupSkills } from "@/data/site-content";
 import { skillSchema } from "@/lib/validations/resume";
 import type { SkillInput } from "@/lib/validations/resume";
 import { DeleteButton } from "./delete-button";
@@ -21,7 +22,12 @@ import { ItemRow } from "./item-row";
 import { MoveButtons } from "./move-buttons";
 import { applyFieldErrors, useServerAction } from "./use-server-action";
 
-type SkillItem = { id: string; name: string; category: string };
+type SkillItem = {
+  id: string;
+  name: string;
+  category: string;
+  order: number;
+};
 
 function SkillForm({
   initial,
@@ -85,11 +91,8 @@ function SkillForm({
 }
 
 export function SkillsManager({ skills }: { skills: SkillItem[] }) {
-  const groups = new Map<string, SkillItem[]>();
-  for (const skill of skills) {
-    groups.set(skill.category, [...(groups.get(skill.category) ?? []), skill]);
-  }
-  const categories = [...groups.keys()];
+  const groups = groupSkills(skills);
+  const categories = groups.map(([category]) => category);
 
   return (
     <div className="space-y-8">
@@ -108,7 +111,7 @@ export function SkillsManager({ skills }: { skills: SkillItem[] }) {
         <p className="text-muted-foreground text-sm">No skills yet.</p>
       )}
 
-      {[...groups].map(([category, items]) => (
+      {groups.map(([category, items]) => (
         <section key={category}>
           <h2 className="text-muted-foreground mb-3 font-mono text-xs tracking-widest uppercase">
             {category}

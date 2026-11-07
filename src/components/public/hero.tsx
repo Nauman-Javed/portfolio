@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { IconRocket, IconShieldCheck } from "@tabler/icons-react";
+import { groupSkills } from "@/data/site-content";
 import type { Profile, Skill } from "@/data/types";
 import { CodeEditor } from "./code-editor";
 import { RotatingText } from "./rotating-text";
@@ -9,10 +10,10 @@ const delay = (seconds: number) =>
   ({ "--d": `${seconds}s` }) as React.CSSProperties;
 
 function pickStack(skills: Skill[]) {
-  const preferred = skills.filter((s) => /framework/i.test(s.category));
-  return (preferred.length >= 3 ? preferred : skills)
-    .slice(0, 3)
-    .map((s) => s.name);
+  const groups = groupSkills(skills);
+  const frontend = groups.find(([category]) => /front/i.test(category));
+  const pool = frontend ? frontend[1] : groups.flatMap(([, items]) => items);
+  return pool.slice(0, 3).map((s) => s.name);
 }
 
 export function Hero({
