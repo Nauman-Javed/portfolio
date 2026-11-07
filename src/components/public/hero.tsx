@@ -74,9 +74,17 @@ export function Hero({
             <Link href="/projects" className={ctaClass("primary")}>
               View my work →
             </Link>
-            <Link href="/#contact" className={ctaClass("secondary")}>
-              Get in touch
-            </Link>
+            {profile.resumeUrl && (
+              <a
+                href={profile.resumeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={ctaClass("secondary")}
+              >
+                My Resume <span aria-hidden>↗</span>
+                <span className="sr-only"> (opens in a new tab)</span>
+              </a>
+            )}
           </div>
         </div>
 

@@ -52,10 +52,16 @@ export async function SiteHeader() {
             </Link>
           ))}
           <ThemeToggle />
-          {profile && (
-            <Link href="/#contact" className={`${ctaClass("primary")} ml-2`}>
-              Get in touch →
-            </Link>
+          {profile?.resumeUrl && (
+            <a
+              href={profile.resumeUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className={`${ctaClass("primary")} ml-2`}
+            >
+              My Resume <span aria-hidden>↗</span>
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
           )}
         </nav>
       </Container>
