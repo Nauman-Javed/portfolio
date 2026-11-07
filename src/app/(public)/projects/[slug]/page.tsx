@@ -78,7 +78,7 @@ export default async function ProjectPage({ params }: Props) {
                     {project.techStack.map((t) => (
                       <li
                         key={t}
-                        className="bg-chip text-fg2 rounded-sm px-2 py-1 text-[11px] leading-[1.4]"
+                        className="bg-raised border-hairline text-fg2 rounded-full border px-3 py-1 text-[11px] leading-[1.4]"
                       >
                         {t}
                       </li>

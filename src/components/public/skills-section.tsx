@@ -9,7 +9,7 @@ import {
 } from "@tabler/icons-react";
 import { groupSkills } from "@/data/site-content";
 import type { Skill } from "@/data/types";
-import { SkillIcon } from "./skill-icon";
+import { SkillPill } from "./skill-pill";
 import { Container, SectionHeader } from "./ui";
 
 function iconFor(category: string) {
@@ -50,18 +50,10 @@ export function SkillsSection({ skills }: { skills: Skill[] }) {
                     </p>
                   </div>
                 </div>
-                <ul className="mt-5 flex flex-wrap gap-2.5">
+                <ul className="mt-5 flex flex-wrap gap-2">
                   {items.map((skill) => (
-                    <li
-                      key={skill.id}
-                      className="chip-lift bg-raised border-hairline flex items-center gap-2.5 rounded-full border py-1.5 pr-4 pl-2"
-                    >
-                      <SkillIcon
-                        name={skill.name}
-                        iconUrl={skill.iconUrl}
-                        size={24}
-                      />
-                      <span className="text-[14px]">{skill.name}</span>
+                    <li key={skill.id}>
+                      <SkillPill skill={skill} className="chip-lift" />
                     </li>
                   ))}
                 </ul>

@@ -32,8 +32,8 @@ export function SkillIcon({
     return (
       <span
         aria-hidden
-        className="text-teal flex shrink-0 items-center justify-center font-mono text-[12px]"
-        style={{ width: size, height: size }}
+        className="text-teal flex shrink-0 items-center justify-center font-mono"
+        style={{ width: size, height: size, fontSize: Math.round(size * 0.5) }}
       >
         {abbreviation(name)}
       </span>

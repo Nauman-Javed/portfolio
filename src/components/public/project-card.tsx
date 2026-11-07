@@ -49,7 +49,7 @@ export function ProjectCard({
             {project.techStack.map((tech) => (
               <li
                 key={tech}
-                className="bg-chip text-fg2 rounded-sm px-2 py-1 text-[11px] leading-[1.4]"
+                className="bg-raised border-hairline text-fg2 rounded-full border px-3 py-1 text-[11px] leading-[1.4]"
               >
                 {tech}
               </li>
