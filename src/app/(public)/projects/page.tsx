@@ -6,6 +6,7 @@ import { getPublishedProjects } from "@/data/queries";
 export const metadata: Metadata = {
   title: "Projects",
   description: "A selection of the web applications I've built.",
+  alternates: { canonical: "/projects" },
 };
 
 export default async function ProjectsPage() {

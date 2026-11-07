@@ -1,4 +1,5 @@
 import { AboutSection } from "@/components/public/about-section";
+import type { Metadata } from "next";
 import { ContactSection } from "@/components/public/contact-section";
 import { ExperienceSection } from "@/components/public/experience-section";
 import { Hero } from "@/components/public/hero";
@@ -16,6 +17,9 @@ import {
   getSocialLinks,
   getStats,
 } from "@/data/queries";
+import { SITE_URL } from "@/lib/site";
+
+export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default async function HomePage() {
   const [
@@ -52,8 +56,27 @@ export default async function HomePage() {
   // Fall back to every published project if none are marked featured.
   const shown = featured.length > 0 ? featured : published;
 
+  // Structured data so search engines can show a rich result for the person.
+  // `<` is escaped so no stored text can close the script tag early.
+  const jsonLd = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "Person",
+    name: profile.name,
+    jobTitle: profile.headline,
+    description: profile.summary,
+    url: SITE_URL,
+    ...(profile.location && {
+      homeLocation: { "@type": "Place", name: profile.location },
+    }),
+    ...(links.length > 0 && { sameAs: links.map((l) => l.url) }),
+  }).replace(/</g, "\u003c");
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: jsonLd }}
+      />
       <Hero profile={profile} skills={skills} />
       {skills.length > 0 && <SkillsMarquee skills={skills} />}
       <AboutSection profile={profile} stats={stats} />

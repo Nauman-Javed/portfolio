@@ -10,12 +10,12 @@ export default function PublicLayout({
     <div id="top" className="flex flex-1 flex-col">
       <a
         href="#main"
-        className="bg-foreground text-background sr-only z-50 rounded-md px-3 py-2 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
+        className="bg-teal text-onteal sr-only z-50 rounded-md px-4 py-3 text-[13px] font-medium focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
       >
         Skip to content
       </a>
       <SiteHeader />
-      <main id="main" className="flex-1">
+      <main id="main" tabIndex={-1} className="flex-1 outline-none">
         {children}
       </main>
       <SiteFooter />
