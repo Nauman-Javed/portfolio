@@ -68,7 +68,7 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: jsonLd }}
       />
-      <Hero profile={profile} skills={skills} />
+      <Hero profile={profile} years={stats.years} />
       {skills.length > 0 && <SkillsMarquee skills={skills} />}
       <AboutSection profile={profile} stats={stats} />
       {skills.length > 0 && <SkillsSection skills={skills} />}

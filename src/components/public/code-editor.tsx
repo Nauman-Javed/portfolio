@@ -14,14 +14,14 @@ export function CodeEditor({
   name,
   role,
   location,
-  stack,
+  years,
   email,
   available,
 }: {
   name: string;
   role: string;
   location: string | null;
-  stack: string[];
+  years: number;
   email: string;
   available: boolean;
 }) {
@@ -46,14 +46,12 @@ export function CodeEditor({
     ...(location
       ? [[["plain", "  base: "], str(location), ["plain", ","]] as Token[]]
       : []),
-    ...(stack.length > 0
+    ...(years > 0
       ? [
           [
-            ["plain", "  stack: ["],
-            ...stack.flatMap((s, i): Token[] =>
-              i === 0 ? [str(s)] : [["plain", ", "], str(s)],
-            ),
-            ["plain", "],"],
+            ["plain", "  experience: "],
+            str(`${years}+ years`),
+            ["plain", ","],
           ] as Token[],
         ]
       : []),

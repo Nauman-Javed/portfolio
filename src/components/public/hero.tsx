@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { IconRocket, IconShieldCheck } from "@tabler/icons-react";
-import { groupSkills } from "@/data/site-content";
-import type { Profile, Skill } from "@/data/types";
+import type { Profile } from "@/data/types";
 import { CodeEditor } from "./code-editor";
 import { RotatingText } from "./rotating-text";
 import { Container, ctaClass } from "./ui";
@@ -9,20 +8,7 @@ import { Container, ctaClass } from "./ui";
 const delay = (seconds: number) =>
   ({ "--d": `${seconds}s` }) as React.CSSProperties;
 
-function pickStack(skills: Skill[]) {
-  const groups = groupSkills(skills);
-  const frontend = groups.find(([category]) => /front/i.test(category));
-  const pool = frontend ? frontend[1] : groups.flatMap(([, items]) => items);
-  return pool.slice(0, 3).map((s) => s.name);
-}
-
-export function Hero({
-  profile,
-  skills,
-}: {
-  profile: Profile;
-  skills: Skill[];
-}) {
+export function Hero({ profile, years }: { profile: Profile; years: number }) {
   const lead = profile.heroLead.trim();
   const phrases = profile.heroPhrases.map((p) => p.trim()).filter(Boolean);
 
@@ -94,7 +80,7 @@ export function Hero({
               name={profile.name}
               role={profile.headline}
               location={profile.location}
-              stack={pickStack(skills)}
+              years={years}
               email={profile.email}
               available={!!profile.availability}
             />
