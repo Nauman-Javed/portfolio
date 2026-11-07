@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Profile {
+  id            String   @id @default("profile")
+  name          String
+  headline      String
+  summary       String
+  about         String
+  location      String?
+  email         String
+  phone         String?
+  imageUrl      String?
+  imagePublicId String?
+  resumeUrl     String?
+  availability  String?
+  updatedAt     DateTime @updatedAt
+}
+
+model SocialLink {
+  id    String @id @default(cuid())
+  label String
+  url   String
+  order Int    @default(0)
+}
+
+model Project {
+  id               String         @id @default(cuid())
+  slug             String         @unique
+  title            String
+  shortDescription String
+  description      String
+  techStack        String[]
+  coverImageUrl    String
+  coverImageId     String
+  gallery          ProjectImage[]
+  liveUrl          String?
+  githubUrl        String?
+  featured         Boolean        @default(false)
+  published        Boolean        @default(true)
+  order            Int            @default(0)
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([published, order])
+}
+
+model ProjectImage {
+  id        String  @id @default(cuid())
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  url       String
+  publicId  String
+  order     Int     @default(0)
+
+  @@index([projectId, order])
+}
+
+model Experience {
+  id             String    @id @default(cuid())
+  company        String
+  role           String
+  employmentType String
+  location       String?
+  startDate      DateTime
+  endDate        DateTime?
+  bullets        String[]
+  order          Int       @default(0)
+}
+
+model Skill {
+  id       String @id @default(cuid())
+  name     String
+  category String
+  order    Int    @default(0)
+
+  @@index([category, order])
+}
+
+model Education {
+  id          String @id @default(cuid())
+  institution String
+  degree      String
+  startYear   Int
+  endYear     Int?
+  order       Int    @default(0)
+}
+
+model Certification {
+  id     String    @id @default(cuid())
+  name   String
+  issuer String
+  date   DateTime?
+  url    String?
+  order  Int       @default(0)
+}
