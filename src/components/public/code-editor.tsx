@@ -15,6 +15,7 @@ export function CodeEditor({
   role,
   location,
   years,
+  phone,
   email,
   available,
 }: {
@@ -22,6 +23,7 @@ export function CodeEditor({
   role: string;
   location: string | null;
   years: number;
+  phone: string | null;
   email: string;
   available: boolean;
 }) {
@@ -60,6 +62,9 @@ export function CodeEditor({
       ["kw", String(available)],
       ["plain", ","],
     ],
+    ...(phone
+      ? [[["plain", "  phone: "], str(phone), ["plain", ","]] as Token[]]
+      : []),
     [["plain", "};"]],
     [],
     [

@@ -9,7 +9,7 @@ export const profile: Profile = {
     "Front-End Developer with 1 year of experience in React.js and Next.js, proficient in HTML, CSS, and JavaScript/TypeScript. Dedicated to crafting visually appealing, user-friendly interfaces, I aim to contribute my skills to the success of a dynamic and innovative team.",
   location: "Islamabad, Pakistan",
   email: "naumanj841@gmail.com",
-  imageUrl: null,
+  phone: null,
   resumeUrl: null,
   availability: "Open to new opportunities",
   heroLead: "I engineer",

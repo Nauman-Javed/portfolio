@@ -81,6 +81,7 @@ export function Hero({ profile, years }: { profile: Profile; years: number }) {
               role={profile.headline}
               location={profile.location}
               years={years}
+              phone={profile.phone}
               email={profile.email}
               available={!!profile.availability}
             />

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { updateProfile } from "@/actions/profile";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -13,32 +13,23 @@ import {
 import type { ProfileInput } from "@/lib/validations/profile";
 import { Field } from "./field";
 import { FormFooter } from "./form-footer";
-import { ImageUploader } from "./image-uploader";
-import { useUploadSession } from "./use-image-upload";
 import { applyFieldErrors, useServerAction } from "./use-server-action";
 
 export function ProfileForm({ initial }: { initial: ProfileInput }) {
-  const session = useUploadSession();
   const { run, pending } = useServerAction();
   const {
     register,
     handleSubmit,
     setError,
-    setValue,
-    control,
     formState: { errors },
   } = useForm<ProfileInput>({
     resolver: zodResolver(profileSchema),
     defaultValues: initial,
   });
 
-  const imageUrl = useWatch({ control, name: "imageUrl" });
-  const imagePublicId = useWatch({ control, name: "imagePublicId" });
-
   const onSubmit = handleSubmit((values) =>
     run(() => updateProfile(values), {
       success: "Profile saved",
-      onSuccess: () => session.markSaved(),
       onError: (r) => applyFieldErrors(setError, r.fieldErrors),
     }),
   );
@@ -97,7 +88,12 @@ export function ProfileForm({ initial }: { initial: ProfileInput }) {
         <Field label="Email" htmlFor="email" error={errors.email?.message}>
           <Input id="email" type="email" {...register("email")} />
         </Field>
-        <Field label="Phone" htmlFor="phone" error={errors.phone?.message}>
+        <Field
+          label="Phone"
+          htmlFor="phone"
+          error={errors.phone?.message}
+          hint="Shown in the hero's code window. Leave empty to hide it."
+        >
           <Input id="phone" {...register("phone")} />
         </Field>
         <Field
@@ -123,23 +119,6 @@ export function ProfileForm({ initial }: { initial: ProfileInput }) {
           <Input id="resumeUrl" {...register("resumeUrl")} />
         </Field>
       </div>
-      <Field
-        label="Profile image"
-        htmlFor="profileImage"
-        error={errors.imageUrl?.message}
-      >
-        <ImageUploader
-          session={session}
-          removable
-          value={imageUrl ? { url: imageUrl, publicId: imagePublicId } : null}
-          onChange={(image) => {
-            setValue("imageUrl", image?.url ?? "", { shouldDirty: true });
-            setValue("imagePublicId", image?.publicId ?? "", {
-              shouldDirty: true,
-            });
-          }}
-        />
-      </Field>
       <FormFooter pending={pending} submitLabel="Save profile" />
     </form>
   );

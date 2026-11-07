@@ -8,7 +8,7 @@ export type Profile = {
   about: string;
   location: string | null;
   email: string;
-  imageUrl: string | null;
+  phone: string | null;
   resumeUrl: string | null;
   availability: string | null;
   heroLead: string;

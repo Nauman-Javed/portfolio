@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { imageSource, optional, optionalUrl, required } from "./common";
+import { optional, optionalUrl, required } from "./common";
 
 export const HERO_PHRASES_MAX = 8;
 // Longer phrases get clipped by the hero column, so keep them short.
@@ -19,8 +19,6 @@ export const profileSchema = z.object({
   location: optional(120),
   email: z.email("Enter a valid email").max(200),
   phone: optional(40),
-  imageUrl: imageSource,
-  imagePublicId: optional(300),
   resumeUrl: optionalUrl,
   availability: optional(120),
   heroLead: optional(40),

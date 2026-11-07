@@ -23,8 +23,6 @@ export default async function AdminProfilePage() {
             location: profile?.location ?? "",
             email: profile?.email ?? "",
             phone: profile?.phone ?? "",
-            imageUrl: profile?.imageUrl ?? "",
-            imagePublicId: profile?.imagePublicId ?? "",
             resumeUrl: profile?.resumeUrl ?? "",
             availability: profile?.availability ?? "",
             heroLead: profile?.heroLead ?? "I engineer",
