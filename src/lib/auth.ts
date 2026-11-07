@@ -1,6 +1,7 @@
 import NextAuth from "next-auth";
 import GitHub from "next-auth/providers/github";
 import { redirect } from "next/navigation";
+import { connection } from "next/server";
 
 function isAdminEmail(email: string | null | undefined) {
   const admin = process.env.ADMIN_EMAIL?.trim().toLowerCase();
@@ -30,6 +31,11 @@ export async function getAdminSession() {
  * top of every admin page and Server Action, not just in the proxy.
  */
 export async function requireAdmin() {
+  // Reading the session re-encrypts the cookie with random values, which Next
+  // flags while it is building a page's static shell. Waiting for a real
+  // request first keeps all of that out of the prerender.
+  await connection();
+
   const session = await getAdminSession();
   if (!session) redirect("/manage/login");
   return session;

@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { signIn } from "@/lib/auth";
+import { signInWithGitHub } from "@/actions/auth";
 
 type Props = {
   searchParams: Promise<{ error?: string; callbackUrl?: string }>;
@@ -30,13 +30,8 @@ async function LoginCard({ searchParams }: Props) {
           Sign-in failed. This GitHub account isn’t allowed.
         </p>
       )}
-      <form
-        className="mt-6"
-        action={async () => {
-          "use server";
-          await signIn("github", { redirectTo });
-        }}
-      >
+      <form className="mt-6" action={signInWithGitHub}>
+        <input type="hidden" name="redirectTo" value={redirectTo} />
         <button
           type="submit"
           className="bg-teal text-onteal hover:bg-teal-light h-12 w-full rounded-md px-5 text-[13px] font-medium transition-colors duration-150"

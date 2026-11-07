@@ -2,7 +2,8 @@ import Link from "next/link";
 import { Suspense } from "react";
 import { AdminNav } from "@/components/admin/admin-nav";
 import { ThemeToggle } from "@/components/theme-toggle";
-import { requireAdmin, signOut } from "@/lib/auth";
+import { signOutAction } from "@/actions/auth";
+import { requireAdmin } from "@/lib/auth";
 
 // Reads the session, so it must sit behind Suspense with Cache Components.
 async function AdminShell({ children }: { children: React.ReactNode }) {
@@ -24,12 +25,7 @@ async function AdminShell({ children }: { children: React.ReactNode }) {
               Portfolio
             </Link>
             <ThemeToggle className="border-border rounded-full border" />
-            <form
-              action={async () => {
-                "use server";
-                await signOut({ redirectTo: "/manage/login" });
-              }}
-            >
+            <form action={signOutAction}>
               <button
                 type="submit"
                 className="border-border hover:bg-muted rounded-full border px-4 py-1.5 transition-colors"
