@@ -12,6 +12,13 @@ export const profile: Profile = {
   imageUrl: null,
   resumeUrl: null,
   availability: "Open to new opportunities",
+  heroLead: "I engineer",
+  heroPhrases: [
+    "fast interfaces",
+    "accessible UIs",
+    "type-safe apps",
+    "things that ship",
+  ],
 };
 
 export const projects: Project[] = [

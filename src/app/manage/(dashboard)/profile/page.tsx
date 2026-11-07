@@ -31,6 +31,8 @@ export default async function AdminProfilePage() {
             imagePublicId: profile?.imagePublicId ?? "",
             resumeUrl: profile?.resumeUrl ?? "",
             availability: profile?.availability ?? "",
+            heroLead: profile?.heroLead ?? "I engineer",
+            heroPhrases: (profile?.heroPhrases ?? []).join("\n"),
           }}
         />
         <section>

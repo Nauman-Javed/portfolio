@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { IconRocket, IconShieldCheck } from "@tabler/icons-react";
-import { ROTATING_PHRASES } from "@/data/site-content";
 import type { Profile, Skill } from "@/data/types";
 import { CodeEditor } from "./code-editor";
 import { RotatingText } from "./rotating-text";
@@ -23,6 +22,9 @@ export function Hero({
   profile: Profile;
   skills: Skill[];
 }) {
+  const lead = profile.heroLead.trim();
+  const phrases = profile.heroPhrases.map((p) => p.trim()).filter(Boolean);
+
   return (
     <section className="pt-16 pb-20 sm:pt-24 sm:pb-24 lg:pt-28">
       <Container className="grid items-center gap-16 *:min-w-0 min-[1100px]:grid-cols-[1.05fr_1fr]">
@@ -43,8 +45,20 @@ export function Hero({
             className="anim-rise text-[clamp(40px,6vw,72px)] leading-[1.08] tracking-[-0.02em]"
             style={delay(0.25)}
           >
-            I engineer
-            <RotatingText phrases={ROTATING_PHRASES} />
+            {lead || phrases.length > 0 ? (
+              <>
+                {lead}
+                {phrases.length > 1 ? (
+                  <RotatingText phrases={phrases} />
+                ) : phrases.length === 1 ? (
+                  <span className="text-teal block leading-[1.2]">
+                    {phrases[0]}
+                  </span>
+                ) : null}
+              </>
+            ) : (
+              profile.name
+            )}
           </h1>
           <p
             className="anim-rise text-fg2 mt-6 max-w-[34rem] text-[18px] leading-[1.6]"

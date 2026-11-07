@@ -8,7 +8,7 @@ import { deleteAssets } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
 import { invalidate, moveId } from "@/lib/mutations";
 import type { MoveDirection } from "@/lib/mutations";
-import { emptyToNull } from "@/lib/validations/common";
+import { emptyToNull, parseList } from "@/lib/validations/common";
 import { profileSchema, socialLinkSchema } from "@/lib/validations/profile";
 
 const idSchema = z.string().min(1);
@@ -31,6 +31,8 @@ export async function updateProfile(input: unknown): Promise<ActionResult> {
     imagePublicId: emptyToNull(v.imagePublicId),
     resumeUrl: emptyToNull(v.resumeUrl),
     availability: emptyToNull(v.availability),
+    heroLead: v.heroLead,
+    heroPhrases: parseList(v.heroPhrases, /\r?\n/),
   };
 
   const existing = await db.profile.findUnique({

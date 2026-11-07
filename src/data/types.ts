@@ -11,6 +11,8 @@ export type Profile = {
   imageUrl: string | null;
   resumeUrl: string | null;
   availability: string | null;
+  heroLead: string;
+  heroPhrases: string[];
 };
 
 export type Project = {

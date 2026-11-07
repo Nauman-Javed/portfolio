@@ -5,7 +5,11 @@ import { useForm, useWatch } from "react-hook-form";
 import { updateProfile } from "@/actions/profile";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { profileSchema } from "@/lib/validations/profile";
+import {
+  HERO_PHRASE_MAX_LENGTH,
+  HERO_PHRASES_MAX,
+  profileSchema,
+} from "@/lib/validations/profile";
 import type { ProfileInput } from "@/lib/validations/profile";
 import { Field } from "./field";
 import { FormFooter } from "./form-footer";
@@ -53,6 +57,31 @@ export function ProfileForm({ initial }: { initial: ProfileInput }) {
           <Input id="headline" {...register("headline")} />
         </Field>
       </div>
+      <section className="border-border space-y-5 rounded-xl border p-5">
+        <div>
+          <h2 className="text-lg">Hero headline</h2>
+          <p className="text-muted-foreground mt-1 text-sm">
+            The big text at the top of the home page: a fixed first line, then a
+            second line that rotates through your phrases.
+          </p>
+        </div>
+        <Field
+          label="First line"
+          htmlFor="heroLead"
+          error={errors.heroLead?.message}
+          hint="Fixed text, for example “I engineer”. Leave empty to show only the rotating line."
+        >
+          <Input id="heroLead" {...register("heroLead")} />
+        </Field>
+        <Field
+          label="Rotating line"
+          htmlFor="heroPhrases"
+          error={errors.heroPhrases?.message}
+          hint={`One phrase per line, up to ${HERO_PHRASES_MAX}, each ${HERO_PHRASE_MAX_LENGTH} characters or fewer so it fits. A single phrase shows without rotating.`}
+        >
+          <Textarea id="heroPhrases" rows={5} {...register("heroPhrases")} />
+        </Field>
+      </section>
       <Field
         label="Summary"
         htmlFor="summary"

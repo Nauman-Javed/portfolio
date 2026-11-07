@@ -1,15 +1,5 @@
-// Copy that isn't stored in the database. Edit here to change it.
-
-/**
- * The line that slides under "I engineer" in the hero. Keep each phrase to
- * about 16 characters or it will be clipped in the two-column hero.
- */
-export const ROTATING_PHRASES = [
-  "fast interfaces",
-  "accessible UIs",
-  "type-safe apps",
-  "things that ship",
-] as const;
+// Small helpers for site copy. The hero headline and rotating phrases are
+// stored on the profile and edited in the admin.
 
 /** Two-letter mark for a skill tile, e.g. "TypeScript" → "TS", "React" → "Re". */
 export function abbreviation(name: string) {

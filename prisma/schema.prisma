@@ -20,6 +20,8 @@ model Profile {
   imagePublicId String?
   resumeUrl     String?
   availability  String?
+  heroLead      String   @default("I engineer")
+  heroPhrases   String[] @default(["fast interfaces", "accessible UIs", "type-safe apps", "things that ship"])
   updatedAt     DateTime @updatedAt
 }
 
