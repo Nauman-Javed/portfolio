@@ -85,10 +85,56 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
 
-  --shadow-float: 0 24px 64px rgba(0, 0, 0, 0.5);
+  --shadow-float: var(--ds-shadow-float);
 }
 
 :root {
+  color-scheme: light;
+  /* Grounds, back to front */
+  --ds-canvas: #f6f9fa;
+  --ds-sidebar: #edf3f5;
+  --ds-topbar: #e6eef1;
+  --ds-surface: #ffffff;
+  --ds-surface-raised: #eef4f6;
+  --ds-code-bg: #0b1418;
+
+  /* Lines */
+  --ds-border: #d3dfe3;
+  --ds-accent-border: #1f9a8b;
+  --ds-track: #d3dfe3;
+
+  /* Text */
+  --ds-text: #0e1a1f;
+  --ds-text-secondary: #41555d;
+  --ds-text-muted: #566b74;
+  --ds-text-code: #bfd9d6;
+
+  /* Accent */
+  --ds-accent: #0b7a6d;
+  --ds-on-accent: #ffffff;
+  --ds-accent-soft: #d7f0ec;
+  --ds-accent-soft-text: #0a6459;
+  --ds-accent-deep-1: #9fd8d0;
+  --ds-accent-deep-2: #6cc4b8;
+  --ds-accent-light: #08665b;
+
+  /* Supporting */
+  --ds-chip: #e1eaee;
+  --ds-warning-soft: #f6ebcf;
+  --ds-warning-soft-text: #74530c;
+  --ds-danger: #b4474c;
+  --ds-info-text: #1d5a52;
+  --ds-feature-from: #d4eeea;
+  --ds-feature-to: #e9f3f6;
+
+  /* Atmosphere */
+  --ds-glow: #dff1ee;
+  --ds-shadow-float: 0 24px 64px rgba(14, 26, 31, 0.16);
+}
+
+/* Dark is the default; the .dark class on <html> (or any element) switches a subtree. */
+.dark {
+  color-scheme: dark;
   /* Grounds, back to front */
   --ds-canvas: #090e11;
   --ds-sidebar: #0c1216;
@@ -126,6 +172,12 @@
   --ds-feature-from: #15302d;
   --ds-feature-to: #101b20;
 
+  /* Atmosphere */
+  --ds-glow: #0d1a1c;
+  --ds-shadow-float: 0 24px 64px rgba(0, 0, 0, 0.5);
+}
+
+:root {
   /* shadcn semantic tokens (used by the admin and shared components) */
   --background: var(--ds-canvas);
   --foreground: var(--ds-text);
@@ -168,14 +220,13 @@
   html {
     @apply scroll-smooth font-sans;
     background-color: var(--ds-canvas);
-    color-scheme: dark;
   }
   body {
     @apply text-foreground;
     background-color: var(--ds-canvas);
     background-image: radial-gradient(
       ellipse at 70% 0%,
-      #0d1a1c,
+      var(--ds-glow),
       var(--ds-canvas) 55%
     );
     background-repeat: no-repeat;
@@ -220,10 +271,10 @@
 }
 @keyframes pulse {
   0% {
-    box-shadow: 0 0 0 0 rgba(38, 209, 191, 0.55);
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--ds-accent) 55%, transparent);
   }
   100% {
-    box-shadow: 0 0 0 12px rgba(38, 209, 191, 0);
+    box-shadow: 0 0 0 12px color-mix(in srgb, var(--ds-accent) 0%, transparent);
   }
 }
 @keyframes type {

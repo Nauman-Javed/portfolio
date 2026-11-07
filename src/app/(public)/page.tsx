@@ -1,3 +1,4 @@
+import { AboutSection } from "@/components/public/about-section";
 import { ContactSection } from "@/components/public/contact-section";
 import { ExperienceSection } from "@/components/public/experience-section";
 import { Hero } from "@/components/public/hero";
@@ -53,13 +54,10 @@ export default async function HomePage() {
 
   return (
     <>
-      <Hero profile={profile} skills={skills} stats={stats} />
-      {skills.length > 0 && (
-        <>
-          <SkillsMarquee skills={skills} />
-          <SkillsSection skills={skills} />
-        </>
-      )}
+      <Hero profile={profile} skills={skills} />
+      {skills.length > 0 && <SkillsMarquee skills={skills} />}
+      <AboutSection profile={profile} stats={stats} />
+      {skills.length > 0 && <SkillsSection skills={skills} />}
       {(experience.length > 0 || education.length > 0) && (
         <ExperienceSection experience={experience} education={education} />
       )}

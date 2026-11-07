@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { AdminNav } from "@/components/admin/admin-nav";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { requireAdmin, signOut } from "@/lib/auth";
 
 // Reads the session, so it must sit behind Suspense with Cache Components.
@@ -21,6 +22,7 @@ async function AdminShell({ children }: { children: React.ReactNode }) {
             <Link href="/" className="hover:text-brand transition-colors">
               View site
             </Link>
+            <ThemeToggle />
             <form
               action={async () => {
                 "use server";

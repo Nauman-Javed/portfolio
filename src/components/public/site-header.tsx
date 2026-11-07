@@ -5,6 +5,7 @@ import {
   getPublishedProjects,
   getSkills,
 } from "@/data/queries";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Container, ctaClass } from "./ui";
 
 export async function SiteHeader() {
@@ -18,6 +19,7 @@ export async function SiteHeader() {
 
   // Only link to sections that actually have content.
   const links = [
+    profile?.about && { href: "/#about", label: "About" },
     skills.length > 0 && { href: "/#skills", label: "Skills" },
     experience.length > 0 && { href: "/#experience", label: "Experience" },
     projects.length > 0 && { href: "/projects", label: "Projects" },
@@ -49,6 +51,7 @@ export async function SiteHeader() {
               {l.label}
             </Link>
           ))}
+          <ThemeToggle />
           {profile && (
             <Link href="/#contact" className={`${ctaClass("primary")} ml-2`}>
               Get in touch →

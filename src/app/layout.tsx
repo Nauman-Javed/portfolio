@@ -17,6 +17,10 @@ const jetbrains = JetBrains_Mono({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
+// Runs before first paint. Dark is the default; only an explicit "light" choice
+// (saved by the toggle) removes the class.
+const themeScript = `(function(){try{document.documentElement.classList.toggle("dark",localStorage.getItem("theme")!=="light")}catch(e){}})()`;
+
 export async function generateMetadata(): Promise<Metadata> {
   const profile = await getProfile();
   const name = profile?.name ?? "Portfolio";
@@ -34,8 +38,12 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`dark ${inter.variable} ${jetbrains.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+      </head>
       <body className="flex min-h-full flex-col">{children}</body>
     </html>
   );
