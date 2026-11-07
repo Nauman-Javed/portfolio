@@ -11,18 +11,19 @@ async function AdminShell({ children }: { children: React.ReactNode }) {
   return (
     <>
       <header className="border-border border-b">
-        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
-          <Link href="/manage" className="font-display text-xl">
-            admin<span className="text-brand">.</span>
+        <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
+          <Link
+            href="/manage"
+            className="min-w-0 truncate text-[15px]"
+            title="Overview"
+          >
+            {session.user?.email}
           </Link>
-          <div className="flex items-center gap-4 text-sm">
-            <span className="text-muted-foreground hidden sm:inline">
-              {session.user?.email}
-            </span>
+          <div className="flex shrink-0 items-center gap-3 text-sm">
             <Link href="/" className="hover:text-brand transition-colors">
-              View site
+              Portfolio
             </Link>
-            <ThemeToggle />
+            <ThemeToggle className="border-border rounded-full border" />
             <form
               action={async () => {
                 "use server";

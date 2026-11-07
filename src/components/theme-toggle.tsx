@@ -1,10 +1,11 @@
 "use client";
 
 import { IconMoon, IconSun } from "@tabler/icons-react";
+import { cn } from "@/lib/utils";
 
 // Both icons are always rendered and CSS picks one from the <html> class, so
 // there is no state to hydrate and no flash of the wrong icon.
-export function ThemeToggle() {
+export function ThemeToggle({ className }: { className?: string }) {
   function toggle() {
     const dark = document.documentElement.classList.toggle("dark");
     try {
@@ -19,7 +20,10 @@ export function ThemeToggle() {
       type="button"
       onClick={toggle}
       aria-label="Toggle light and dark theme"
-      className="text-fg2 hover:text-fg hover:bg-raised flex size-11 items-center justify-center rounded-md transition-colors duration-150"
+      className={cn(
+        "text-fg2 hover:text-fg hover:bg-raised flex size-11 items-center justify-center rounded-md transition-colors duration-150",
+        className,
+      )}
     >
       <IconSun
         size={18}
