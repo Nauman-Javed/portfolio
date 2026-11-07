@@ -25,13 +25,6 @@ model Profile {
   updatedAt     DateTime @updatedAt
 }
 
-model SocialLink {
-  id    String @id @default(cuid())
-  label String
-  url   String
-  order Int    @default(0)
-}
-
 model Project {
   id               String         @id @default(cuid())
   slug             String         @unique

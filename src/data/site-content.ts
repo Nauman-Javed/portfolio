@@ -40,3 +40,25 @@ export function groupSkills<T extends { category: string; order: number }>(
     ([a], [b]) => categoryRank(a) - categoryRank(b) || a.localeCompare(b),
   );
 }
+
+export type SocialIcon = "linkedin" | "github" | "steam";
+
+/** Profile links shown in the Contact section. Edit here to change them. */
+export const SOCIAL_LINKS: { label: string; url: string; icon: SocialIcon }[] =
+  [
+    {
+      label: "LinkedIn",
+      url: "https://www.linkedin.com/in/nauman-javed-268162210/",
+      icon: "linkedin",
+    },
+    {
+      label: "GitHub",
+      url: "https://github.com/Nauman-Javed",
+      icon: "github",
+    },
+    {
+      label: "Steam",
+      url: "https://steamcommunity.com/id/H3adShOt_841/",
+      icon: "steam",
+    },
+  ];

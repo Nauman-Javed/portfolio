@@ -13,12 +13,6 @@ export async function getProfile() {
   return db.profile.findUnique({ where: { id: "profile" } });
 }
 
-export async function getSocialLinks() {
-  cacheTag("social-links");
-  cacheLife("max");
-  return db.socialLink.findMany({ orderBy: { order: "asc" } });
-}
-
 export async function getPublishedProjects() {
   cacheTag("projects");
   cacheLife("max");

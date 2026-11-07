@@ -14,33 +14,24 @@ import {
   getProfile,
   getPublishedProjects,
   getSkills,
-  getSocialLinks,
   getStats,
 } from "@/data/queries";
+import { SOCIAL_LINKS } from "@/data/site-content";
 import { SITE_URL } from "@/lib/site";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 export default async function HomePage() {
-  const [
-    profile,
-    education,
-    skills,
-    experience,
-    featured,
-    published,
-    links,
-    stats,
-  ] = await Promise.all([
-    getProfile(),
-    getEducation(),
-    getSkills(),
-    getExperience(),
-    getFeaturedProjects(),
-    getPublishedProjects(),
-    getSocialLinks(),
-    getStats(),
-  ]);
+  const [profile, education, skills, experience, featured, published, stats] =
+    await Promise.all([
+      getProfile(),
+      getEducation(),
+      getSkills(),
+      getExperience(),
+      getFeaturedProjects(),
+      getPublishedProjects(),
+      getStats(),
+    ]);
 
   if (!profile) {
     return (
@@ -68,7 +59,7 @@ export default async function HomePage() {
     ...(profile.location && {
       homeLocation: { "@type": "Place", name: profile.location },
     }),
-    ...(links.length > 0 && { sameAs: links.map((l) => l.url) }),
+    sameAs: SOCIAL_LINKS.map((link) => link.url),
   }).replace(/</g, "\u003c");
 
   return (
@@ -90,7 +81,7 @@ export default async function HomePage() {
           showAllLink={published.length > shown.length}
         />
       )}
-      <ContactSection profile={profile} links={links} />
+      <ContactSection profile={profile} />
     </>
   );
 }

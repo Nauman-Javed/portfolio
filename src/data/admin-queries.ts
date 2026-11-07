@@ -15,9 +15,6 @@ export const getAdminProject = (id: string) =>
 export const getAdminProfile = () =>
   db.profile.findUnique({ where: { id: "profile" } });
 
-export const getAdminSocialLinks = () =>
-  db.socialLink.findMany({ orderBy: [{ order: "asc" }, { id: "asc" }] });
-
 export const getAdminExperience = () =>
   db.experience.findMany({
     orderBy: [{ order: "asc" }, { startDate: "desc" }],

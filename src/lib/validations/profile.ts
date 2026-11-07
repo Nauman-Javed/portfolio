@@ -37,10 +37,3 @@ export const profileSchema = z.object({
 });
 
 export type ProfileInput = z.infer<typeof profileSchema>;
-
-export const socialLinkSchema = z.object({
-  label: required("Label", 60),
-  url: optionalUrl.refine((v) => v !== "", "URL is required"),
-});
-
-export type SocialLinkInput = z.infer<typeof socialLinkSchema>;
