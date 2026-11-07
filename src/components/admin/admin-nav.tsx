@@ -12,7 +12,6 @@ const links = [
   { href: "/manage/experience", label: "Experience" },
   { href: "/manage/skills", label: "Skills" },
   { href: "/manage/education", label: "Education" },
-  { href: "/manage/certifications", label: "Certifications" },
 ];
 
 function hrefFor(pathname: string) {

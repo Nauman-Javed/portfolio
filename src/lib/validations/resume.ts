@@ -3,7 +3,6 @@ import {
   dateString,
   optional,
   optionalDate,
-  optionalUrl,
   imageSource,
   required,
 } from "./common";
@@ -62,12 +61,3 @@ export const educationSchema = z
   });
 
 export type EducationInput = z.infer<typeof educationSchema>;
-
-export const certificationSchema = z.object({
-  name: required("Name", 200),
-  issuer: required("Issuer", 200),
-  date: optionalDate,
-  url: optionalUrl,
-});
-
-export type CertificationInput = z.infer<typeof certificationSchema>;

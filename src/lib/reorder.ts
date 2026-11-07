@@ -1,8 +1,7 @@
 import { Prisma } from "@/generated/prisma/client";
 import { db } from "@/lib/db";
 
-type OrderedTable =
-  "Project" | "Experience" | "Skill" | "Education" | "Certification";
+type OrderedTable = "Project" | "Experience" | "Skill" | "Education";
 
 /**
  * Writes new `order` values for a few rows in one statement (one round trip).

@@ -28,17 +28,12 @@ export const getAdminSkills = () =>
 export const getAdminEducation = () =>
   db.education.findMany({ orderBy: [{ order: "asc" }, { startYear: "desc" }] });
 
-export const getAdminCertifications = () =>
-  db.certification.findMany({ orderBy: [{ order: "asc" }, { name: "asc" }] });
-
 export async function getAdminCounts() {
-  const [projects, experience, skills, education, certifications] =
-    await Promise.all([
-      db.project.count(),
-      db.experience.count(),
-      db.skill.count(),
-      db.education.count(),
-      db.certification.count(),
-    ]);
-  return { projects, experience, skills, education, certifications };
+  const [projects, experience, skills, education] = await Promise.all([
+    db.project.count(),
+    db.experience.count(),
+    db.skill.count(),
+    db.education.count(),
+  ]);
+  return { projects, experience, skills, education };
 }

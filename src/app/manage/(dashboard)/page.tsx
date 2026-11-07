@@ -16,11 +16,6 @@ export default async function AdminHomePage() {
     },
     { href: "/manage/skills", label: "Skills", count: counts.skills },
     { href: "/manage/education", label: "Education", count: counts.education },
-    {
-      href: "/manage/certifications",
-      label: "Certifications",
-      count: counts.certifications,
-    },
   ];
 
   return (
