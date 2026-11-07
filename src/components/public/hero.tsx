@@ -1,55 +1,137 @@
 import Link from "next/link";
-import { ArrowDownRight, Mail } from "lucide-react";
-import type { Profile } from "@/data/types";
+import { IconRocket, IconShieldCheck } from "@tabler/icons-react";
+import { ROTATING_PHRASES } from "@/data/site-content";
+import type { Profile, Skill } from "@/data/types";
+import { CodeEditor } from "./code-editor";
+import { RotatingText } from "./rotating-text";
+import { Container, ctaClass } from "./ui";
 
-export function Hero({ profile }: { profile: Profile }) {
-  const [first, ...rest] = profile.name.split(" ");
+type Stats = { years: number; projects: number; skills: number };
+
+const delay = (seconds: number) =>
+  ({ "--d": `${seconds}s` }) as React.CSSProperties;
+
+function pickStack(skills: Skill[]) {
+  const preferred = skills.filter((s) => /framework/i.test(s.category));
+  return (preferred.length >= 3 ? preferred : skills)
+    .slice(0, 3)
+    .map((s) => s.name);
+}
+
+export function Hero({
+  profile,
+  skills,
+  stats,
+}: {
+  profile: Profile;
+  skills: Skill[];
+  stats: Stats;
+}) {
+  const statItems = [
+    stats.years > 0 && {
+      value: `${stats.years}+`,
+      label: "Years of experience",
+    },
+    { value: String(stats.projects), label: "Projects shipped" },
+    { value: String(stats.skills), label: "Technologies" },
+  ].filter(Boolean) as { value: string; label: string }[];
 
   return (
-    <section className="relative overflow-hidden">
-      <div
-        aria-hidden
-        className="bg-brand/20 pointer-events-none absolute -top-40 -right-32 size-[34rem] rounded-full blur-3xl"
-      />
-      <div className="relative mx-auto max-w-6xl px-5 pt-20 pb-24 sm:px-8 sm:pt-32 sm:pb-36">
-        {profile.availability && (
-          <p className="border-border bg-card mb-8 inline-flex items-center gap-2 rounded-full border px-3.5 py-1.5 font-mono text-xs">
-            <span className="relative flex size-2">
-              <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-60" />
-              <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
-            </span>
-            {profile.availability}
-          </p>
-        )}
-        <h1 className="font-display text-[clamp(3rem,9vw,7.5rem)] leading-[0.95] tracking-tight">
-          {first}
-          <br />
-          <span className="text-brand italic">{rest.join(" ")}</span>
-        </h1>
-        <p className="mt-8 font-mono text-sm tracking-wide uppercase">
-          {profile.headline}
-          {profile.location && (
-            <span className="text-muted-foreground"> · {profile.location}</span>
+    <section className="pt-16 pb-20 sm:pt-24 sm:pb-24 lg:pt-28">
+      <Container className="grid items-center gap-16 *:min-w-0 min-[1100px]:grid-cols-[1.05fr_1fr]">
+        <div>
+          {profile.availability && (
+            <p
+              className="anim-rise border-hairline bg-surface text-fg2 mb-7 inline-flex items-center gap-2.5 rounded-full border px-4 py-2 text-[13px]"
+              style={delay(0.1)}
+            >
+              <span
+                aria-hidden
+                className="anim-pulse bg-teal size-2 rounded-full"
+              />
+              {profile.availability}
+            </p>
           )}
-        </p>
-        <p className="text-muted-foreground mt-6 max-w-xl text-lg leading-relaxed">
-          {profile.summary}
-        </p>
-        <div className="mt-10 flex flex-wrap gap-3">
-          <Link
-            href="/projects"
-            className="bg-foreground text-background inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-medium transition-opacity hover:opacity-85"
+          <h1
+            className="anim-rise text-[clamp(40px,6vw,72px)] leading-[1.08] tracking-[-0.02em]"
+            style={delay(0.25)}
           >
-            View my work <ArrowDownRight className="size-4" />
-          </Link>
-          <a
-            href={`mailto:${profile.email}`}
-            className="border-border hover:bg-muted inline-flex items-center gap-2 rounded-full border px-6 py-3 text-sm font-medium transition-colors"
+            I engineer
+            <RotatingText phrases={ROTATING_PHRASES} />
+          </h1>
+          <p
+            className="anim-rise text-fg2 mt-6 max-w-[34rem] text-[18px] leading-[1.6]"
+            style={delay(0.4)}
           >
-            <Mail className="size-4" /> Get in touch
-          </a>
+            {profile.summary}
+          </p>
+          <div
+            className="anim-rise mt-9 flex flex-wrap gap-3"
+            style={delay(0.55)}
+          >
+            <Link href="/projects" className={ctaClass("primary")}>
+              View my work →
+            </Link>
+            <Link href="/#contact" className={ctaClass("secondary")}>
+              Get in touch
+            </Link>
+          </div>
+          <dl
+            className="anim-rise mt-12 flex flex-wrap gap-x-10 gap-y-5"
+            style={delay(0.7)}
+          >
+            {statItems.map((s) => (
+              <div key={s.label} className="flex flex-col-reverse">
+                <dt className="text-fg3 text-xs">{s.label}</dt>
+                <dd className="text-[28px] leading-[1.25]">{s.value}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
-      </div>
+
+        <div className="relative pb-10 min-[1100px]:pr-6 min-[1100px]:pb-12">
+          <div className="anim-rise" style={delay(0.4)}>
+            <CodeEditor
+              name={profile.name}
+              role={profile.headline}
+              location={profile.location}
+              stack={pickStack(skills)}
+              email={profile.email}
+              available={!!profile.availability}
+            />
+          </div>
+
+          <div
+            aria-hidden="true"
+            className="anim-bob border-hairline bg-surface shadow-float absolute top-3 right-3 flex items-center gap-3 rounded-lg border px-4 py-3 min-[1100px]:-right-4 sm:-top-5 sm:-right-2"
+          >
+            <span className="bg-tealsoft text-teal flex size-9 items-center justify-center rounded-md">
+              <IconShieldCheck size={18} stroke={1.5} />
+            </span>
+            <span>
+              <span className="block text-[13px]">Test suite</span>
+              <span className="text-tealsoft-fg block text-[11px]">
+                ✓ All checks passing
+              </span>
+            </span>
+          </div>
+
+          <div
+            aria-hidden="true"
+            className="anim-bob-2 border-hairline bg-surface shadow-float absolute bottom-0 left-3 w-[min(260px,calc(100%-24px))] rounded-lg border p-4 min-[1100px]:-left-6 sm:-left-4"
+          >
+            <div className="flex items-center gap-3">
+              <span className="bg-tealsoft text-teal flex size-9 items-center justify-center rounded-md">
+                <IconRocket size={18} stroke={1.5} />
+              </span>
+              <span className="text-[13px]">Deploying to production</span>
+            </div>
+            <div className="bg-track mt-3 h-1.5 overflow-hidden rounded-full">
+              <div className="anim-deploy from-teal to-teal-light h-full rounded-full bg-linear-to-r" />
+            </div>
+          </div>
+        </div>
+      </Container>
     </section>
   );
 }

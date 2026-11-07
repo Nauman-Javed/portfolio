@@ -7,7 +7,7 @@ export default function PublicLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <div id="top" className="flex flex-1 flex-col">
       <a
         href="#main"
         className="bg-foreground text-background sr-only z-50 rounded-md px-3 py-2 focus:not-sr-only focus:fixed focus:top-3 focus:left-3"
@@ -19,6 +19,6 @@ export default function PublicLayout({
         {children}
       </main>
       <SiteFooter />
-    </>
+    </div>
   );
 }

@@ -71,3 +71,24 @@ export async function getCertifications() {
   cacheLife("max");
   return db.certification.findMany({ orderBy: { order: "asc" } });
 }
+
+export async function getStats() {
+  cacheTag("experience", "projects", "skills");
+  cacheLife("days");
+  const [first, projects, skills] = await Promise.all([
+    db.experience.findFirst({
+      where: { employmentType: { not: "Internship" } },
+      orderBy: { startDate: "asc" },
+      select: { startDate: true },
+    }),
+    db.project.count({ where: { published: true } }),
+    db.skill.count(),
+  ]);
+  const years = first
+    ? Math.max(
+        1,
+        Math.floor((Date.now() - first.startDate.getTime()) / (365.25 * 864e5)),
+      )
+    : 0;
+  return { years, projects, skills };
+}

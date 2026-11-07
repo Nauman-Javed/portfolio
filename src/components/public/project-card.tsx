@@ -1,59 +1,66 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
 import type { Project } from "@/data/types";
 
 export function ProjectCard({
   project,
-  index,
   priority = false,
 }: {
   project: Project;
-  index: number;
   priority?: boolean;
 }) {
   return (
-    <article className="group border-border bg-card focus-within:ring-ring relative overflow-hidden rounded-2xl border transition-all focus-within:ring-2 hover:-translate-y-1 hover:shadow-xl">
-      <div className="bg-muted relative aspect-16/10 overflow-hidden">
+    <article className="lift border-hairline bg-surface overflow-hidden rounded-lg border">
+      <div className="bg-band border-hairline relative h-60 overflow-hidden border-b">
         <Image
           src={project.coverImageUrl}
           alt={`${project.title} screenshot`}
           fill
           priority={priority}
-          sizes="(min-width: 768px) 50vw, 100vw"
-          className="object-cover object-top transition-transform duration-500 group-hover:scale-105"
+          sizes="(min-width: 1000px) 600px, 100vw"
+          className="object-cover object-top"
         />
       </div>
-      <div className="p-6">
-        <div className="flex items-start justify-between gap-4">
-          <div>
-            <p className="text-brand font-mono text-xs">
-              {String(index + 1).padStart(2, "0")}
-            </p>
-            <h3 className="font-display mt-1 text-3xl">
-              <Link
-                href={`/projects/${project.slug}`}
-                className="after:absolute after:inset-0 focus-visible:outline-none"
-              >
-                {project.title}
-              </Link>
-            </h3>
-          </div>
-          <ArrowUpRight className="text-muted-foreground group-hover:text-brand size-6 shrink-0 transition-all group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-        </div>
-        <p className="text-muted-foreground mt-3 text-sm leading-relaxed">
+      <div className="p-[22px]">
+        <h3 className="flex items-start justify-between gap-4 text-xl leading-[1.3]">
+          {project.liveUrl ? (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-teal transition-colors duration-150"
+            >
+              {project.title} <span aria-hidden>↗</span>
+              <span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          ) : (
+            <Link
+              href={`/projects/${project.slug}`}
+              className="hover:text-teal transition-colors duration-150"
+            >
+              {project.title}
+            </Link>
+          )}
+        </h3>
+        <p className="text-fg2 mt-2 text-[14px] leading-[1.6]">
           {project.shortDescription}
         </p>
-        <ul className="mt-5 flex flex-wrap gap-1.5">
-          {project.techStack.slice(0, 4).map((t) => (
+        <ul className="mt-4 flex flex-wrap gap-1.5">
+          {project.techStack.map((tech) => (
             <li
-              key={t}
-              className="bg-muted rounded-full px-2.5 py-1 font-mono text-[11px]"
+              key={tech}
+              className="bg-chip text-fg2 rounded-sm px-2 py-1 text-[11px] leading-[1.4]"
             >
-              {t}
+              {tech}
             </li>
           ))}
         </ul>
+        <Link
+          href={`/projects/${project.slug}`}
+          className="text-teal mt-5 inline-flex min-h-11 items-center text-[13px] hover:underline"
+        >
+          Case study →<span className="sr-only"> for {project.title}</span>
+        </Link>
       </div>
     </article>
   );

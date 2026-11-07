@@ -1,40 +1,48 @@
 import Link from "next/link";
 import { getProfile } from "@/data/queries";
-import { ThemeToggle } from "./theme-toggle";
+import { Container, ctaClass } from "./ui";
 
 const links = [
-  { href: "/#about", label: "About" },
   { href: "/#skills", label: "Skills" },
+  { href: "/#experience", label: "Experience" },
   { href: "/projects", label: "Projects" },
-  { href: "/#contact", label: "Contact" },
 ];
 
 export async function SiteHeader() {
   const profile = await getProfile();
+  const name = profile?.name ?? "Portfolio";
 
   return (
-    <header className="bg-background/80 border-border sticky top-0 z-40 border-b backdrop-blur">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
+    <header className="border-hairline bg-canvas/80 sticky top-0 z-40 border-b backdrop-blur">
+      <Container className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-3">
         <Link
           href="/"
-          className="font-display text-xl tracking-tight"
-          aria-label={`${profile?.name ?? "Portfolio"}, home`}
+          aria-label={`${name}, home`}
+          className="flex items-center gap-3"
         >
-          nauman<span className="text-brand">.</span>
+          <span
+            aria-hidden
+            className="bg-tealsoft text-teal flex size-9 items-center justify-center rounded-md font-mono text-[13px]"
+          >
+            {"</>"}
+          </span>
+          <span className="text-[15px]">{name}</span>
         </Link>
-        <nav aria-label="Main" className="flex items-center gap-1 sm:gap-3">
+        <nav aria-label="Main" className="flex flex-wrap items-center gap-1">
           {links.map((l) => (
             <Link
               key={l.href}
               href={l.href}
-              className="text-muted-foreground hover:text-foreground rounded-full px-2.5 py-1.5 text-sm transition-colors sm:px-3"
+              className="text-fg2 hover:text-fg flex min-h-11 items-center rounded-md px-3 text-[13px] transition-colors duration-150"
             >
               {l.label}
             </Link>
           ))}
-          <ThemeToggle />
+          <Link href="/#contact" className={`${ctaClass("primary")} ml-2`}>
+            Get in touch →
+          </Link>
         </nav>
-      </div>
+      </Container>
     </header>
   );
 }

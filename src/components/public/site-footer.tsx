@@ -1,14 +1,20 @@
 import { getProfile } from "@/data/queries";
+import { Container } from "./ui";
 
 export async function SiteFooter() {
   const profile = await getProfile();
 
   return (
-    <footer className="border-border border-t">
-      <div className="text-muted-foreground mx-auto flex max-w-6xl flex-col gap-2 px-5 py-8 font-mono text-xs sm:flex-row sm:justify-between sm:px-8">
+    <footer className="border-hairline mt-24 border-t">
+      <Container className="text-fg3 flex flex-wrap items-center justify-between gap-3 py-8 text-xs">
         <span>© {profile?.name}</span>
-        <span>Built with Next.js, Tailwind CSS &amp; shadcn/ui</span>
-      </div>
+        <a
+          href="#top"
+          className="hover:text-fg flex min-h-11 items-center transition-colors duration-150"
+        >
+          Back to top ↑
+        </a>
+      </Container>
     </footer>
   );
 }

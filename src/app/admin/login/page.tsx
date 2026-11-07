@@ -39,7 +39,7 @@ async function LoginCard({ searchParams }: Props) {
       >
         <button
           type="submit"
-          className="bg-foreground text-background w-full rounded-full px-5 py-3 text-sm font-medium transition-opacity hover:opacity-85"
+          className="bg-teal text-onteal hover:bg-teal-light h-12 w-full rounded-md px-5 text-[13px] font-medium transition-colors duration-150"
         >
           Continue with GitHub
         </button>
