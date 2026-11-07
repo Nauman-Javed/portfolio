@@ -1,7 +1,7 @@
 import {
-  IconBrandGithub,
-  IconBrandLinkedin,
-  IconBrandSteam,
+  IconBrandGithubFilled,
+  IconBrandLinkedinFilled,
+  IconBrandSteamFilled,
   IconFileText,
   IconMail,
 } from "@tabler/icons-react";
@@ -10,10 +10,23 @@ import type { SocialIcon } from "@/data/site-content";
 import type { Profile } from "@/data/types";
 import { Container, ctaClass } from "./ui";
 
-const ICONS: Record<SocialIcon, typeof IconBrandGithub> = {
-  linkedin: IconBrandLinkedin,
-  github: IconBrandGithub,
-  steam: IconBrandSteam,
+// Brand colours, switched to lighter tints in dark mode so they stay legible.
+const BRANDS: Record<
+  SocialIcon,
+  { Icon: typeof IconBrandGithubFilled; color: string }
+> = {
+  linkedin: {
+    Icon: IconBrandLinkedinFilled,
+    color: "text-[#0a66c2] dark:text-[#58a6e6]",
+  },
+  github: {
+    Icon: IconBrandGithubFilled,
+    color: "text-[#181717] dark:text-white",
+  },
+  steam: {
+    Icon: IconBrandSteamFilled,
+    color: "text-[#171a21] dark:text-[#66c0f4]",
+  },
 };
 
 const iconProps = { size: 18, stroke: 1.5, "aria-hidden": true } as const;
@@ -45,7 +58,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
               {profile.email}
             </a>
             {SOCIAL_LINKS.map((link) => {
-              const Icon = ICONS[link.icon];
+              const { Icon, color } = BRANDS[link.icon];
               return (
                 <a
                   key={link.label}
@@ -54,7 +67,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
                   rel="noopener noreferrer"
                   className={ctaClass("secondary", "large")}
                 >
-                  <Icon {...iconProps} />
+                  <Icon {...iconProps} className={color} />
                   {link.label} <span aria-hidden>↗</span>
                   <span className="sr-only"> (opens in a new tab)</span>
                 </a>
