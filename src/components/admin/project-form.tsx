@@ -142,6 +142,7 @@ export function ProjectForm({
       >
         <ImageUploader
           session={session}
+          removable
           invalid={!!errors.coverImageUrl}
           value={coverUrl ? { url: coverUrl, publicId: coverId } : null}
           onChange={(image) => {

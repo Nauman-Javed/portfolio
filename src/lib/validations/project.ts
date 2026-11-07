@@ -24,7 +24,7 @@ export const projectSchema = z.object({
   shortDescription: required("Short description", 300),
   description: required("Description", 10000),
   techStack: optional(1000),
-  coverImageUrl: imageSource.refine((v) => v !== "", "Cover image is required"),
+  coverImageUrl: imageSource,
   coverImageId: optional(300),
   gallery: z.array(galleryImageSchema).max(MAX_GALLERY_IMAGES),
   liveUrl: optionalUrl,
