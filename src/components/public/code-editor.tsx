@@ -97,7 +97,6 @@ export function CodeEditor({
           <span className="bg-codebg text-fg border-hairline rounded-t-md border border-b-0 px-3 py-2">
             server.ts
           </span>
-          <span className="text-fg3 px-3 py-2">api.test.ts</span>
         </div>
       </div>
       <div className="overflow-hidden p-4 pb-16 font-mono text-[13px] leading-[1.85]">
@@ -114,7 +113,7 @@ export function CodeEditor({
                   {
                     "--w": `${Math.max(text.length, 1)}ch`,
                     "--n": Math.max(text.length, 1),
-                    "--d": `${0.5 + i * 0.8}s`,
+                    "--d": `${0.4 + i * 0.4}s`,
                   } as React.CSSProperties
                 }
               >

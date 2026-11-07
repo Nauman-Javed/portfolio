@@ -371,7 +371,7 @@
 }
 .anim-type {
   width: var(--w);
-  animation: type 0.9s steps(var(--n, 20)) backwards;
+  animation: type 0.5s steps(var(--n, 20)) backwards;
   animation-delay: var(--d, 0s);
 }
 .anim-caret {
