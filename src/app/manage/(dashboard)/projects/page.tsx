@@ -18,7 +18,7 @@ export default async function AdminProjectsPage() {
         action={
           <Button
             nativeButton={false}
-            render={<Link href="/admin/projects/new" />}
+            render={<Link href="/manage/projects/new" />}
           >
             <Plus /> New project
           </Button>

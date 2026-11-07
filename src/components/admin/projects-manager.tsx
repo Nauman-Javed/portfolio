@@ -101,7 +101,7 @@ export function ProjectsManager({ projects }: { projects: ProjectRow[] }) {
               size="icon-sm"
               aria-label={`Edit ${p.title}`}
               nativeButton={false}
-              render={<Link href={`/admin/projects/${p.id}`} />}
+              render={<Link href={`/manage/projects/${p.id}`} />}
             >
               <Pencil />
             </Button>

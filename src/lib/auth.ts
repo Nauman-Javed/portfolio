@@ -10,7 +10,7 @@ function isAdminEmail(email: string | null | undefined) {
 export const { handlers, auth, signIn, signOut } = NextAuth({
   providers: [GitHub],
   session: { strategy: "jwt" },
-  pages: { signIn: "/admin/login", error: "/admin/login" },
+  pages: { signIn: "/manage/login", error: "/manage/login" },
   callbacks: {
     // Only the allowlisted email may sign in; everyone else is rejected here.
     signIn({ user }) {
@@ -31,6 +31,6 @@ export async function getAdminSession() {
  */
 export async function requireAdmin() {
   const session = await getAdminSession();
-  if (!session) redirect("/admin/login");
+  if (!session) redirect("/manage/login");
   return session;
 }

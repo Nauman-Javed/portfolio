@@ -8,16 +8,16 @@ export default async function AdminHomePage() {
   const counts = await getAdminCounts();
 
   const cards = [
-    { href: "/admin/projects", label: "Projects", count: counts.projects },
+    { href: "/manage/projects", label: "Projects", count: counts.projects },
     {
-      href: "/admin/experience",
+      href: "/manage/experience",
       label: "Experience",
       count: counts.experience,
     },
-    { href: "/admin/skills", label: "Skills", count: counts.skills },
-    { href: "/admin/education", label: "Education", count: counts.education },
+    { href: "/manage/skills", label: "Skills", count: counts.skills },
+    { href: "/manage/education", label: "Education", count: counts.education },
     {
-      href: "/admin/certifications",
+      href: "/manage/certifications",
       label: "Certifications",
       count: counts.certifications,
     },
@@ -31,7 +31,7 @@ export default async function AdminHomePage() {
       />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link
-          href="/admin/profile"
+          href="/manage/profile"
           className="border-border bg-card hover:border-brand rounded-2xl border p-6 transition-colors"
         >
           <p className="text-muted-foreground font-mono text-xs tracking-widest uppercase">

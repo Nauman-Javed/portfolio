@@ -11,7 +11,7 @@ async function AdminShell({ children }: { children: React.ReactNode }) {
     <>
       <header className="border-border border-b">
         <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-5 sm:px-8">
-          <Link href="/admin" className="font-display text-xl">
+          <Link href="/manage" className="font-display text-xl">
             admin<span className="text-brand">.</span>
           </Link>
           <div className="flex items-center gap-4 text-sm">
@@ -24,7 +24,7 @@ async function AdminShell({ children }: { children: React.ReactNode }) {
             <form
               action={async () => {
                 "use server";
-                await signOut({ redirectTo: "/admin/login" });
+                await signOut({ redirectTo: "/manage/login" });
               }}
             >
               <button

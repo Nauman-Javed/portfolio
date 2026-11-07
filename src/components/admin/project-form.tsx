@@ -73,7 +73,7 @@ export function ProjectForm({
         success: projectId ? "Project saved" : "Project created",
         onSuccess: () => {
           session.markSaved();
-          if (!projectId) router.push("/admin/projects");
+          if (!projectId) router.push("/manage/projects");
         },
         onError: (r) => applyFieldErrors(setError, r.fieldErrors),
       },
@@ -220,7 +220,7 @@ export function ProjectForm({
         <Button
           variant="ghost"
           nativeButton={false}
-          render={<Link href="/admin/projects" />}
+          render={<Link href="/manage/projects" />}
         >
           Back to projects
         </Button>

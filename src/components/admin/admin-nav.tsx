@@ -5,13 +5,13 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 
 const links = [
-  { href: "/admin", label: "Overview" },
-  { href: "/admin/profile", label: "Profile" },
-  { href: "/admin/projects", label: "Projects" },
-  { href: "/admin/experience", label: "Experience" },
-  { href: "/admin/skills", label: "Skills" },
-  { href: "/admin/education", label: "Education" },
-  { href: "/admin/certifications", label: "Certifications" },
+  { href: "/manage", label: "Overview" },
+  { href: "/manage/profile", label: "Profile" },
+  { href: "/manage/projects", label: "Projects" },
+  { href: "/manage/experience", label: "Experience" },
+  { href: "/manage/skills", label: "Skills" },
+  { href: "/manage/education", label: "Education" },
+  { href: "/manage/certifications", label: "Certifications" },
 ];
 
 export function AdminNav() {
@@ -24,7 +24,7 @@ export function AdminNav() {
     >
       {links.map(({ href, label }) => {
         const active =
-          href === "/admin" ? pathname === href : pathname.startsWith(href);
+          href === "/manage" ? pathname === href : pathname.startsWith(href);
         return (
           <Link
             key={href}

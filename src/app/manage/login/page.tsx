@@ -9,9 +9,9 @@ async function LoginCard({ searchParams }: Props) {
   const { error, callbackUrl } = await searchParams;
   // Only allow same-site redirects after login.
   const redirectTo =
-    callbackUrl?.startsWith("/admin") && !callbackUrl.startsWith("//")
+    callbackUrl?.startsWith("/manage") && !callbackUrl.startsWith("//")
       ? callbackUrl
-      : "/admin";
+      : "/manage";
 
   return (
     <div className="border-border bg-card w-full max-w-sm rounded-2xl border p-8">
