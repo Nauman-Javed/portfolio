@@ -12,7 +12,8 @@ import type { ActionResult } from "@/lib/action-result";
 import { requireAdmin } from "@/lib/auth";
 import { deleteAssets } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
-import { invalidate, moveId } from "@/lib/mutations";
+import { setOrders } from "@/lib/reorder";
+import { invalidate, planReorder } from "@/lib/mutations";
 import type { MoveDirection } from "@/lib/mutations";
 import { emptyToNull, parseList } from "@/lib/validations/common";
 import { projectSchema } from "@/lib/validations/project";
@@ -186,20 +187,12 @@ export async function moveProject(
 
   const rows = await db.project.findMany({
     orderBy: [{ order: "asc" }, { createdAt: "asc" }],
-    select: { id: true },
+    select: { id: true, order: true },
   });
-  const next = moveId(
-    rows.map((r) => r.id),
-    id,
-    direction,
-  );
-  if (!next) return fail("Can't move that item.");
+  const updates = planReorder(rows, id, direction);
+  if (!updates) return fail("Can't move that item.");
 
-  await db.$transaction(
-    next.map((projectId, order) =>
-      db.project.update({ where: { id: projectId }, data: { order } }),
-    ),
-  );
+  await setOrders("Project", updates);
   invalidate("projects");
   return ok();
 }

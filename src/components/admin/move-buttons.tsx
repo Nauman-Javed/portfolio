@@ -1,6 +1,7 @@
 "use client";
 
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import type { ActionResult } from "@/lib/action-result";
 import type { MoveDirection } from "@/lib/mutations";
@@ -11,13 +12,24 @@ export function MoveButtons({
   isFirst,
   isLast,
   onMove,
+  onOptimistic,
 }: {
   name: string;
   isFirst: boolean;
   isLast: boolean;
   onMove: (direction: MoveDirection) => Promise<ActionResult>;
+  /** Reorders the list on screen right away, before the server has answered. */
+  onOptimistic?: (direction: MoveDirection) => void;
 }) {
+  const router = useRouter();
   const { run, pending } = useServerAction();
+
+  function move(direction: MoveDirection) {
+    // Runs outside the transition so the new order shows immediately.
+    onOptimistic?.(direction);
+    // If the server refuses, reload the real order so the screen can't drift.
+    run(() => onMove(direction), { onError: () => router.refresh() });
+  }
 
   return (
     <>
@@ -27,7 +39,7 @@ export function MoveButtons({
         size="icon-sm"
         aria-label={`Move ${name} up`}
         disabled={isFirst || pending}
-        onClick={() => run(() => onMove("up"))}
+        onClick={() => move("up")}
       >
         <ChevronUp />
       </Button>
@@ -37,7 +49,7 @@ export function MoveButtons({
         size="icon-sm"
         aria-label={`Move ${name} down`}
         disabled={isLast || pending}
-        onClick={() => run(() => onMove("down"))}
+        onClick={() => move("down")}
       >
         <ChevronDown />
       </Button>

@@ -23,6 +23,7 @@ import { SkillIcon } from "@/components/public/skill-icon";
 import { useUploadSession } from "./use-image-upload";
 import { ItemRow } from "./item-row";
 import { MoveButtons } from "./move-buttons";
+import { swapSkillOrder, useOptimisticList } from "./use-optimistic-list";
 import { applyFieldErrors, useServerAction } from "./use-server-action";
 
 type SkillItem = {
@@ -127,7 +128,8 @@ function SkillForm({
 }
 
 export function SkillsManager({ skills }: { skills: SkillItem[] }) {
-  const groups = groupSkills(skills);
+  const [rows, setRows] = useOptimisticList(skills);
+  const groups = groupSkills(rows);
   const categories = groups.map(([category]) => category);
 
   return (
@@ -172,6 +174,9 @@ export function SkillsManager({ skills }: { skills: SkillItem[] }) {
                       name={skill.name}
                       isFirst={i === 0}
                       isLast={i === items.length - 1}
+                      onOptimistic={(dir) =>
+                        setRows((r) => swapSkillOrder(r, skill.id, dir))
+                      }
                       onMove={(dir) => moveSkill(skill.id, dir)}
                     />
                     <FormDialog

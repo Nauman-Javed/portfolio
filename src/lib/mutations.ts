@@ -22,3 +22,26 @@ export function moveId(
   [next[from], next[to]] = [next[to], next[from]];
   return next;
 }
+
+/**
+ * The minimal set of `order` updates for a move: only rows whose position
+ * number actually changes (normally just the two that swap). Null if the move
+ * isn't possible.
+ */
+export function planReorder(
+  rows: { id: string; order: number }[],
+  id: string,
+  direction: MoveDirection,
+): { id: string; order: number }[] | null {
+  const next = moveId(
+    rows.map((r) => r.id),
+    id,
+    direction,
+  );
+  if (!next) return null;
+
+  const current = new Map(rows.map((r) => [r.id, r.order]));
+  return next.flatMap((rowId, order) =>
+    current.get(rowId) === order ? [] : [{ id: rowId, order }],
+  );
+}

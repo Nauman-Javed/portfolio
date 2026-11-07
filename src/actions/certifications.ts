@@ -5,7 +5,8 @@ import { fail, invalid, isNotFound, ok } from "@/lib/action-result";
 import type { ActionResult } from "@/lib/action-result";
 import { requireAdmin } from "@/lib/auth";
 import { db } from "@/lib/db";
-import { invalidate, moveId } from "@/lib/mutations";
+import { setOrders } from "@/lib/reorder";
+import { invalidate, planReorder } from "@/lib/mutations";
 import type { MoveDirection } from "@/lib/mutations";
 import { emptyToNull, toUtcDate } from "@/lib/validations/common";
 import { certificationSchema } from "@/lib/validations/resume";
@@ -77,20 +78,12 @@ export async function moveCertification(
 
   const rows = await db.certification.findMany({
     orderBy: [{ order: "asc" }, { name: "asc" }],
-    select: { id: true },
+    select: { id: true, order: true },
   });
-  const next = moveId(
-    rows.map((r) => r.id),
-    id,
-    direction,
-  );
-  if (!next) return fail("Can't move that item.");
+  const updates = planReorder(rows, id, direction);
+  if (!updates) return fail("Can't move that item.");
 
-  await db.$transaction(
-    next.map((entryId, order) =>
-      db.certification.update({ where: { id: entryId }, data: { order } }),
-    ),
-  );
+  await setOrders("Certification", updates);
   invalidate("certifications");
   return ok();
 }

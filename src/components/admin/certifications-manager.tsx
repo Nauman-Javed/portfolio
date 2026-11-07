@@ -19,6 +19,7 @@ import { FormDialog } from "./form-dialog";
 import { FormFooter } from "./form-footer";
 import { ItemRow } from "./item-row";
 import { MoveButtons } from "./move-buttons";
+import { swapNeighbour, useOptimisticList } from "./use-optimistic-list";
 import { applyFieldErrors, useServerAction } from "./use-server-action";
 
 type CertificationItem = {
@@ -98,6 +99,7 @@ export function CertificationsManager({
 }: {
   items: CertificationItem[];
 }) {
+  const [rows, setRows] = useOptimisticList(items);
   return (
     <div className="space-y-4">
       <FormDialog
@@ -115,7 +117,7 @@ export function CertificationsManager({
         <p className="text-muted-foreground text-sm">No certifications yet.</p>
       ) : (
         <ul className="space-y-2">
-          {items.map((item, i) => (
+          {rows.map((item, i) => (
             <ItemRow
               key={item.id}
               title={item.name}
@@ -125,7 +127,10 @@ export function CertificationsManager({
                   <MoveButtons
                     name={item.name}
                     isFirst={i === 0}
-                    isLast={i === items.length - 1}
+                    isLast={i === rows.length - 1}
+                    onOptimistic={(dir) =>
+                      setRows((r) => swapNeighbour(r, item.id, dir))
+                    }
                     onMove={(dir) => moveCertification(item.id, dir)}
                   />
                   <FormDialog

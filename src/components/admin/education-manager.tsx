@@ -19,6 +19,7 @@ import { FormDialog } from "./form-dialog";
 import { FormFooter } from "./form-footer";
 import { ItemRow } from "./item-row";
 import { MoveButtons } from "./move-buttons";
+import { swapNeighbour, useOptimisticList } from "./use-optimistic-list";
 import { applyFieldErrors, useServerAction } from "./use-server-action";
 
 type EducationItem = {
@@ -109,6 +110,7 @@ function EducationForm({
 }
 
 export function EducationManager({ items }: { items: EducationItem[] }) {
+  const [rows, setRows] = useOptimisticList(items);
   return (
     <div className="space-y-4">
       <FormDialog
@@ -126,7 +128,7 @@ export function EducationManager({ items }: { items: EducationItem[] }) {
         <p className="text-muted-foreground text-sm">No education yet.</p>
       ) : (
         <ul className="space-y-2">
-          {items.map((item, i) => (
+          {rows.map((item, i) => (
             <ItemRow
               key={item.id}
               title={item.degree}
@@ -136,7 +138,10 @@ export function EducationManager({ items }: { items: EducationItem[] }) {
                   <MoveButtons
                     name={item.degree}
                     isFirst={i === 0}
-                    isLast={i === items.length - 1}
+                    isLast={i === rows.length - 1}
+                    onOptimistic={(dir) =>
+                      setRows((r) => swapNeighbour(r, item.id, dir))
+                    }
                     onMove={(dir) => moveEducation(item.id, dir)}
                   />
                   <FormDialog

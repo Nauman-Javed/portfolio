@@ -6,7 +6,8 @@ import type { ActionResult } from "@/lib/action-result";
 import { requireAdmin } from "@/lib/auth";
 import { deleteAssets } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
-import { invalidate, moveId } from "@/lib/mutations";
+import { setOrders } from "@/lib/reorder";
+import { invalidate, planReorder } from "@/lib/mutations";
 import type { MoveDirection } from "@/lib/mutations";
 import { emptyToNull } from "@/lib/validations/common";
 import { skillSchema } from "@/lib/validations/resume";
@@ -103,20 +104,12 @@ export async function moveSkill(
   const rows = await db.skill.findMany({
     where: { category: skill.category },
     orderBy: [{ order: "asc" }, { name: "asc" }],
-    select: { id: true },
+    select: { id: true, order: true },
   });
-  const next = moveId(
-    rows.map((r) => r.id),
-    id,
-    direction,
-  );
-  if (!next) return fail("Can't move that item.");
+  const updates = planReorder(rows, id, direction);
+  if (!updates) return fail("Can't move that item.");
 
-  await db.$transaction(
-    next.map((skillId, order) =>
-      db.skill.update({ where: { id: skillId }, data: { order } }),
-    ),
-  );
+  await setOrders("Skill", updates);
   invalidate("skills");
   return ok();
 }

@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { DeleteButton } from "./delete-button";
 import { MoveButtons } from "./move-buttons";
+import { swapNeighbour, useOptimisticList } from "./use-optimistic-list";
 import { useServerAction } from "./use-server-action";
 
 type ProjectRow = {
@@ -50,13 +51,14 @@ function FlagSwitch({
 }
 
 export function ProjectsManager({ projects }: { projects: ProjectRow[] }) {
+  const [rows, setRows] = useOptimisticList(projects);
   if (projects.length === 0) {
     return <p className="text-muted-foreground text-sm">No projects yet.</p>;
   }
 
   return (
     <ul className="space-y-2">
-      {projects.map((p, i) => (
+      {rows.map((p, i) => (
         <li
           key={p.id}
           className="border-border bg-card flex flex-wrap items-center gap-4 rounded-xl border p-3"
@@ -93,7 +95,10 @@ export function ProjectsManager({ projects }: { projects: ProjectRow[] }) {
             <MoveButtons
               name={p.title}
               isFirst={i === 0}
-              isLast={i === projects.length - 1}
+              isLast={i === rows.length - 1}
+              onOptimistic={(dir) =>
+                setRows((r) => swapNeighbour(r, p.id, dir))
+              }
               onMove={(dir) => moveProject(p.id, dir)}
             />
             <Button

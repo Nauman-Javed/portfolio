@@ -35,6 +35,7 @@ export function useServerAction() {
           }
         } catch {
           toast.error("Something went wrong. Please try again.");
+          router.refresh();
         }
       });
     },
