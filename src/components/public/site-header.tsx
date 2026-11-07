@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { profile } from "@/data/placeholder";
+import { getProfile } from "@/data/queries";
 import { ThemeToggle } from "./theme-toggle";
 
 const links = [
@@ -9,14 +9,16 @@ const links = [
   { href: "/#contact", label: "Contact" },
 ];
 
-export function SiteHeader() {
+export async function SiteHeader() {
+  const profile = await getProfile();
+
   return (
     <header className="bg-background/80 border-border sticky top-0 z-40 border-b backdrop-blur">
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-4 px-5 sm:px-8">
         <Link
           href="/"
           className="font-display text-xl tracking-tight"
-          aria-label={`${profile.name}, home`}
+          aria-label={`${profile?.name ?? "Portfolio"}, home`}
         >
           nauman<span className="text-brand">.</span>
         </Link>

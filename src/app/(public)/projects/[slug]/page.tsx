@@ -3,17 +3,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
-import { projectBySlug, publishedProjects } from "@/data/placeholder";
+import { getProjectBySlug, getPublishedProjects } from "@/data/queries";
 
 type Props = { params: Promise<{ slug: string }> };
 
-export function generateStaticParams() {
-  return publishedProjects().map((p) => ({ slug: p.slug }));
+export async function generateStaticParams() {
+  return (await getPublishedProjects()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const project = projectBySlug(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) return {};
   return {
     title: project.title,
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
-  const project = projectBySlug(slug);
+  const project = await getProjectBySlug(slug);
   if (!project) notFound();
 
   return (

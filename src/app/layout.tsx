@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
-import { profile } from "@/data/placeholder";
+import { getProfile } from "@/data/queries";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -22,14 +22,18 @@ const display = Instrument_Serif({
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
 
-export const metadata: Metadata = {
-  metadataBase: new URL(siteUrl),
-  title: {
-    default: `${profile.name} — ${profile.headline}`,
-    template: `%s — ${profile.name}`,
-  },
-  description: profile.summary,
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const profile = await getProfile();
+  const name = profile?.name ?? "Portfolio";
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: profile ? `${name} — ${profile.headline}` : name,
+      template: `%s — ${name}`,
+    },
+    description: profile?.summary,
+  };
+}
 
 // Runs before first paint so the saved/system theme applies without a flash.
 const themeScript = `(function(){try{var t=localStorage.getItem("theme");var d=t?t==="dark":matchMedia("(prefers-color-scheme: dark)").matches;document.documentElement.classList.toggle("dark",d)}catch(e){}})()`;

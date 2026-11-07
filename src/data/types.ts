@@ -27,8 +27,7 @@ export type Project = {
   order: number;
 };
 
-export type EmploymentType =
-  "Full-time" | "Part-time" | "Contract" | "Internship";
+export type EmploymentType = string;
 
 export type Experience = {
   id: string;

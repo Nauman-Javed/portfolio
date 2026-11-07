@@ -8,14 +8,23 @@ import { ProjectsGrid } from "@/components/public/projects-grid";
 import { Section } from "@/components/public/section";
 import { SkillsSection } from "@/components/public/skills-section";
 import {
-  education,
-  experience,
-  featuredProjects,
-  profile,
-  skills,
-} from "@/data/placeholder";
+  getEducation,
+  getExperience,
+  getFeaturedProjects,
+  getProfile,
+  getSkills,
+} from "@/data/queries";
 
-export default function HomePage() {
+export default async function HomePage() {
+  const [profile, education, skills, experience, featured] = await Promise.all([
+    getProfile(),
+    getEducation(),
+    getSkills(),
+    getExperience(),
+    getFeaturedProjects(),
+  ]);
+  if (!profile) throw new Error("Profile not found. Run the database seed.");
+
   return (
     <>
       <Hero profile={profile} />
@@ -27,7 +36,7 @@ export default function HomePage() {
         label="Selected work"
         title="Things I’ve built recently."
       >
-        <ProjectsGrid projects={featuredProjects()} />
+        <ProjectsGrid projects={featured} />
         <Link
           href="/projects"
           className="hover:text-brand mt-10 inline-flex items-center gap-2 font-medium transition-colors"
