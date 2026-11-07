@@ -1,6 +1,15 @@
 import { z } from "zod";
 import { imageSource, optional, optionalUrl, required } from "./common";
 
+export const MAX_GALLERY_IMAGES = 12;
+
+export const galleryImageSchema = z.object({
+  url: imageSource.refine((v) => v !== "", "Image URL is required"),
+  publicId: optional(300),
+});
+
+export type GalleryImage = z.infer<typeof galleryImageSchema>;
+
 export const projectSchema = z.object({
   slug: z
     .string()
@@ -17,6 +26,7 @@ export const projectSchema = z.object({
   techStack: optional(1000),
   coverImageUrl: imageSource.refine((v) => v !== "", "Cover image is required"),
   coverImageId: optional(300),
+  gallery: z.array(galleryImageSchema).max(MAX_GALLERY_IMAGES),
   liveUrl: optionalUrl,
   githubUrl: optionalUrl,
   featured: z.boolean(),

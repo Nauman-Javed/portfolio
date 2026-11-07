@@ -28,6 +28,10 @@ export default async function EditProjectPage({
             techStack: project.techStack.join(", "),
             coverImageUrl: project.coverImageUrl,
             coverImageId: project.coverImageId,
+            gallery: project.gallery.map((g) => ({
+              url: g.url,
+              publicId: g.publicId,
+            })),
             liveUrl: project.liveUrl ?? "",
             githubUrl: project.githubUrl ?? "",
             featured: project.featured,

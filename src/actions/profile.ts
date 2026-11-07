@@ -4,6 +4,7 @@ import { z } from "zod";
 import { fail, invalid, isNotFound, ok } from "@/lib/action-result";
 import type { ActionResult } from "@/lib/action-result";
 import { requireAdmin } from "@/lib/auth";
+import { deleteAssets } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
 import { invalidate, moveId } from "@/lib/mutations";
 import type { MoveDirection } from "@/lib/mutations";
@@ -32,11 +33,24 @@ export async function updateProfile(input: unknown): Promise<ActionResult> {
     availability: emptyToNull(v.availability),
   };
 
+  const existing = await db.profile.findUnique({
+    where: { id: "profile" },
+    select: { imagePublicId: true },
+  });
+
   await db.profile.upsert({
     where: { id: "profile" },
     update: data,
     create: { id: "profile", ...data },
   });
+
+  // Drop the previous profile image from Cloudinary once it is replaced.
+  if (
+    existing?.imagePublicId &&
+    existing.imagePublicId !== data.imagePublicId
+  ) {
+    await deleteAssets([existing.imagePublicId]);
+  }
   invalidate("profile");
   return ok();
 }

@@ -7,7 +7,10 @@ export const getAdminProjects = () =>
   db.project.findMany({ orderBy: [{ order: "asc" }, { createdAt: "asc" }] });
 
 export const getAdminProject = (id: string) =>
-  db.project.findUnique({ where: { id } });
+  db.project.findUnique({
+    where: { id },
+    include: { gallery: { orderBy: { order: "asc" } } },
+  });
 
 export const getAdminProfile = () =>
   db.profile.findUnique({ where: { id: "profile" } });

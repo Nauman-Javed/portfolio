@@ -100,6 +100,32 @@ export default async function ProjectPage({ params }: Props) {
           </div>
         </div>
       </div>
+      {project.gallery.length > 0 && (
+        <section className="mt-16" aria-labelledby="gallery-heading">
+          <h2
+            id="gallery-heading"
+            className="mb-4 font-mono text-xs tracking-widest uppercase"
+          >
+            Gallery
+          </h2>
+          <ul className="grid gap-4 sm:grid-cols-2">
+            {project.gallery.map((image) => (
+              <li
+                key={image.id}
+                className="border-border bg-muted relative aspect-16/10 overflow-hidden rounded-xl border"
+              >
+                <Image
+                  src={image.url}
+                  alt={`${project.title} screenshot`}
+                  fill
+                  sizes="(min-width: 640px) 448px, 100vw"
+                  className="object-cover object-top"
+                />
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </article>
   );
 }

@@ -19,14 +19,18 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
 });
 
+/** The admin session, or null. For route handlers, which should answer 401 rather than redirect. */
+export async function getAdminSession() {
+  const session = await auth();
+  return session?.user && isAdminEmail(session.user.email) ? session : null;
+}
+
 /**
  * Returns the admin session or redirects to the login page. Call this at the
  * top of every admin page and Server Action, not just in the proxy.
  */
 export async function requireAdmin() {
-  const session = await auth();
-  if (!session?.user || !isAdminEmail(session.user.email)) {
-    redirect("/admin/login");
-  }
+  const session = await getAdminSession();
+  if (!session) redirect("/admin/login");
   return session;
 }

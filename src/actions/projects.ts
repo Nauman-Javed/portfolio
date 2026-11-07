@@ -10,6 +10,7 @@ import {
 } from "@/lib/action-result";
 import type { ActionResult } from "@/lib/action-result";
 import { requireAdmin } from "@/lib/auth";
+import { deleteAssets } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
 import { invalidate, moveId } from "@/lib/mutations";
 import type { MoveDirection } from "@/lib/mutations";
@@ -21,7 +22,7 @@ const idSchema = z.string().min(1);
 
 const SLUG_TAKEN = { slug: ["That slug is already used by another project."] };
 
-function toData(v: ProjectInput) {
+function toData({ gallery: _gallery, ...v }: ProjectInput) {
   return {
     slug: v.slug,
     title: v.title,
@@ -37,6 +38,13 @@ function toData(v: ProjectInput) {
   };
 }
 
+const toGalleryRows = (gallery: ProjectInput["gallery"]) =>
+  gallery.map((image, order) => ({
+    url: image.url,
+    publicId: image.publicId,
+    order,
+  }));
+
 export async function createProject(
   input: unknown,
 ): Promise<ActionResult<{ id: string }>> {
@@ -51,7 +59,11 @@ export async function createProject(
 
   try {
     const project = await db.project.create({
-      data: { ...toData(parsed.data), order: (last?.order ?? -1) + 1 },
+      data: {
+        ...toData(parsed.data),
+        order: (last?.order ?? -1) + 1,
+        gallery: { create: toGalleryRows(parsed.data.gallery) },
+      },
       select: { id: true, slug: true },
     });
     invalidate("projects", `project:${project.slug}`);
@@ -74,17 +86,43 @@ export async function updateProject(
 
   const existing = await db.project.findUnique({
     where: { id },
-    select: { slug: true },
+    select: {
+      slug: true,
+      coverImageId: true,
+      gallery: { select: { publicId: true } },
+    },
   });
   if (!existing) return fail("That project no longer exists.");
 
   try {
-    await db.project.update({ where: { id }, data: toData(parsed.data) });
+    await db.$transaction([
+      db.project.update({ where: { id }, data: toData(parsed.data) }),
+      db.projectImage.deleteMany({ where: { projectId: id } }),
+      db.projectImage.createMany({
+        data: toGalleryRows(parsed.data.gallery).map((row) => ({
+          ...row,
+          projectId: id,
+        })),
+      }),
+    ]);
   } catch (error) {
     if (isUniqueViolation(error))
       return fail("Slug already in use.", SLUG_TAKEN);
     throw error;
   }
+
+  // Only after the database change succeeded: drop images that are no longer
+  // referenced (a replaced cover, removed gallery images).
+  const keep = new Set([
+    parsed.data.coverImageId,
+    ...parsed.data.gallery.map((g) => g.publicId),
+  ]);
+  await deleteAssets(
+    [existing.coverImageId, ...existing.gallery.map((g) => g.publicId)].filter(
+      (publicId) => !keep.has(publicId),
+    ),
+  );
+
   invalidate(
     "projects",
     `project:${existing.slug}`,
@@ -122,11 +160,19 @@ export async function deleteProject(id: string): Promise<ActionResult> {
 
   const project = await db.project.findUnique({
     where: { id },
-    select: { slug: true },
+    select: {
+      slug: true,
+      coverImageId: true,
+      gallery: { select: { publicId: true } },
+    },
   });
   if (!project) return ok();
 
   await db.project.delete({ where: { id } });
+  await deleteAssets([
+    project.coverImageId,
+    ...project.gallery.map((g) => g.publicId),
+  ]);
   invalidate("projects", `project:${project.slug}`);
   return ok();
 }

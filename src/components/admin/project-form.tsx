@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { createProject, updateProject } from "@/actions/projects";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -13,7 +13,10 @@ import { projectSchema } from "@/lib/validations/project";
 import type { ProjectInput } from "@/lib/validations/project";
 import { Field } from "./field";
 import { FormFooter } from "./form-footer";
+import { GalleryEditor } from "./gallery-editor";
+import { ImageUploader } from "./image-uploader";
 import { applyFieldErrors, useServerAction } from "./use-server-action";
+import { useUploadSession } from "./use-image-upload";
 
 const EMPTY: ProjectInput = {
   slug: "",
@@ -23,6 +26,7 @@ const EMPTY: ProjectInput = {
   techStack: "",
   coverImageUrl: "",
   coverImageId: "",
+  gallery: [],
   liveUrl: "",
   githubUrl: "",
   featured: false,
@@ -44,6 +48,7 @@ export function ProjectForm({
   initial?: ProjectInput;
 }) {
   const router = useRouter();
+  const session = useUploadSession();
   const { run, pending } = useServerAction();
   const {
     register,
@@ -57,6 +62,9 @@ export function ProjectForm({
     defaultValues: initial ?? EMPTY,
   });
 
+  const coverUrl = useWatch({ control, name: "coverImageUrl" });
+  const coverId = useWatch({ control, name: "coverImageId" });
+
   const onSubmit = handleSubmit((values) =>
     run(
       () =>
@@ -64,6 +72,7 @@ export function ProjectForm({
       {
         success: projectId ? "Project saved" : "Project created",
         onSuccess: () => {
+          session.markSaved();
           if (!projectId) router.push("/admin/projects");
         },
         onError: (r) => applyFieldErrors(setError, r.fieldErrors),
@@ -125,15 +134,46 @@ export function ProjectForm({
       >
         <Input id="techStack" {...register("techStack")} />
       </Field>
+
       <Field
-        label="Cover image URL"
-        htmlFor="coverImageUrl"
+        label="Cover image"
+        htmlFor="coverImage"
         error={errors.coverImageUrl?.message}
-        hint="Image uploads arrive in the next phase. For now use a /path or https URL."
       >
-        <Input id="coverImageUrl" {...register("coverImageUrl")} />
+        <ImageUploader
+          session={session}
+          invalid={!!errors.coverImageUrl}
+          value={coverUrl ? { url: coverUrl, publicId: coverId } : null}
+          onChange={(image) => {
+            setValue("coverImageUrl", image?.url ?? "", {
+              shouldDirty: true,
+              shouldValidate: true,
+            });
+            setValue("coverImageId", image?.publicId ?? "", {
+              shouldDirty: true,
+            });
+          }}
+        />
       </Field>
-      <input type="hidden" {...register("coverImageId")} />
+
+      <Controller
+        control={control}
+        name="gallery"
+        render={({ field }) => (
+          <Field
+            label="Gallery (optional)"
+            htmlFor="gallery"
+            error={errors.gallery?.message}
+          >
+            <GalleryEditor
+              session={session}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          </Field>
+        )}
+      />
+
       <div className="grid gap-5 sm:grid-cols-2">
         <Field
           label="Live URL"
