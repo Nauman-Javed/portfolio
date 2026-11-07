@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { AppToaster } from "@/components/admin/app-toaster";
 
 export const metadata: Metadata = {
   title: "Admin",
@@ -10,5 +11,10 @@ export default function AdminRootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <div className="bg-background min-h-screen">{children}</div>;
+  return (
+    <div className="bg-background min-h-screen">
+      {children}
+      <AppToaster />
+    </div>
+  );
 }

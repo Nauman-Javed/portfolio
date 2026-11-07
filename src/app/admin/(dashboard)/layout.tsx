@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
+import { AdminNav } from "@/components/admin/admin-nav";
 import { requireAdmin, signOut } from "@/lib/auth";
 
 // Reads the session, so it must sit behind Suspense with Cache Components.
@@ -36,6 +37,7 @@ async function AdminShell({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </header>
+      <AdminNav />
       <main className="mx-auto max-w-6xl px-5 py-10 sm:px-8">{children}</main>
     </>
   );
