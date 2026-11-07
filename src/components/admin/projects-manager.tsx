@@ -1,7 +1,7 @@
 "use client";
 
 import { Pencil } from "lucide-react";
-import Image from "next/image";
+import { SafeImage } from "@/components/safe-image";
 import Link from "next/link";
 import { deleteProject, moveProject, setProjectFlag } from "@/actions/projects";
 import { Button } from "@/components/ui/button";
@@ -62,10 +62,9 @@ export function ProjectsManager({ projects }: { projects: ProjectRow[] }) {
           className="border-border bg-card flex flex-wrap items-center gap-4 rounded-xl border p-3"
         >
           <div className="bg-muted relative h-14 w-20 shrink-0 overflow-hidden rounded-md">
-            <Image
+            <SafeImage
               src={p.coverImageUrl}
               alt=""
-              fill
               sizes="80px"
               className="object-cover object-top"
             />

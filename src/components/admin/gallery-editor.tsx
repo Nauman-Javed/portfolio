@@ -1,7 +1,7 @@
 "use client";
 
 import { ImagePlus, Loader2, X } from "lucide-react";
-import Image from "next/image";
+import { SafeImage } from "@/components/safe-image";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { MAX_GALLERY_IMAGES } from "@/lib/validations/project";
@@ -45,10 +45,9 @@ export function GalleryEditor({
               key={image.publicId || image.url}
               className="bg-muted border-border relative aspect-16/10 overflow-hidden rounded-lg border"
             >
-              <Image
+              <SafeImage
                 src={image.url}
                 alt=""
-                fill
                 sizes="200px"
                 className="object-cover object-top"
               />

@@ -4,6 +4,7 @@ import { Hero } from "@/components/public/hero";
 import { ProjectsSection } from "@/components/public/projects-section";
 import { SkillsMarquee } from "@/components/public/skills-marquee";
 import { SkillsSection } from "@/components/public/skills-section";
+import { Container } from "@/components/public/ui";
 import {
   getEducation,
   getExperience,
@@ -35,7 +36,17 @@ export default async function HomePage() {
     getSocialLinks(),
     getStats(),
   ]);
-  if (!profile) throw new Error("Profile not found. Run the database seed.");
+
+  if (!profile) {
+    return (
+      <Container className="py-32 text-center">
+        <h1 className="text-[clamp(32px,5vw,56px)] leading-[1.1]">
+          Coming soon
+        </h1>
+        <p className="text-fg2 mt-4">This portfolio is being set up.</p>
+      </Container>
+    );
+  }
 
   // Fall back to every published project if none are marked featured.
   const shown = featured.length > 0 ? featured : published;
@@ -43,13 +54,21 @@ export default async function HomePage() {
   return (
     <>
       <Hero profile={profile} skills={skills} stats={stats} />
-      <SkillsMarquee skills={skills} />
-      <SkillsSection skills={skills} />
-      <ExperienceSection experience={experience} education={education} />
-      <ProjectsSection
-        projects={shown}
-        showAllLink={published.length > shown.length}
-      />
+      {skills.length > 0 && (
+        <>
+          <SkillsMarquee skills={skills} />
+          <SkillsSection skills={skills} />
+        </>
+      )}
+      {(experience.length > 0 || education.length > 0) && (
+        <ExperienceSection experience={experience} education={education} />
+      )}
+      {shown.length > 0 && (
+        <ProjectsSection
+          projects={shown}
+          showAllLink={published.length > shown.length}
+        />
+      )}
       <ContactSection profile={profile} links={links} />
     </>
   );

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { SafeImage } from "@/components/safe-image";
 import { Container, ctaClass } from "@/components/public/ui";
 import { getProjectBySlug, getPublishedProjects } from "@/data/queries";
 
@@ -18,7 +18,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   return {
     title: project.title,
     description: project.shortDescription,
-    openGraph: { images: [project.coverImageUrl] },
+    ...(project.coverImageUrl && {
+      openGraph: { images: [project.coverImageUrl] },
+    }),
   };
 }
 
@@ -26,6 +28,9 @@ export default async function ProjectPage({ params }: Props) {
   const { slug } = await params;
   const project = await getProjectBySlug(slug);
   if (!project) notFound();
+
+  const hasTech = project.techStack.length > 0;
+  const hasLinks = !!(project.liveUrl || project.githubUrl);
 
   return (
     <Container className="max-w-[960px] pt-12 sm:pt-20">
@@ -44,17 +49,18 @@ export default async function ProjectPage({ params }: Props) {
         </p>
 
         <div className="border-hairline bg-band relative mt-10 aspect-16/10 overflow-hidden rounded-[10px] border">
-          <Image
+          <SafeImage
             src={project.coverImageUrl}
             alt={`${project.title} screenshot`}
-            fill
             priority
             sizes="(min-width: 960px) 912px, 100vw"
             className="object-contain"
           />
         </div>
 
-        <div className="mt-12 grid gap-10 md:grid-cols-[1.6fr_1fr]">
+        <div
+          className={`mt-12 grid gap-10 ${hasTech || hasLinks ? "md:grid-cols-[1.6fr_1fr]" : ""}`}
+        >
           <div>
             <h2 className="text-fg2 mb-3 text-[11px] tracking-[0.14em] uppercase">
               Overview
@@ -63,45 +69,53 @@ export default async function ProjectPage({ params }: Props) {
               {project.description}
             </p>
           </div>
-          <div>
-            <h2 className="text-fg2 mb-3 text-[11px] tracking-[0.14em] uppercase">
-              Built with
-            </h2>
-            <ul className="flex flex-wrap gap-1.5">
-              {project.techStack.map((t) => (
-                <li
-                  key={t}
-                  className="bg-chip text-fg2 rounded-sm px-2 py-1 text-[11px] leading-[1.4]"
-                >
-                  {t}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8 flex flex-col gap-3">
-              {project.liveUrl && (
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={ctaClass("primary")}
-                >
-                  Live site <span aria-hidden>↗</span>
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
+          {(hasTech || hasLinks) && (
+            <div>
+              {hasTech && (
+                <>
+                  <h2 className="text-fg2 mb-3 text-[11px] tracking-[0.14em] uppercase">
+                    Built with
+                  </h2>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {project.techStack.map((t) => (
+                      <li
+                        key={t}
+                        className="bg-chip text-fg2 rounded-sm px-2 py-1 text-[11px] leading-[1.4]"
+                      >
+                        {t}
+                      </li>
+                    ))}
+                  </ul>
+                </>
               )}
-              {project.githubUrl && (
-                <a
-                  href={project.githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={ctaClass("secondary")}
-                >
-                  Source code <span aria-hidden>↗</span>
-                  <span className="sr-only"> (opens in a new tab)</span>
-                </a>
+              {hasLinks && (
+                <div className={`${hasTech ? "mt-8" : ""} flex flex-col gap-3`}>
+                  {project.liveUrl && (
+                    <a
+                      href={project.liveUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={ctaClass("primary")}
+                    >
+                      Live site <span aria-hidden>↗</span>
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  )}
+                  {project.githubUrl && (
+                    <a
+                      href={project.githubUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={ctaClass("secondary")}
+                    >
+                      Source code <span aria-hidden>↗</span>
+                      <span className="sr-only"> (opens in a new tab)</span>
+                    </a>
+                  )}
+                </div>
               )}
             </div>
-          </div>
+          )}
         </div>
 
         {project.gallery.length > 0 && (
@@ -118,10 +132,9 @@ export default async function ProjectPage({ params }: Props) {
                   key={image.id}
                   className="border-hairline bg-band relative aspect-16/10 overflow-hidden rounded-lg border"
                 >
-                  <Image
+                  <SafeImage
                     src={image.url}
                     alt={`${project.title} screenshot`}
-                    fill
                     sizes="(min-width: 640px) 448px, 100vw"
                     className="object-contain"
                   />

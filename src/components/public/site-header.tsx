@@ -1,16 +1,27 @@
 import Link from "next/link";
-import { getProfile } from "@/data/queries";
+import {
+  getExperience,
+  getProfile,
+  getPublishedProjects,
+  getSkills,
+} from "@/data/queries";
 import { Container, ctaClass } from "./ui";
 
-const links = [
-  { href: "/#skills", label: "Skills" },
-  { href: "/#experience", label: "Experience" },
-  { href: "/projects", label: "Projects" },
-];
-
 export async function SiteHeader() {
-  const profile = await getProfile();
+  const [profile, skills, experience, projects] = await Promise.all([
+    getProfile(),
+    getSkills(),
+    getExperience(),
+    getPublishedProjects(),
+  ]);
   const name = profile?.name ?? "Portfolio";
+
+  // Only link to sections that actually have content.
+  const links = [
+    skills.length > 0 && { href: "/#skills", label: "Skills" },
+    experience.length > 0 && { href: "/#experience", label: "Experience" },
+    projects.length > 0 && { href: "/projects", label: "Projects" },
+  ].filter(Boolean) as { href: string; label: string }[];
 
   return (
     <header className="border-hairline bg-canvas/80 sticky top-0 z-40 border-b backdrop-blur">
@@ -38,9 +49,11 @@ export async function SiteHeader() {
               {l.label}
             </Link>
           ))}
-          <Link href="/#contact" className={`${ctaClass("primary")} ml-2`}>
-            Get in touch →
-          </Link>
+          {profile && (
+            <Link href="/#contact" className={`${ctaClass("primary")} ml-2`}>
+              Get in touch →
+            </Link>
+          )}
         </nav>
       </Container>
     </header>

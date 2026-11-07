@@ -46,13 +46,17 @@ export function CodeEditor({
     ...(location
       ? [[["plain", "  base: "], str(location), ["plain", ","]] as Token[]]
       : []),
-    [
-      ["plain", "  stack: ["],
-      ...stack.flatMap((s, i): Token[] =>
-        i === 0 ? [str(s)] : [["plain", ", "], str(s)],
-      ),
-      ["plain", "],"],
-    ],
+    ...(stack.length > 0
+      ? [
+          [
+            ["plain", "  stack: ["],
+            ...stack.flatMap((s, i): Token[] =>
+              i === 0 ? [str(s)] : [["plain", ", "], str(s)],
+            ),
+            ["plain", "],"],
+          ] as Token[],
+        ]
+      : []),
     [
       ["plain", "  openToWork: "],
       ["kw", String(available)],

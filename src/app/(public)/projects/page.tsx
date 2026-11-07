@@ -14,7 +14,11 @@ export default async function ProjectsPage() {
   return (
     <Container className="pt-16 sm:pt-24">
       <SectionHeader eyebrow="Projects" title="All projects" />
-      <ProjectGrid projects={projects} />
+      {projects.length > 0 ? (
+        <ProjectGrid projects={projects} />
+      ) : (
+        <p className="text-fg2">No projects to show yet.</p>
+      )}
     </Container>
   );
 }

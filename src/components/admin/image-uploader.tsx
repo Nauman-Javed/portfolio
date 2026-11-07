@@ -1,7 +1,7 @@
 "use client";
 
 import { ImagePlus, Loader2, Trash2 } from "lucide-react";
-import Image from "next/image";
+import { SafeImage } from "@/components/safe-image";
 import { useId, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { useImageUpload } from "./use-image-upload";
@@ -40,10 +40,9 @@ export function ImageUploader({
         className={`bg-muted relative aspect-16/10 w-full max-w-sm overflow-hidden rounded-xl border ${invalid ? "border-destructive" : "border-border"}`}
       >
         {value ? (
-          <Image
+          <SafeImage
             src={value.url}
             alt="Preview"
-            fill
             sizes="384px"
             className="object-cover object-top"
           />

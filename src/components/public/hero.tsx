@@ -32,8 +32,14 @@ export function Hero({
       value: `${stats.years}+`,
       label: "Years of experience",
     },
-    { value: String(stats.projects), label: "Projects shipped" },
-    { value: String(stats.skills), label: "Technologies" },
+    stats.projects > 0 && {
+      value: String(stats.projects),
+      label: "Projects shipped",
+    },
+    stats.skills > 0 && {
+      value: String(stats.skills),
+      label: "Technologies",
+    },
   ].filter(Boolean) as { value: string; label: string }[];
 
   return (
@@ -76,17 +82,19 @@ export function Hero({
               Get in touch
             </Link>
           </div>
-          <dl
-            className="anim-rise mt-12 flex flex-wrap gap-x-10 gap-y-5"
-            style={delay(0.7)}
-          >
-            {statItems.map((s) => (
-              <div key={s.label} className="flex flex-col-reverse">
-                <dt className="text-fg3 text-xs">{s.label}</dt>
-                <dd className="text-[28px] leading-[1.25]">{s.value}</dd>
-              </div>
-            ))}
-          </dl>
+          {statItems.length > 0 && (
+            <dl
+              className="anim-rise mt-12 flex flex-wrap gap-x-10 gap-y-5"
+              style={delay(0.7)}
+            >
+              {statItems.map((s) => (
+                <div key={s.label} className="flex flex-col-reverse">
+                  <dt className="text-fg3 text-xs">{s.label}</dt>
+                  <dd className="text-[28px] leading-[1.25]">{s.value}</dd>
+                </div>
+              ))}
+            </dl>
+          )}
         </div>
 
         <div className="relative pb-10 min-[1100px]:pr-6 min-[1100px]:pb-12">

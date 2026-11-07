@@ -1,5 +1,5 @@
-import Image from "next/image";
 import Link from "next/link";
+import { SafeImage } from "@/components/safe-image";
 import type { Project } from "@/data/types";
 
 export function ProjectCard({
@@ -12,10 +12,9 @@ export function ProjectCard({
   return (
     <article className="lift border-hairline bg-surface overflow-hidden rounded-lg border">
       <div className="bg-band border-hairline relative h-60 overflow-hidden border-b">
-        <Image
+        <SafeImage
           src={project.coverImageUrl}
           alt={`${project.title} screenshot`}
-          fill
           priority={priority}
           sizes="(min-width: 1000px) 600px, 100vw"
           className="object-cover object-top"
@@ -45,16 +44,18 @@ export function ProjectCard({
         <p className="text-fg2 mt-2 text-[14px] leading-[1.6]">
           {project.shortDescription}
         </p>
-        <ul className="mt-4 flex flex-wrap gap-1.5">
-          {project.techStack.map((tech) => (
-            <li
-              key={tech}
-              className="bg-chip text-fg2 rounded-sm px-2 py-1 text-[11px] leading-[1.4]"
-            >
-              {tech}
-            </li>
-          ))}
-        </ul>
+        {project.techStack.length > 0 && (
+          <ul className="mt-4 flex flex-wrap gap-1.5">
+            {project.techStack.map((tech) => (
+              <li
+                key={tech}
+                className="bg-chip text-fg2 rounded-sm px-2 py-1 text-[11px] leading-[1.4]"
+              >
+                {tech}
+              </li>
+            ))}
+          </ul>
+        )}
         <Link
           href={`/projects/${project.slug}`}
           className="text-teal mt-5 inline-flex min-h-11 items-center text-[13px] hover:underline"
