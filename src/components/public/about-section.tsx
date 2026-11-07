@@ -32,7 +32,7 @@ export function AboutSection({
   return (
     <section id="about" className="scroll-mt-16 pt-24 sm:pt-28">
       <Container>
-        <SectionHeader eyebrow="About" title="About me" />
+        <SectionHeader title="About me" />
         <div
           className={`grid items-start gap-10 ${
             statItems.length > 0 && paragraphs.length > 0

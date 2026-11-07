@@ -30,7 +30,7 @@ export function SkillsSection({ skills }: { skills: Skill[] }) {
   return (
     <section id="skills" className="scroll-mt-16 pt-24 sm:pt-28">
       <Container>
-        <SectionHeader eyebrow="Skills" title="Skills by stack" />
+        <SectionHeader title="Skills by stack" />
         <div className="grid gap-5 md:grid-cols-2">
           {groups.map(([category, items]) => {
             const Icon = iconFor(category);

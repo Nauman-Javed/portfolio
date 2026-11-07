@@ -16,14 +16,6 @@ export function Container({
   );
 }
 
-export function Eyebrow({ children }: { children: React.ReactNode }) {
-  return (
-    <p className="text-fg2 mb-4 text-[11px] leading-[1.4] tracking-[0.14em] uppercase">
-      {children}
-    </p>
-  );
-}
-
 export function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
     <h2 className="text-[clamp(30px,4vw,44px)] leading-[1.15]">{children}</h2>
@@ -31,17 +23,14 @@ export function SectionTitle({ children }: { children: React.ReactNode }) {
 }
 
 export function SectionHeader({
-  eyebrow,
   title,
   className,
 }: {
-  eyebrow: string;
   title: string;
   className?: string;
 }) {
   return (
     <header className={cn("mb-10", className)}>
-      <Eyebrow>{eyebrow}</Eyebrow>
       <SectionTitle>{title}</SectionTitle>
     </header>
   );

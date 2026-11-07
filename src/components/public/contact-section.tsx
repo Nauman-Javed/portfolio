@@ -19,9 +19,6 @@ export function ContactSection({
             className="anim-ring border-teal/40 absolute -top-24 -right-24 size-72 rounded-full border-2 border-dashed"
           />
           <div className="relative max-w-[640px]">
-            <p className="text-info-fg mb-4 text-[11px] tracking-[0.14em] uppercase">
-              Contact
-            </p>
             <h2 className="text-[clamp(32px,5vw,56px)] leading-[1.1] tracking-[-0.02em]">
               Let’s build something together
             </h2>

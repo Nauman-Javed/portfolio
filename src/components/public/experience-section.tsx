@@ -32,7 +32,7 @@ export function ExperienceSection({
       <Container>
         {items.length > 0 && (
           <>
-            <SectionHeader eyebrow="Experience" title="Where I’ve worked" />
+            <SectionHeader title="Where I’ve worked" />
 
             <Reveal>
               <ol className="relative max-w-[860px] space-y-5 pl-9">

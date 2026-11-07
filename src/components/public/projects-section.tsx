@@ -23,7 +23,7 @@ export function ProjectsSection({
   return (
     <section id="projects" className="scroll-mt-16 pt-24 sm:pt-28">
       <Container>
-        <SectionHeader eyebrow="Projects" title="Selected work" />
+        <SectionHeader title="Selected work" />
         <ProjectGrid projects={projects} />
         {showAllLink && (
           <Link
