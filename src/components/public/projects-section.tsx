@@ -23,16 +23,18 @@ export function ProjectsSection({
   return (
     <section id="projects" className="scroll-mt-16 pt-24 sm:pt-28">
       <Container>
-        <SectionHeader title="Selected work" />
+        <div className="mb-10 flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
+          <SectionHeader title="Selected work" className="mb-0" />
+          {showAllLink && (
+            <Link
+              href="/projects"
+              className="text-teal inline-flex min-h-11 items-center text-[14px] hover:underline"
+            >
+              All projects →
+            </Link>
+          )}
+        </div>
         <ProjectGrid projects={projects} />
-        {showAllLink && (
-          <Link
-            href="/projects"
-            className="text-teal mt-8 inline-flex min-h-11 items-center text-[14px] hover:underline"
-          >
-            All projects →
-          </Link>
-        )}
       </Container>
     </section>
   );
