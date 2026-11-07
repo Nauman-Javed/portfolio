@@ -1,7 +1,8 @@
-import { abbreviation, groupSkills } from "@/data/site-content";
+import { groupSkills } from "@/data/site-content";
 import type { Skill } from "@/data/types";
+import { SkillIcon } from "./skill-icon";
 
-function Item({ name, hidden }: { name: string; hidden?: boolean }) {
+function Item({ skill, hidden }: { skill: Skill; hidden?: boolean }) {
   return (
     <li
       aria-hidden={hidden || undefined}
@@ -9,11 +10,11 @@ function Item({ name, hidden }: { name: string; hidden?: boolean }) {
     >
       <span
         aria-hidden
-        className="bg-raised text-teal flex size-10 items-center justify-center rounded-md font-mono text-[13px]"
+        className="bg-raised flex size-10 items-center justify-center rounded-md"
       >
-        {abbreviation(name)}
+        <SkillIcon name={skill.name} iconUrl={skill.iconUrl} size={24} />
       </span>
-      <span className="text-[14px] whitespace-nowrap">{name}</span>
+      <span className="text-[14px] whitespace-nowrap">{skill.name}</span>
     </li>
   );
 }
@@ -36,7 +37,7 @@ function Row({
     >
       {[0, 1].map((copy) =>
         half.map((skill, i) => (
-          <Item key={`${copy}-${i}`} name={skill.name} hidden={copy === 1} />
+          <Item key={`${copy}-${i}`} skill={skill} hidden={copy === 1} />
         )),
       )}
     </ul>

@@ -4,12 +4,24 @@ import { z } from "zod";
 import { fail, invalid, isNotFound, ok } from "@/lib/action-result";
 import type { ActionResult } from "@/lib/action-result";
 import { requireAdmin } from "@/lib/auth";
+import { deleteAssets } from "@/lib/cloudinary";
 import { db } from "@/lib/db";
 import { invalidate, moveId } from "@/lib/mutations";
 import type { MoveDirection } from "@/lib/mutations";
+import { emptyToNull } from "@/lib/validations/common";
 import { skillSchema } from "@/lib/validations/resume";
+import type { SkillInput } from "@/lib/validations/resume";
 
 const idSchema = z.string().min(1);
+
+function toData(v: SkillInput) {
+  return {
+    name: v.name,
+    category: v.category,
+    iconUrl: emptyToNull(v.iconUrl),
+    iconPublicId: emptyToNull(v.iconPublicId),
+  };
+}
 
 export async function createSkill(input: unknown): Promise<ActionResult> {
   await requireAdmin();
@@ -22,7 +34,7 @@ export async function createSkill(input: unknown): Promise<ActionResult> {
     select: { order: true },
   });
   await db.skill.create({
-    data: { ...parsed.data, order: (last?.order ?? -1) + 1 },
+    data: { ...toData(parsed.data), order: (last?.order ?? -1) + 1 },
   });
   invalidate("skills");
   return ok();
@@ -37,11 +49,23 @@ export async function updateSkill(
   const parsed = skillSchema.safeParse(input);
   if (!parsed.success) return invalid(parsed.error);
 
+  const existing = await db.skill.findUnique({
+    where: { id },
+    select: { iconPublicId: true },
+  });
+  if (!existing) return fail("That skill no longer exists.");
+
+  const data = toData(parsed.data);
   try {
-    await db.skill.update({ where: { id }, data: parsed.data });
+    await db.skill.update({ where: { id }, data });
   } catch (error) {
     if (isNotFound(error)) return fail("That skill no longer exists.");
     throw error;
+  }
+
+  // Drop the previous icon once it has been replaced or removed.
+  if (existing.iconPublicId && existing.iconPublicId !== data.iconPublicId) {
+    await deleteAssets([existing.iconPublicId]);
   }
   invalidate("skills");
   return ok();
@@ -51,7 +75,12 @@ export async function deleteSkill(id: string): Promise<ActionResult> {
   await requireAdmin();
   if (!idSchema.safeParse(id).success) return fail("Invalid skill.");
 
+  const existing = await db.skill.findUnique({
+    where: { id },
+    select: { iconPublicId: true },
+  });
   await db.skill.deleteMany({ where: { id } });
+  await deleteAssets([existing?.iconPublicId]);
   invalidate("skills");
   return ok();
 }

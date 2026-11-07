@@ -3,7 +3,7 @@ import { v2 as cloudinary } from "cloudinary";
 // Everything this app uploads lives under one folder, which also scopes what
 // deleteAssets is allowed to remove.
 export const UPLOAD_FOLDER = "portfolio";
-export const ALLOWED_FORMATS = "jpg,jpeg,png,webp,avif,gif";
+export const ALLOWED_FORMATS = "jpg,jpeg,png,webp,avif,gif,svg";
 
 function config() {
   const cloudName = process.env.CLOUDINARY_CLOUD_NAME;

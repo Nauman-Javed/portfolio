@@ -13,7 +13,22 @@ const ACCEPTED_TYPES = [
   "image/avif",
   "image/gif",
 ];
+const SVG_TYPE = "image/svg+xml";
 const MAX_BYTES = 8 * 1024 * 1024;
+
+// Cloudinary classifies a bare <svg> file as "raw" and rejects it; an XML
+// declaration makes it recognise the file as an image.
+async function withXmlDeclaration(file: File) {
+  const text = (await file.text()).replace(/^\uFEFF/, "");
+  if (/^\s*<\?xml/i.test(text)) return file;
+  return new File(
+    ['<?xml version="1.0" encoding="UTF-8"?>\n' + text],
+    file.name,
+    {
+      type: file.type,
+    },
+  );
+}
 
 type SignedParams = {
   cloudName: string;
@@ -79,14 +94,25 @@ export function useUploadSession() {
 
 export type UploadSession = ReturnType<typeof useUploadSession>;
 
-export function useImageUpload(session: UploadSession) {
+export function useImageUpload(
+  session: UploadSession,
+  options: { svg?: boolean } = {},
+) {
+  const allowSvg = options.svg ?? false;
   const [progress, setProgress] = useState<number | null>(null);
   const { unsaved } = session;
 
   const upload = useCallback(
     async (file: File): Promise<UploadedImage | null> => {
-      if (!ACCEPTED_TYPES.includes(file.type)) {
-        toast.error("Choose a JPG, PNG, WebP, AVIF or GIF image.");
+      const accepted = allowSvg
+        ? [...ACCEPTED_TYPES, SVG_TYPE]
+        : ACCEPTED_TYPES;
+      if (!accepted.includes(file.type)) {
+        toast.error(
+          allowSvg
+            ? "Choose a JPG, PNG, WebP, AVIF, GIF or SVG image."
+            : "Choose a JPG, PNG, WebP, AVIF or GIF image.",
+        );
         return null;
       }
       if (file.size > MAX_BYTES) {
@@ -102,7 +128,9 @@ export function useImageUpload(session: UploadSession) {
         if (!response.ok) throw new Error("Could not start the upload");
         const signed = (await response.json()) as SignedParams;
 
-        const image = await sendToCloudinary(file, signed, setProgress);
+        const toSend =
+          file.type === SVG_TYPE ? await withXmlDeclaration(file) : file;
+        const image = await sendToCloudinary(toSend, signed, setProgress);
         unsaved.current.add(image.publicId);
         return image;
       } catch (error) {
@@ -112,7 +140,7 @@ export function useImageUpload(session: UploadSession) {
         setProgress(null);
       }
     },
-    [unsaved],
+    [unsaved, allowSvg],
   );
 
   const discard = useCallback(

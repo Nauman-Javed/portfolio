@@ -156,6 +156,7 @@ const skill = (category: string, names: string[]): Skill[] =>
     id: `${category}-${name}`,
     name,
     category,
+    iconUrl: null,
     order: i,
   }));
 

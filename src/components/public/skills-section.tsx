@@ -7,8 +7,9 @@ import {
   IconServer,
   IconTool,
 } from "@tabler/icons-react";
-import { abbreviation, groupSkills } from "@/data/site-content";
+import { groupSkills } from "@/data/site-content";
 import type { Skill } from "@/data/types";
+import { SkillIcon } from "./skill-icon";
 import { Container, SectionHeader } from "./ui";
 
 function iconFor(category: string) {
@@ -49,19 +50,18 @@ export function SkillsSection({ skills }: { skills: Skill[] }) {
                     </p>
                   </div>
                 </div>
-                <ul className="mt-5 flex flex-wrap gap-2">
+                <ul className="mt-5 flex flex-wrap gap-2.5">
                   {items.map((skill) => (
                     <li
                       key={skill.id}
-                      className="chip-lift bg-raised border-hairline flex items-center gap-2.5 rounded-md border py-1 pr-3 pl-1"
+                      className="chip-lift bg-raised border-hairline flex items-center gap-2.5 rounded-full border py-1.5 pr-4 pl-2"
                     >
-                      <span
-                        aria-hidden
-                        className="bg-chip text-teal flex size-[30px] items-center justify-center rounded-[5px] font-mono text-[11px]"
-                      >
-                        {abbreviation(skill.name)}
-                      </span>
-                      <span className="text-[13px]">{skill.name}</span>
+                      <SkillIcon
+                        name={skill.name}
+                        iconUrl={skill.iconUrl}
+                        size={24}
+                      />
+                      <span className="text-[14px]">{skill.name}</span>
                     </li>
                   ))}
                 </ul>

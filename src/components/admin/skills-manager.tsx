@@ -2,7 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Pencil, Plus } from "lucide-react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import {
   createSkill,
   deleteSkill,
@@ -18,6 +18,9 @@ import { DeleteButton } from "./delete-button";
 import { Field } from "./field";
 import { FormDialog } from "./form-dialog";
 import { FormFooter } from "./form-footer";
+import { ImageUploader } from "./image-uploader";
+import { SkillIcon } from "@/components/public/skill-icon";
+import { useUploadSession } from "./use-image-upload";
 import { ItemRow } from "./item-row";
 import { MoveButtons } from "./move-buttons";
 import { applyFieldErrors, useServerAction } from "./use-server-action";
@@ -26,6 +29,8 @@ type SkillItem = {
   id: string;
   name: string;
   category: string;
+  iconUrl: string | null;
+  iconPublicId: string | null;
   order: number;
 };
 
@@ -38,26 +43,37 @@ function SkillForm({
   categories: string[];
   onDone: () => void;
 }) {
+  const session = useUploadSession();
   const { run, pending } = useServerAction();
   const {
     register,
     handleSubmit,
     setError,
+    setValue,
+    control,
     formState: { errors },
   } = useForm<SkillInput>({
     resolver: zodResolver(skillSchema),
     defaultValues: {
       name: initial?.name ?? "",
       category: initial?.category ?? "",
+      iconUrl: initial?.iconUrl ?? "",
+      iconPublicId: initial?.iconPublicId ?? "",
     },
   });
+
+  const iconUrl = useWatch({ control, name: "iconUrl" });
+  const iconPublicId = useWatch({ control, name: "iconPublicId" });
 
   const onSubmit = handleSubmit((values) =>
     run(
       () => (initial ? updateSkill(initial.id, values) : createSkill(values)),
       {
         success: initial ? "Skill updated" : "Skill added",
-        onSuccess: onDone,
+        onSuccess: () => {
+          session.markSaved();
+          onDone();
+        },
         onError: (r) => applyFieldErrors(setError, r.fieldErrors),
       },
     ),
@@ -84,6 +100,26 @@ function SkillForm({
             <option key={c} value={c} />
           ))}
         </datalist>
+      </Field>
+      <Field
+        label="Icon (optional)"
+        htmlFor="icon"
+        error={errors.iconUrl?.message}
+        hint="A small logo, ideally a square SVG or PNG. Shown next to the skill name. Without one, a two-letter mark is used."
+      >
+        <ImageUploader
+          session={session}
+          compact
+          allowSvg
+          removable
+          value={iconUrl ? { url: iconUrl, publicId: iconPublicId } : null}
+          onChange={(image) => {
+            setValue("iconUrl", image?.url ?? "", { shouldDirty: true });
+            setValue("iconPublicId", image?.publicId ?? "", {
+              shouldDirty: true,
+            });
+          }}
+        />
       </Field>
       <FormFooter pending={pending} submitLabel="Save" onCancel={onDone} />
     </form>
@@ -120,7 +156,16 @@ export function SkillsManager({ skills }: { skills: SkillItem[] }) {
             {items.map((skill, i) => (
               <ItemRow
                 key={skill.id}
-                title={skill.name}
+                title={
+                  <span className="flex items-center gap-3">
+                    <SkillIcon
+                      name={skill.name}
+                      iconUrl={skill.iconUrl}
+                      size={22}
+                    />
+                    {skill.name}
+                  </span>
+                }
                 actions={
                   <>
                     <MoveButtons

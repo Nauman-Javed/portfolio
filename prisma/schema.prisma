@@ -77,10 +77,12 @@ model Experience {
 }
 
 model Skill {
-  id       String @id @default(cuid())
-  name     String
-  category String
-  order    Int    @default(0)
+  id           String  @id @default(cuid())
+  name         String
+  category     String
+  iconUrl      String?
+  iconPublicId String?
+  order        Int     @default(0)
 
   @@index([category, order])
 }

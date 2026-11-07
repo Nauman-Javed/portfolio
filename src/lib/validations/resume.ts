@@ -4,6 +4,7 @@ import {
   optional,
   optionalDate,
   optionalUrl,
+  imageSource,
   required,
 } from "./common";
 
@@ -34,6 +35,8 @@ export type ExperienceInput = z.infer<typeof experienceSchema>;
 export const skillSchema = z.object({
   name: required("Name", 60),
   category: required("Category", 60),
+  iconUrl: imageSource,
+  iconPublicId: optional(300),
 });
 
 export type SkillInput = z.infer<typeof skillSchema>;
