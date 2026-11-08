@@ -11,10 +11,13 @@ export function SkillIcon({
   name,
   iconUrl,
   size = 28,
+  showInitials = true,
 }: {
   name: string;
   iconUrl?: string | null;
   size?: number;
+  /** Show a two-letter mark when there is no usable image; otherwise render nothing. */
+  showInitials?: boolean;
 }) {
   const [failedUrl, setFailedUrl] = useState<string | null>(null);
 
@@ -29,6 +32,7 @@ export function SkillIcon({
   );
 
   if (!iconUrl || failedUrl === iconUrl) {
+    if (!showInitials) return null;
     return (
       <span
         aria-hidden

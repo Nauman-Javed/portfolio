@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pencil, Plus } from "lucide-react";
+import { RiPencilLine, RiAddLine } from "react-icons/ri";
 import { useForm, useWatch } from "react-hook-form";
 import {
   createSkill,
@@ -138,7 +138,7 @@ export function SkillsManager({ skills }: { skills: SkillItem[] }) {
         title="Add skill"
         trigger={(open) => (
           <Button type="button" onClick={open}>
-            <Plus /> Add skill
+            <RiAddLine /> Add skill
           </Button>
         )}
       >
@@ -189,7 +189,7 @@ export function SkillsManager({ skills }: { skills: SkillItem[] }) {
                           aria-label={`Edit ${skill.name}`}
                           onClick={open}
                         >
-                          <Pencil />
+                          <RiPencilLine />
                         </Button>
                       )}
                     >

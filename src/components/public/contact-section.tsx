@@ -1,35 +1,34 @@
 import {
-  IconBrandGithubFilled,
-  IconBrandLinkedinFilled,
-  IconBrandSteamFilled,
-  IconFileText,
-  IconMail,
-} from "@tabler/icons-react";
+  RiGithubFill,
+  RiLinkedinBoxFill,
+  RiSteamFill,
+  RiFileTextLine,
+  RiMailLine,
+  RiArrowRightUpLine,
+} from "react-icons/ri";
 import { SOCIAL_LINKS } from "@/data/site-content";
 import type { SocialIcon } from "@/data/site-content";
 import type { Profile } from "@/data/types";
 import { Container, ctaClass } from "./ui";
 
 // Brand colours, switched to lighter tints in dark mode so they stay legible.
-const BRANDS: Record<
-  SocialIcon,
-  { Icon: typeof IconBrandGithubFilled; color: string }
-> = {
-  linkedin: {
-    Icon: IconBrandLinkedinFilled,
-    color: "text-[#0a66c2] dark:text-[#58a6e6]",
-  },
-  github: {
-    Icon: IconBrandGithubFilled,
-    color: "text-[#181717] dark:text-white",
-  },
-  steam: {
-    Icon: IconBrandSteamFilled,
-    color: "text-[#171a21] dark:text-[#66c0f4]",
-  },
-};
+const BRANDS: Record<SocialIcon, { Icon: typeof RiGithubFill; color: string }> =
+  {
+    linkedin: {
+      Icon: RiLinkedinBoxFill,
+      color: "text-[#0a66c2] dark:text-[#58a6e6]",
+    },
+    github: {
+      Icon: RiGithubFill,
+      color: "text-[#181717] dark:text-white",
+    },
+    steam: {
+      Icon: RiSteamFill,
+      color: "text-[#171a21] dark:text-[#66c0f4]",
+    },
+  };
 
-const iconProps = { size: 18, stroke: 1.5, "aria-hidden": true } as const;
+const iconProps = { size: 18, "aria-hidden": true } as const;
 
 export function ContactSection({ profile }: { profile: Profile }) {
   return (
@@ -54,7 +53,7 @@ export function ContactSection({ profile }: { profile: Profile }) {
               href={`mailto:${profile.email}`}
               className={ctaClass("primary", "large")}
             >
-              <IconMail {...iconProps} />
+              <RiMailLine {...iconProps} />
               {profile.email}
             </a>
             {SOCIAL_LINKS.map((link) => {
@@ -68,7 +67,11 @@ export function ContactSection({ profile }: { profile: Profile }) {
                   className={ctaClass("secondary", "large")}
                 >
                   <Icon {...iconProps} className={color} />
-                  {link.label} <span aria-hidden>↗</span>
+                  {link.label}{" "}
+                  <RiArrowRightUpLine
+                    aria-hidden
+                    className="inline-block size-4"
+                  />
                   <span className="sr-only"> (opens in a new tab)</span>
                 </a>
               );
@@ -80,8 +83,12 @@ export function ContactSection({ profile }: { profile: Profile }) {
                 rel="noopener noreferrer"
                 className={ctaClass("secondary", "large")}
               >
-                <IconFileText {...iconProps} />
-                Résumé <span aria-hidden>↗</span>
+                <RiFileTextLine {...iconProps} />
+                Résumé{" "}
+                <RiArrowRightUpLine
+                  aria-hidden
+                  className="inline-block size-4"
+                />
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
             )}

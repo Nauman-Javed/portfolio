@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pencil, Plus } from "lucide-react";
+import { RiPencilLine, RiAddLine } from "react-icons/ri";
 import { useForm } from "react-hook-form";
 import {
   createEducation,
@@ -117,7 +117,7 @@ export function EducationManager({ items }: { items: EducationItem[] }) {
         title="Add education"
         trigger={(open) => (
           <Button type="button" onClick={open}>
-            <Plus /> Add education
+            <RiAddLine /> Add education
           </Button>
         )}
       >
@@ -154,7 +154,7 @@ export function EducationManager({ items }: { items: EducationItem[] }) {
                         aria-label={`Edit ${item.degree}`}
                         onClick={open}
                       >
-                        <Pencil />
+                        <RiPencilLine />
                       </Button>
                     )}
                   >

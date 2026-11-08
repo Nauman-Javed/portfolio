@@ -1,4 +1,4 @@
-import { Plus } from "lucide-react";
+import { RiAddLine } from "react-icons/ri";
 import Link from "next/link";
 import { PageHeader } from "@/components/admin/page-header";
 import { ProjectsManager } from "@/components/admin/projects-manager";
@@ -20,7 +20,7 @@ export default async function AdminProjectsPage() {
             nativeButton={false}
             render={<Link href="/manage/projects/new" />}
           >
-            <Plus /> New project
+            <RiAddLine /> New project
           </Button>
         }
       />

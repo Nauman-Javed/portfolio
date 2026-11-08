@@ -1,3 +1,4 @@
+import { RiArrowRightUpLine, RiCodeSSlashLine } from "react-icons/ri";
 import Link from "next/link";
 import {
   getExperience,
@@ -6,6 +7,7 @@ import {
   getSkills,
 } from "@/data/queries";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { MobileNav } from "./mobile-nav";
 import { Container, ctaClass } from "./ui";
 
 export async function SiteHeader() {
@@ -27,21 +29,21 @@ export async function SiteHeader() {
 
   return (
     <header className="border-hairline bg-canvas/80 sticky top-0 z-40 border-b backdrop-blur">
-      <Container className="flex flex-wrap items-center justify-between gap-x-6 gap-y-2 py-3">
+      <Container className="flex items-center justify-between gap-4 py-3">
         <Link
           href="/"
           aria-label={`${name}, home`}
-          className="flex items-center gap-3"
+          className="flex min-w-0 items-center gap-3"
         >
           <span
             aria-hidden
-            className="bg-tealsoft text-teal flex size-9 items-center justify-center rounded-md font-mono text-[13px]"
+            className="bg-tealsoft text-teal flex size-9 items-center justify-center rounded-md"
           >
-            {"</>"}
+            <RiCodeSSlashLine size={20} />
           </span>
-          <span className="text-[15px]">{name}</span>
+          <span className="truncate text-[15px]">{name}</span>
         </Link>
-        <nav aria-label="Main" className="flex flex-wrap items-center gap-1">
+        <nav aria-label="Main" className="hidden items-center gap-1 md:flex">
           {links.map((l) => (
             <Link
               key={l.href}
@@ -51,7 +53,7 @@ export async function SiteHeader() {
               {l.label}
             </Link>
           ))}
-          <ThemeToggle />
+          <ThemeToggle className="border-border mx-1 size-9 rounded-full border" />
           {profile?.resumeUrl && (
             <a
               href={profile.resumeUrl}
@@ -59,11 +61,13 @@ export async function SiteHeader() {
               rel="noopener noreferrer"
               className={`${ctaClass("primary")} ml-2`}
             >
-              My Resume <span aria-hidden>↗</span>
+              My Resume{" "}
+              <RiArrowRightUpLine aria-hidden className="inline-block size-4" />
               <span className="sr-only"> (opens in a new tab)</span>
             </a>
           )}
         </nav>
+        <MobileNav links={links} resumeUrl={profile?.resumeUrl} />
       </Container>
     </header>
   );

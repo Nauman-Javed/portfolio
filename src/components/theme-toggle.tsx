@@ -1,6 +1,6 @@
 "use client";
 
-import { IconMoon, IconSun } from "@tabler/icons-react";
+import { RiMoonLine, RiSunLine } from "react-icons/ri";
 import { cn } from "@/lib/utils";
 
 // Both icons are always rendered and CSS picks one from the <html> class, so
@@ -25,13 +25,8 @@ export function ThemeToggle({ className }: { className?: string }) {
         className,
       )}
     >
-      <IconSun
-        size={18}
-        stroke={1.5}
-        aria-hidden
-        className="hidden dark:block"
-      />
-      <IconMoon size={18} stroke={1.5} aria-hidden className="dark:hidden" />
+      <RiSunLine size={18} aria-hidden className="hidden dark:block" />
+      <RiMoonLine size={18} aria-hidden className="dark:hidden" />
     </button>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { ImagePlus, Loader2, X } from "lucide-react";
+import { RiImageLine, RiLoader4Line, RiCloseLine } from "react-icons/ri";
 import { SafeImage } from "@/components/safe-image";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
@@ -61,7 +61,7 @@ export function GalleryEditor({
                 }}
                 className="bg-background/90 hover:bg-background absolute top-1.5 right-1.5 rounded-full p-1"
               >
-                <X className="size-3.5" />
+                <RiCloseLine className="size-3.5" />
               </button>
             </li>
           ))}
@@ -82,7 +82,11 @@ export function GalleryEditor({
         disabled={uploading || value.length >= MAX_GALLERY_IMAGES}
         onClick={() => inputRef.current?.click()}
       >
-        {uploading ? <Loader2 className="animate-spin" /> : <ImagePlus />}
+        {uploading ? (
+          <RiLoader4Line className="animate-spin" />
+        ) : (
+          <RiImageLine />
+        )}
         {uploading ? `Uploading ${progress}%` : "Add images"}
       </Button>
       <p className="text-muted-foreground text-xs">

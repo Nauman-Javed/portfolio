@@ -16,11 +16,16 @@ export function SkillPill({
   return (
     <span
       className={cn(
-        "bg-raised border-hairline inline-flex items-center gap-2 rounded-full border py-1 pr-3 pl-1.5 text-[13px] leading-none whitespace-nowrap",
+        "bg-raised border-hairline inline-flex h-[30px] items-center gap-2 rounded-full border pr-3 pl-3 text-[13px] leading-none whitespace-nowrap has-[img]:pl-1.5",
         className,
       )}
     >
-      <SkillIcon name={skill.name} iconUrl={skill.iconUrl} size={20} />
+      <SkillIcon
+        name={skill.name}
+        iconUrl={skill.iconUrl}
+        size={20}
+        showInitials={false}
+      />
       {skill.name}
     </span>
   );

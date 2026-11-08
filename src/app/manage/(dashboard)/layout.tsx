@@ -21,10 +21,13 @@ async function AdminShell({ children }: { children: React.ReactNode }) {
             {session.user?.email}
           </Link>
           <div className="flex shrink-0 items-center gap-3 text-sm">
-            <Link href="/" className="hover:text-brand transition-colors">
+            <Link
+              href="/"
+              className="border-border hover:bg-muted rounded-full border px-4 py-1.5 transition-colors"
+            >
               Portfolio
             </Link>
-            <ThemeToggle className="border-border rounded-full border" />
+            <ThemeToggle className="border-border size-9 rounded-full border" />
             <form action={signOutAction}>
               <button
                 type="submit"

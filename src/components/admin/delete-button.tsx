@@ -1,6 +1,6 @@
 "use client";
 
-import { Trash2 } from "lucide-react";
+import { RiDeleteBinLine } from "react-icons/ri";
 import { useState } from "react";
 import {
   AlertDialog,
@@ -36,7 +36,7 @@ export function DeleteButton({
         onClick={() => setOpen(true)}
         className="text-destructive hover:text-destructive"
       >
-        <Trash2 />
+        <RiDeleteBinLine />
       </Button>
       <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogContent>

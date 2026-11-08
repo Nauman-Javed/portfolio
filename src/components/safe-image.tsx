@@ -1,6 +1,6 @@
 "use client";
 
-import { IconPhoto } from "@tabler/icons-react";
+import { RiImageLine } from "react-icons/ri";
 import Image from "next/image";
 import { useCallback, useState } from "react";
 import type { ComponentProps } from "react";
@@ -15,7 +15,7 @@ export function ImagePlaceholder({ className }: { className?: string }) {
         className,
       )}
     >
-      <IconPhoto size={28} stroke={1.5} />
+      <RiImageLine size={28} />
       <span className="text-[11px]">No image</span>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pencil, Plus } from "lucide-react";
+import { RiPencilLine, RiAddLine } from "react-icons/ri";
 import { useForm } from "react-hook-form";
 import {
   createExperience,
@@ -156,7 +156,7 @@ export function ExperienceManager({ items }: { items: ExperienceItem[] }) {
         title="Add experience"
         trigger={(open) => (
           <Button type="button" onClick={open}>
-            <Plus /> Add experience
+            <RiAddLine /> Add experience
           </Button>
         )}
       >
@@ -193,7 +193,7 @@ export function ExperienceManager({ items }: { items: ExperienceItem[] }) {
                         aria-label={`Edit ${item.role}`}
                         onClick={open}
                       >
-                        <Pencil />
+                        <RiPencilLine />
                       </Button>
                     )}
                   >

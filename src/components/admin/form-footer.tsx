@@ -1,4 +1,4 @@
-import { Loader2 } from "lucide-react";
+import { RiLoader4Line } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 
 export function FormFooter({
@@ -23,7 +23,7 @@ export function FormFooter({
         </Button>
       )}
       <Button type="submit" disabled={pending}>
-        {pending && <Loader2 className="animate-spin" />}
+        {pending && <RiLoader4Line className="animate-spin" />}
         {submitLabel}
       </Button>
     </div>

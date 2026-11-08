@@ -1,6 +1,6 @@
 "use client";
 
-import { ImagePlus, Loader2, Trash2 } from "lucide-react";
+import { RiImageLine, RiLoader4Line, RiDeleteBinLine } from "react-icons/ri";
 import { SafeImage } from "@/components/safe-image";
 import { useId, useRef } from "react";
 import { Button } from "@/components/ui/button";
@@ -76,7 +76,7 @@ export function ImageUploader({
         )}
         {uploading && (
           <div className="bg-background/80 absolute inset-0 flex flex-col items-center justify-center gap-2 text-sm">
-            <Loader2 className="size-5 animate-spin" />
+            <RiLoader4Line className="size-5 animate-spin" />
             {progress}%
           </div>
         )}
@@ -97,7 +97,7 @@ export function ImageUploader({
           disabled={uploading}
           onClick={() => inputRef.current?.click()}
         >
-          <ImagePlus /> {value ? "Replace image" : "Upload image"}
+          <RiImageLine /> {value ? "Replace image" : "Upload image"}
         </Button>
         {removable && value && (
           <Button
@@ -109,7 +109,7 @@ export function ImageUploader({
               onChange(null);
             }}
           >
-            <Trash2 /> Remove
+            <RiDeleteBinLine /> Remove
           </Button>
         )}
       </div>

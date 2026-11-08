@@ -1,25 +1,25 @@
 import {
-  IconBrowser,
-  IconCloud,
-  IconCode,
-  IconDatabase,
-  IconGitBranch,
-  IconServer,
-  IconTool,
-} from "@tabler/icons-react";
+  RiWindowLine,
+  RiCloudLine,
+  RiCodeSSlashLine,
+  RiDatabase2Line,
+  RiGitBranchLine,
+  RiServerLine,
+  RiToolsLine,
+} from "react-icons/ri";
 import { groupSkills } from "@/data/site-content";
 import type { Skill } from "@/data/types";
 import { SkillPill } from "./skill-pill";
 import { Container, SectionHeader } from "./ui";
 
 function iconFor(category: string) {
-  if (/version|git/i.test(category)) return IconGitBranch;
-  if (/cloud|devops|deploy/i.test(category)) return IconCloud;
-  if (/back|server|api/i.test(category)) return IconServer;
-  if (/data|db/i.test(category)) return IconDatabase;
-  if (/front|framework|ui/i.test(category)) return IconBrowser;
-  if (/tool|practice/i.test(category)) return IconTool;
-  return IconCode;
+  if (/version|git/i.test(category)) return RiGitBranchLine;
+  if (/cloud|devops|deploy/i.test(category)) return RiCloudLine;
+  if (/back|server|api/i.test(category)) return RiServerLine;
+  if (/data|db/i.test(category)) return RiDatabase2Line;
+  if (/front|framework|ui/i.test(category)) return RiWindowLine;
+  if (/tool|practice/i.test(category)) return RiToolsLine;
+  return RiCodeSSlashLine;
 }
 
 export function SkillsSection({ skills }: { skills: Skill[] }) {
@@ -41,7 +41,7 @@ export function SkillsSection({ skills }: { skills: Skill[] }) {
               >
                 <div className="flex items-center gap-4">
                   <span className="bg-tealsoft text-teal flex size-11 shrink-0 items-center justify-center rounded-lg">
-                    <Icon size={20} stroke={1.5} aria-hidden />
+                    <Icon size={20} aria-hidden />
                   </span>
                   <div>
                     <h3 className="text-[17px] leading-[1.35]">{category}</h3>

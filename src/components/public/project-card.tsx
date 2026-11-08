@@ -1,3 +1,4 @@
+import { RiArrowRightUpLine } from "react-icons/ri";
 import Link from "next/link";
 import { SafeImage } from "@/components/safe-image";
 import type { Project } from "@/data/types";
@@ -17,7 +18,8 @@ function ProjectActions({ project }: { project: Project }) {
           rel="noopener noreferrer"
           className={ctaClass("secondary")}
         >
-          Live site <span aria-hidden>↗</span>
+          Live site{" "}
+          <RiArrowRightUpLine aria-hidden className="inline-block size-4" />
           <span className="sr-only">
             {" "}
             for {project.title} (opens in a new tab)

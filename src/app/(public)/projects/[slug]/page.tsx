@@ -1,3 +1,4 @@
+import { RiArrowRightUpLine } from "react-icons/ri";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -95,7 +96,11 @@ export default async function ProjectPage({ params }: Props) {
                       rel="noopener noreferrer"
                       className={ctaClass("primary")}
                     >
-                      Live site <span aria-hidden>↗</span>
+                      Live site{" "}
+                      <RiArrowRightUpLine
+                        aria-hidden
+                        className="inline-block size-4"
+                      />
                       <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   )}
@@ -106,7 +111,11 @@ export default async function ProjectPage({ params }: Props) {
                       rel="noopener noreferrer"
                       className={ctaClass("secondary")}
                     >
-                      Source code <span aria-hidden>↗</span>
+                      Source code{" "}
+                      <RiArrowRightUpLine
+                        aria-hidden
+                        className="inline-block size-4"
+                      />
                       <span className="sr-only"> (opens in a new tab)</span>
                     </a>
                   )}

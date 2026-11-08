@@ -1,6 +1,6 @@
 "use client";
 
-import { Pencil } from "lucide-react";
+import { RiPencilLine } from "react-icons/ri";
 import { SafeImage } from "@/components/safe-image";
 import Link from "next/link";
 import { deleteProject, moveProject, setProjectFlag } from "@/actions/projects";
@@ -108,7 +108,7 @@ export function ProjectsManager({ projects }: { projects: ProjectRow[] }) {
               nativeButton={false}
               render={<Link href={`/manage/projects/${p.id}`} />}
             >
-              <Pencil />
+              <RiPencilLine />
             </Button>
             <DeleteButton name={p.title} onDelete={() => deleteProject(p.id)} />
           </div>

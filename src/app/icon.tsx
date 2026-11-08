@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { RiCodeSSlashLine } from "react-icons/ri";
 
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
@@ -15,11 +16,9 @@ export default function Icon() {
         background: "#26d1bf",
         color: "#06251f",
         borderRadius: 7,
-        fontSize: 15,
-        fontWeight: 700,
       }}
     >
-      {"</>"}
+      <RiCodeSSlashLine size={22} />
     </div>,
     { ...size },
   );

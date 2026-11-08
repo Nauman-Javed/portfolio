@@ -1,3 +1,4 @@
+import { RiArrowRightLine } from "react-icons/ri";
 import Link from "next/link";
 import type { Project } from "@/data/types";
 import { ProjectCard } from "./project-card";
@@ -30,7 +31,8 @@ export function ProjectsSection({
               href="/projects"
               className="text-teal inline-flex min-h-11 items-center text-[14px] hover:underline"
             >
-              All projects →
+              All projects{" "}
+              <RiArrowRightLine aria-hidden className="inline-block size-4" />
             </Link>
           )}
         </div>

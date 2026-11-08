@@ -25,7 +25,7 @@ function Row({
             aria-hidden={copy === 1 || undefined}
             className="shrink-0"
           >
-            <SkillPill skill={skill} />
+            <SkillPill skill={skill} className="border-transparent" />
           </li>
         )),
       )}

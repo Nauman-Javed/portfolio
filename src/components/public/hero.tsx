@@ -1,5 +1,10 @@
 import Link from "next/link";
-import { IconRocket, IconShieldCheck } from "@tabler/icons-react";
+import {
+  RiRocketLine,
+  RiShieldCheckLine,
+  RiArrowRightUpLine,
+  RiArrowRightLine,
+} from "react-icons/ri";
 import type { Profile } from "@/data/types";
 import { CodeEditor } from "./code-editor";
 import { RotatingText } from "./rotating-text";
@@ -58,7 +63,8 @@ export function Hero({ profile, years }: { profile: Profile; years: number }) {
             style={delay(0.55)}
           >
             <Link href="/projects" className={ctaClass("primary")}>
-              View my work →
+              View my work{" "}
+              <RiArrowRightLine aria-hidden className="inline-block size-4" />
             </Link>
             {profile.resumeUrl && (
               <a
@@ -67,7 +73,11 @@ export function Hero({ profile, years }: { profile: Profile; years: number }) {
                 rel="noopener noreferrer"
                 className={ctaClass("secondary")}
               >
-                My Resume <span aria-hidden>↗</span>
+                My Resume{" "}
+                <RiArrowRightUpLine
+                  aria-hidden
+                  className="inline-block size-4"
+                />
                 <span className="sr-only"> (opens in a new tab)</span>
               </a>
             )}
@@ -92,7 +102,7 @@ export function Hero({ profile, years }: { profile: Profile; years: number }) {
             className="anim-bob border-hairline bg-surface shadow-float absolute top-3 right-3 flex items-center gap-3 rounded-lg border px-4 py-3 min-[1100px]:-right-4 sm:-top-5 sm:-right-2"
           >
             <span className="bg-tealsoft text-teal flex size-9 items-center justify-center rounded-md">
-              <IconShieldCheck size={18} stroke={1.5} />
+              <RiShieldCheckLine size={18} />
             </span>
             <span>
               <span className="block text-[13px]">Test suite</span>
@@ -108,7 +118,7 @@ export function Hero({ profile, years }: { profile: Profile; years: number }) {
           >
             <div className="flex items-center gap-3">
               <span className="bg-tealsoft text-teal flex size-9 items-center justify-center rounded-md">
-                <IconRocket size={18} stroke={1.5} />
+                <RiRocketLine size={18} />
               </span>
               <span className="text-[13px]">Deploying to production</span>
             </div>

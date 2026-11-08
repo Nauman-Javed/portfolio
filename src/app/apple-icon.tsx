@@ -1,4 +1,5 @@
 import { ImageResponse } from "next/og";
+import { RiCodeSSlashLine } from "react-icons/ri";
 
 export const size = { width: 180, height: 180 };
 export const contentType = "image/png";
@@ -14,11 +15,9 @@ export default function AppleIcon() {
         justifyContent: "center",
         background: "#090e11",
         color: "#26d1bf",
-        fontSize: 72,
-        fontWeight: 700,
       }}
     >
-      {"</>"}
+      <RiCodeSSlashLine size={110} />
     </div>,
     { ...size },
   );

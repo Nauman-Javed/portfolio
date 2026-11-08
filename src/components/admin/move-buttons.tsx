@@ -1,6 +1,6 @@
 "use client";
 
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { RiArrowDownSLine, RiArrowUpSLine } from "react-icons/ri";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import type { ActionResult } from "@/lib/action-result";
@@ -41,7 +41,7 @@ export function MoveButtons({
         disabled={isFirst || pending}
         onClick={() => move("up")}
       >
-        <ChevronUp />
+        <RiArrowUpSLine />
       </Button>
       <Button
         type="button"
@@ -51,7 +51,7 @@ export function MoveButtons({
         disabled={isLast || pending}
         onClick={() => move("down")}
       >
-        <ChevronDown />
+        <RiArrowDownSLine />
       </Button>
     </>
   );
