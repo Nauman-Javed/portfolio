@@ -79,7 +79,8 @@ export async function SiteHeader({ locale }: { locale: Locale }) {
           {profile?.resumeUrl && (
             <a
               href={profile.resumeUrl}
-              target="_blank"
+              download="Nauman-Qureshi-Resume.pdf"
+                target="_blank"
               rel="noopener noreferrer"
               className={`${ctaClass("primary")} ms-2`}
             >

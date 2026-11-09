@@ -89,6 +89,7 @@ export function Hero({
             {profile.resumeUrl && (
               <a
                 href={profile.resumeUrl}
+                download="Nauman-Qureshi-Resume.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className={ctaClass("secondary")}
