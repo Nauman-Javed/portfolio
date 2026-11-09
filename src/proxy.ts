@@ -49,6 +49,11 @@ export function proxy(req: NextRequest) {
     return adminProxy(req, { params: Promise.resolve({}) });
   }
 
+  // Standalone English-only page, outside the localized site.
+  if (pathname === "/H3adShOt" || pathname.startsWith("/H3adShOt/")) {
+    return NextResponse.next();
+  }
+
   // Public pages live under /<locale>/…; send everything else there.
   const first = pathname.split("/")[1];
   if (hasLocale(first)) return NextResponse.next();
