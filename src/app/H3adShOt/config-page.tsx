@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { bindsCfg } from "./binds";
 import { player, sections, type JsonValue, type Section } from "./data";
 
 type Obj = { [k: string]: JsonValue };
@@ -34,6 +35,7 @@ function filterObj(o: Obj, q: string): Obj {
 type View =
   | { section: Section; kind: "list"; rows: ListRow[]; count: number }
   | { section: Section; kind: "json"; data: Obj; count: number }
+  | { section: Section; kind: "text"; lines: string[]; count: number }
   | { section: Section; kind: "line"; count: number };
 
 function view(section: Section, q: string): View {
@@ -47,6 +49,10 @@ function view(section: Section, q: string): View {
   if (section.kind === "json") {
     const data = all ? section.data : filterObj(section.data, q);
     return { section, kind: "json", data, count: countLeaves(data) };
+  }
+  if (section.kind === "text") {
+    const lines = all ? section.lines : section.lines.filter((l) => has(l, q));
+    return { section, kind: "text", lines, count: lines.length };
   }
   const count = all || has(section.value, q) ? 1 : 0;
   return { section, kind: "line", count };
@@ -74,10 +80,12 @@ function CopyButton({
   text,
   className = "",
   icon = true,
+  label = "Copy code",
 }: {
   text: string;
   className?: string;
   icon?: boolean;
+  label?: string;
 }) {
   const [done, setDone] = useState(false);
   async function copy() {
@@ -105,7 +113,7 @@ function CopyButton({
           }
         />
       )}
-      {done ? "Copied ✓" : "Copy code"}
+      {done ? "Copied ✓" : label}
     </button>
   );
 }
@@ -343,7 +351,12 @@ export function ConfigPage() {
                     <div className="hs-json">
                       <div className="hs-bar">
                         <span>{s.file}</span>
-                        <CopyButton text={JSON.stringify(s.data, null, 2)} />
+                        <div className="hs-bar-actions">
+                          {s.id === "keybinds" && (
+                            <CopyButton text={bindsCfg} label="Copy config" />
+                          )}
+                          <CopyButton text={JSON.stringify(s.data, null, 2)} />
+                        </div>
                       </div>
                       <pre>
                         <code>
@@ -353,6 +366,18 @@ export function ConfigPage() {
                           </div>
                           <span className="j-p">{"}"}</span>
                         </code>
+                      </pre>
+                    </div>
+                  )}
+
+                  {v.kind === "text" && s.kind === "text" && (
+                    <div className="hs-json">
+                      <div className="hs-bar">
+                        <span>{s.file}</span>
+                        <CopyButton text={s.lines.join("\n")} />
+                      </div>
+                      <pre>
+                        <code>{v.lines.join("\n")}</code>
                       </pre>
                     </div>
                   )}

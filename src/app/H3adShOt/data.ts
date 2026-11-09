@@ -1,3 +1,5 @@
+import { bindsCfg } from "./binds";
+
 // Hardcoded CS2 config. Edit the values here; the page reads everything from
 // this file (search, sections, copy buttons).
 
@@ -14,7 +16,15 @@ export type Section =
       file: string;
       data: { [k: string]: JsonValue };
     }
-  | { id: string; title: string; path: string; kind: "line"; value: string };
+  | { id: string; title: string; path: string; kind: "line"; value: string }
+  | {
+      id: string;
+      title: string;
+      path: string;
+      kind: "text";
+      file: string;
+      lines: string[];
+    };
 
 export const player = {
   name: "H3adShOt",
@@ -156,6 +166,7 @@ export const sections: Section[] = [
         KP_PLUS: "buy ssg08;",
         KP_ENTER: "buy p250;",
         KP_DEL: "buy decoy;",
+        INSERT: "buy tec9;buy fiveseven;",
         DEL: "buy ak47;buy m4a1;",
         HOME: "buy deagle;",
         PGUP: "buy awp;",
@@ -201,6 +212,8 @@ export const sections: Section[] = [
       viewmodel_offset_x: 1.5,
       viewmodel_offset_y: 2,
       viewmodel_offset_z: -2,
+      viewmodel_presetpos: 0,
+      viewmodel_recoil: 1,
     },
   },
   {
@@ -211,13 +224,21 @@ export const sections: Section[] = [
     value: "+exec binds.cfg",
   },
   {
+    id: "config",
+    title: "Config",
+    path: "cfg › binds.cfg",
+    kind: "text",
+    file: "binds.cfg",
+    lines: bindsCfg.trim().split("\n"),
+  },
+  {
     id: "audio",
     title: "Audio",
     path: "Settings › Audio",
     kind: "list",
     rows: [
       ["Master volume", "40%"],
-      ["Voice volume", "100%"],
+      ["Voice volume", "30%"],
       ["Voice chat", "Enabled"],
       ["Mute enemy team", "No"],
       ["Perspective correction", "Yes"],

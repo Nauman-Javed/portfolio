@@ -489,6 +489,12 @@ html:has(.hs) {
   border: 1px solid var(--border);
   border-left: 3px solid var(--accent);
 }
+.hs-bar-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 8px;
+}
 .hs-bar {
   display: flex;
   align-items: center;
