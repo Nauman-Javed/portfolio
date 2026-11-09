@@ -207,10 +207,20 @@ export function ConfigPage() {
             ))}
           </div>
           <div className="hs-links">
-            <a className="hs-outline" href={player.steamUrl}>
+            <a
+              className="hs-outline"
+              href={player.steamUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               Steam ↗
             </a>
-            <a className="hs-outline" href={player.faceitUrl}>
+            <a
+              className="hs-outline"
+              href={player.faceitUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
               FACEIT ↗
             </a>
           </div>
