@@ -11,7 +11,7 @@ export const profile: Profile = {
   email: "naumanj841@gmail.com",
   phone: null,
   resumeUrl:
-    "https://drive.google.com/file/d/1YOOuyNfkK2_Q2zydQSHTmOpTKEaTup9-/view?usp=sharing",
+    "/Nauman-Qureshi-Resume.pdf",
   availability: "Open to new opportunities",
   heroLead: "I engineer",
   heroPhrases: [
