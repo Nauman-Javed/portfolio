@@ -1,5 +1,7 @@
 import { groupSkills } from "@/data/site-content";
 import type { Skill } from "@/data/types";
+import type { Locale } from "@/i18n/config";
+import { getT } from "@/i18n/server";
 import { SkillPill } from "./skill-pill";
 
 function Row({
@@ -33,14 +35,21 @@ function Row({
   );
 }
 
-export function SkillsMarquee({ skills }: { skills: Skill[] }) {
+export function SkillsMarquee({
+  skills,
+  locale,
+}: {
+  skills: Skill[];
+  locale: Locale;
+}) {
   if (skills.length === 0) return null;
 
   const ordered = groupSkills(skills).flatMap(([, items]) => items);
 
   return (
     <section
-      aria-label="Technologies"
+      aria-label={getT(locale)("skills.technologies")}
+      dir="ltr" // the scrolling track is animated in physical directions
       className="bg-band border-hairline marquee flex flex-col gap-2.5 overflow-hidden border-y py-5"
     >
       <Row skills={ordered} />

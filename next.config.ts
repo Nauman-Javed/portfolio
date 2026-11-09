@@ -14,6 +14,7 @@ const nextConfig: NextConfig = {
   },
   /* config options here */
   cacheComponents: true,
+  experimental: { globalNotFound: true },
   partialPrefetching: true,
   turbopack: {
     rules: {

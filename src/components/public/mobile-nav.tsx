@@ -3,7 +3,9 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { RiArrowRightUpLine, RiCloseLine, RiMenuLine } from "react-icons/ri";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { ThemeToggle } from "@/components/theme-toggle";
+import { useLocale } from "@/i18n/use-locale";
 import { ctaClass } from "./ui";
 
 /** The navbar below the `md` breakpoint: theme toggle + a menu button that opens a panel. */
@@ -14,6 +16,7 @@ export function MobileNav({
   links: { href: string; label: string }[];
   resumeUrl?: string | null;
 }) {
+  const { t } = useLocale();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -26,13 +29,17 @@ export function MobileNav({
   return (
     <div className="md:hidden">
       <div className="flex items-center gap-2">
-        <ThemeToggle className="border-border size-9 rounded-full border" />
+        <LanguageSwitcher />
+        <ThemeToggle
+          label={t("common.toggleTheme")}
+          className="border-border size-9 rounded-full border"
+        />
         <button
           type="button"
           onClick={() => setOpen((o) => !o)}
           aria-expanded={open}
           aria-controls="mobile-menu"
-          aria-label={open ? "Close menu" : "Open menu"}
+          aria-label={open ? t("nav.closeMenu") : t("nav.openMenu")}
           className="border-border text-fg2 hover:text-fg hover:bg-raised flex size-9 items-center justify-center rounded-full border transition-colors duration-150"
         >
           {open ? (
@@ -54,7 +61,7 @@ export function MobileNav({
       >
         <nav
           id="mobile-menu"
-          aria-label="Main"
+          aria-label={t("nav.main")}
           className={`flex min-h-0 flex-col gap-1 overflow-hidden px-5 transition-transform duration-300 ease-out motion-reduce:transition-none ${
             open ? "translate-y-0 py-3" : "-translate-y-2 py-0"
           }`}
@@ -77,9 +84,12 @@ export function MobileNav({
               onClick={() => setOpen(false)}
               className={`${ctaClass("primary")} mt-2`}
             >
-              My Resume{" "}
-              <RiArrowRightUpLine aria-hidden className="inline-block size-4" />
-              <span className="sr-only"> (opens in a new tab)</span>
+              {t("common.myResume")}{" "}
+              <RiArrowRightUpLine
+                aria-hidden
+                className="inline-block size-4 rtl:-scale-x-100"
+              />
+              <span className="sr-only">{t("common.opensInNewTab")}</span>
             </a>
           )}
         </nav>

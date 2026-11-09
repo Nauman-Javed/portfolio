@@ -1,12 +1,8 @@
 import type { Education, Experience } from "@/data/types";
+import type { Locale } from "@/i18n/config";
+import { getT } from "@/i18n/server";
 import { Reveal } from "./reveal";
 import { Container, SectionHeader } from "./ui";
-
-const monthYear = new Intl.DateTimeFormat("en-US", {
-  month: "short",
-  year: "numeric",
-  timeZone: "UTC",
-});
 
 function pillClass(type: string) {
   if (type === "Full-time") return "bg-tealsoft text-tealsoft-fg";
@@ -20,10 +16,22 @@ const delay = (seconds: number) =>
 export function ExperienceSection({
   experience,
   education,
+  locale,
 }: {
   experience: Experience[];
   education: Education[];
+  locale: Locale;
 }) {
+  const t = getT(locale);
+  const monthYear = new Intl.DateTimeFormat(locale, {
+    month: "short",
+    year: "numeric",
+    timeZone: "UTC",
+  });
+  // Employment types are free text in the admin; known ones are translated.
+  const typeLabel = (type: string) =>
+    t(`experience.types.${type}`, { defaultValue: type });
+  const present = t("common.present");
   const items = [...experience].sort((a, b) => a.order - b.order);
   const last = Math.max(items.length - 1, 1);
 
@@ -32,21 +40,21 @@ export function ExperienceSection({
       <Container>
         {items.length > 0 && (
           <>
-            <SectionHeader title="Where I’ve worked" />
+            <SectionHeader title={t("experience.title")} />
 
             <Reveal>
-              <ol className="relative max-w-[860px] space-y-5 pl-9">
+              <ol className="relative max-w-[860px] space-y-5 ps-9">
                 <span
                   aria-hidden
-                  className="bg-track absolute top-0 bottom-0 left-[7px] w-0.5 overflow-hidden"
+                  className="bg-track absolute start-[7px] top-0 bottom-0 w-0.5 overflow-hidden"
                 >
                   <span className="anim-rail bg-teal absolute inset-0" />
                 </span>
                 <span
                   aria-hidden
-                  className="absolute top-0 bottom-0 left-[7px] w-0.5"
+                  className="absolute start-[7px] top-0 bottom-0 w-0.5"
                 >
-                  <span className="anim-glow bg-teal-light absolute left-1/2 size-2 -translate-x-1/2 rounded-full shadow-[0_0_12px_2px_var(--ds-accent)]" />
+                  <span className="anim-glow bg-teal-light absolute start-1/2 size-2 -translate-x-1/2 rounded-full shadow-[0_0_12px_2px_var(--ds-accent)] rtl:translate-x-1/2" />
                 </span>
 
                 {items.map((job, i) => {
@@ -55,7 +63,7 @@ export function ExperienceSection({
                     <li key={job.id} className="relative">
                       <span
                         aria-hidden
-                        className={`absolute top-7 -left-9 size-4 rounded-full ${
+                        className={`absolute -start-9 top-7 size-4 rounded-full ${
                           current
                             ? "anim-pulse bg-teal"
                             : "anim-pop border-teal bg-canvas border-2"
@@ -77,23 +85,23 @@ export function ExperienceSection({
                               {job.role}
                             </p>
                           </div>
-                          <div className="sm:text-right">
+                          <div className="sm:text-end">
                             <p className="text-fg3 text-xs">
                               {monthYear.format(job.startDate)} –{" "}
                               {job.endDate
                                 ? monthYear.format(job.endDate)
-                                : "Present"}
+                                : present}
                               {job.location && ` · ${job.location}`}
                             </p>
                             <span
                               className={`mt-2 inline-block rounded-full px-3 py-1 text-[11px] leading-[1.4] ${pillClass(job.employmentType)}`}
                             >
-                              {job.employmentType}
+                              {typeLabel(job.employmentType)}
                             </span>
                           </div>
                         </div>
                         {job.bullets.length > 0 && (
-                          <ul className="text-fg2 mt-4 list-disc space-y-1.5 pl-5 text-[14px] leading-[1.65]">
+                          <ul className="text-fg2 mt-4 list-disc space-y-1.5 ps-5 text-[14px] leading-[1.65]">
                             {job.bullets.map((b) => (
                               <li key={b}>{b}</li>
                             ))}
@@ -115,7 +123,7 @@ export function ExperienceSection({
             }
           >
             <h3 className="text-fg2 mb-4 text-[11px] tracking-[0.14em] uppercase">
-              Education
+              {t("experience.education")}
             </h3>
             <ul className="grid gap-5 sm:grid-cols-2">
               {education.map((e) => (
@@ -126,7 +134,7 @@ export function ExperienceSection({
                   <p className="text-[17px] leading-[1.35]">{e.degree}</p>
                   <p className="text-fg2 mt-1 text-[14px]">{e.institution}</p>
                   <p className="text-fg3 mt-2 text-xs">
-                    {e.startYear} – {e.endYear ?? "Present"}
+                    {e.startYear} – {e.endYear ?? present}
                   </p>
                 </li>
               ))}

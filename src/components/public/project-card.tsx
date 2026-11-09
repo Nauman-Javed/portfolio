@@ -2,13 +2,25 @@ import { RiArrowRightUpLine } from "react-icons/ri";
 import Link from "next/link";
 import { SafeImage } from "@/components/safe-image";
 import type { Project } from "@/data/types";
+import { localePath, type Locale } from "@/i18n/config";
+import { getT } from "@/i18n/server";
 import { ctaClass } from "./ui";
 
-function ProjectActions({ project }: { project: Project }) {
+function ProjectActions({
+  project,
+  locale,
+}: {
+  project: Project;
+  locale: Locale;
+}) {
+  const t = getT(locale);
   return (
     <>
-      <Link href={`/projects/${project.slug}`} className={ctaClass("primary")}>
-        View project
+      <Link
+        href={localePath(locale, `/projects/${project.slug}`)}
+        className={ctaClass("primary")}
+      >
+        {t("projects.viewProject")}
         <span className="sr-only"> {project.title}</span>
       </Link>
       {project.liveUrl && (
@@ -18,11 +30,13 @@ function ProjectActions({ project }: { project: Project }) {
           rel="noopener noreferrer"
           className={ctaClass("secondary")}
         >
-          Live site{" "}
-          <RiArrowRightUpLine aria-hidden className="inline-block size-4" />
+          {t("projects.liveSite")}{" "}
+          <RiArrowRightUpLine
+            aria-hidden
+            className="inline-block size-4 rtl:-scale-x-100"
+          />
           <span className="sr-only">
-            {" "}
-            for {project.title} (opens in a new tab)
+            {t("projects.liveSiteFor", { title: project.title })}
           </span>
         </a>
       )}
@@ -33,16 +47,19 @@ function ProjectActions({ project }: { project: Project }) {
 export function ProjectCard({
   project,
   priority = false,
+  locale,
 }: {
   project: Project;
   priority?: boolean;
+  locale: Locale;
 }) {
+  const t = getT(locale);
   return (
     <article className="group lift border-hairline bg-surface overflow-hidden rounded-lg border">
       <div className="bg-band border-hairline relative h-60 overflow-hidden border-b">
         <SafeImage
           src={project.coverImageUrl}
-          alt={`${project.title} screenshot`}
+          alt={t("projects.screenshot", { title: project.title })}
           priority={priority}
           sizes="(min-width: 1000px) 600px, 100vw"
           className="object-cover object-top transition duration-300 group-focus-within:scale-105 group-focus-within:blur-sm group-hover:scale-105 group-hover:blur-sm"
@@ -50,7 +67,7 @@ export function ProjectCard({
         {/* Shown on hover or keyboard focus. Devices that can't hover get the
             same buttons in the card body instead (below). */}
         <div className="bg-canvas/45 pointer-events-none absolute inset-0 flex items-center justify-center gap-3 opacity-0 transition-opacity duration-300 group-focus-within:pointer-events-auto group-focus-within:opacity-100 group-hover:pointer-events-auto group-hover:opacity-100 [@media(hover:none)]:hidden">
-          <ProjectActions project={project} />
+          <ProjectActions project={project} locale={locale} />
         </div>
       </div>
       <div className="p-[22px]">
@@ -71,7 +88,7 @@ export function ProjectCard({
           </ul>
         )}
         <div className="mt-5 flex flex-wrap gap-3 [@media(hover:hover)]:hidden">
-          <ProjectActions project={project} />
+          <ProjectActions project={project} locale={locale} />
         </div>
       </div>
     </article>

@@ -16,7 +16,7 @@ export function SkillPill({
   return (
     <span
       className={cn(
-        "bg-raised border-hairline inline-flex h-[30px] items-center gap-2 rounded-full border pr-3 pl-3 text-[13px] leading-none whitespace-nowrap has-[img]:pl-1.5",
+        "bg-raised border-hairline inline-flex h-[30px] items-center gap-2 rounded-full border ps-3 pe-3 text-[13px] leading-none whitespace-nowrap has-[img]:ps-1.5",
         className,
       )}
     >

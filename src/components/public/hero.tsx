@@ -6,6 +6,8 @@ import {
   RiArrowRightLine,
 } from "react-icons/ri";
 import type { Profile } from "@/data/types";
+import { localePath, type Locale } from "@/i18n/config";
+import { getT } from "@/i18n/server";
 import { CodeEditor } from "./code-editor";
 import { RotatingText } from "./rotating-text";
 import { Container, ctaClass } from "./ui";
@@ -13,7 +15,19 @@ import { Container, ctaClass } from "./ui";
 const delay = (seconds: number) =>
   ({ "--d": `${seconds}s` }) as React.CSSProperties;
 
-export function Hero({ profile, years }: { profile: Profile; years: number }) {
+export function Hero({
+  profile,
+  codeProfile,
+  years,
+  locale,
+}: {
+  profile: Profile;
+  /** English values for the code window, which always stays English and left-to-right. */
+  codeProfile: Profile;
+  years: number;
+  locale: Locale;
+}) {
+  const t = getT(locale);
   const lead = profile.heroLead.trim();
   const phrases = profile.heroPhrases.map((p) => p.trim()).filter(Boolean);
 
@@ -62,9 +76,15 @@ export function Hero({ profile, years }: { profile: Profile; years: number }) {
             className="anim-rise mt-9 flex flex-wrap gap-3"
             style={delay(0.55)}
           >
-            <Link href="/projects" className={ctaClass("primary")}>
-              View my work{" "}
-              <RiArrowRightLine aria-hidden className="inline-block size-4" />
+            <Link
+              href={localePath(locale, "/projects")}
+              className={ctaClass("primary")}
+            >
+              {t("hero.viewWork")}{" "}
+              <RiArrowRightLine
+                aria-hidden
+                className="inline-block size-4 rtl:-scale-x-100"
+              />
             </Link>
             {profile.resumeUrl && (
               <a
@@ -73,54 +93,54 @@ export function Hero({ profile, years }: { profile: Profile; years: number }) {
                 rel="noopener noreferrer"
                 className={ctaClass("secondary")}
               >
-                My Resume{" "}
+                {t("common.myResume")}{" "}
                 <RiArrowRightUpLine
                   aria-hidden
-                  className="inline-block size-4"
+                  className="inline-block size-4 rtl:-scale-x-100"
                 />
-                <span className="sr-only"> (opens in a new tab)</span>
+                <span className="sr-only">{t("common.opensInNewTab")}</span>
               </a>
             )}
           </div>
         </div>
 
-        <div className="relative pb-10 min-[1100px]:pr-6 min-[1100px]:pb-12">
+        <div className="relative pb-10 min-[1100px]:pe-6 min-[1100px]:pb-12">
           <div className="anim-rise" style={delay(0.4)}>
             <CodeEditor
-              name={profile.name}
-              role={profile.headline}
-              location={profile.location}
+              name={codeProfile.name}
+              role={codeProfile.headline}
+              location={codeProfile.location}
               years={years}
-              phone={profile.phone}
+              phone={codeProfile.phone}
               email={profile.email}
-              available={!!profile.availability}
+              available={!!codeProfile.availability}
             />
           </div>
 
           <div
             aria-hidden="true"
-            className="anim-bob border-hairline bg-surface shadow-float absolute top-3 right-3 flex items-center gap-3 rounded-lg border px-4 py-3 min-[1100px]:-right-4 sm:-top-5 sm:-right-2"
+            className="anim-bob border-hairline bg-surface shadow-float absolute end-3 top-3 flex items-center gap-3 rounded-lg border px-4 py-3 min-[1100px]:-end-4 sm:-end-2 sm:-top-5"
           >
             <span className="bg-tealsoft text-teal flex size-9 items-center justify-center rounded-md">
               <RiShieldCheckLine size={18} />
             </span>
             <span>
-              <span className="block text-[13px]">Test suite</span>
+              <span className="block text-[13px]">{t("hero.testSuite")}</span>
               <span className="text-tealsoft-fg block text-[11px]">
-                ✓ All checks passing
+                {t("hero.checksPassing")}
               </span>
             </span>
           </div>
 
           <div
             aria-hidden="true"
-            className="anim-bob-2 border-hairline bg-surface shadow-float absolute bottom-0 left-3 w-[min(260px,calc(100%-24px))] rounded-lg border p-4 min-[1100px]:-left-6 sm:-left-4"
+            className="anim-bob-2 border-hairline bg-surface shadow-float absolute start-3 bottom-0 w-[min(260px,calc(100%-24px))] rounded-lg border p-4 min-[1100px]:-start-6 sm:-start-4"
           >
             <div className="flex items-center gap-3">
               <span className="bg-tealsoft text-teal flex size-9 items-center justify-center rounded-md">
                 <RiRocketLine size={18} />
               </span>
-              <span className="text-[13px]">Deploying to production</span>
+              <span className="text-[13px]">{t("hero.deploying")}</span>
             </div>
             <div className="bg-track mt-3 h-1.5 overflow-hidden rounded-full">
               <div className="anim-deploy from-teal to-teal-light h-full rounded-full bg-linear-to-r" />

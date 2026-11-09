@@ -1,0 +1,98 @@
+import type { Messages } from "./types";
+
+const ar: Messages = {
+  common: {
+    skipToContent: "تخطَّ إلى المحتوى",
+    opensInNewTab: " (يفتح في علامة تبويب جديدة)",
+    myResume: "سيرتي الذاتية",
+    resume: "السيرة الذاتية",
+    present: "حتى الآن",
+    backHome: "العودة إلى الرئيسية",
+    backToTop: "العودة إلى الأعلى",
+    toggleTheme: "التبديل بين المظهر الفاتح والداكن",
+    language: "اللغة",
+    loading: "جارٍ التحميل…",
+    homeLabel: "{{name}}، الرئيسية",
+  },
+  nav: {
+    about: "نبذة",
+    skills: "المهارات",
+    experience: "الخبرة",
+    projects: "المشاريع",
+    main: "الرئيسية",
+    openMenu: "فتح القائمة",
+    closeMenu: "إغلاق القائمة",
+  },
+  home: {
+    comingSoon: "قريبًا",
+    beingSetUp: "يجري إعداد هذا الموقع الشخصي.",
+  },
+  hero: {
+    viewWork: "شاهد أعمالي",
+    testSuite: "مجموعة الاختبارات",
+    checksPassing: "✓ نجحت جميع الفحوصات",
+    deploying: "النشر على بيئة الإنتاج",
+  },
+  about: {
+    title: "نبذة عني",
+    years: "سنوات من الخبرة",
+    projects: "مشاريع منجزة",
+    technologies: "التقنيات",
+  },
+  skills: {
+    title: "المهارات حسب التقنية",
+    technologies: "التقنيات",
+    count_zero: "لا مهارات",
+    count_one: "مهارة واحدة",
+    count_two: "مهارتان",
+    count_few: "{{count}} مهارات",
+    count_many: "{{count}} مهارة",
+    count_other: "{{count}} مهارة",
+  },
+  experience: {
+    title: "أين عملت",
+    education: "التعليم",
+    types: {
+      "Full-time": "دوام كامل",
+      "Part-time": "دوام جزئي",
+      Contract: "عقد",
+      Freelance: "عمل حر",
+      Internship: "تدريب",
+    },
+  },
+  projects: {
+    selectedWork: "أعمال مختارة",
+    allProjects: "جميع المشاريع",
+    pageDescription: "مجموعة مختارة من تطبيقات الويب التي بنيتها.",
+    none: "لا توجد مشاريع لعرضها بعد.",
+    viewProject: "عرض المشروع",
+    liveSite: "الموقع المباشر",
+    liveSiteFor: " الخاص بـ {{title}} (يفتح في علامة تبويب جديدة)",
+    screenshot: "لقطة شاشة لـ {{title}}",
+    overview: "نظرة عامة",
+    builtWith: "بُني باستخدام",
+    sourceCode: "الشيفرة المصدرية",
+    gallery: "المعرض",
+    viewProjects: "عرض المشاريع",
+  },
+  contact: {
+    title: "لنبنِ شيئًا معًا",
+    text: "لديك وظيفة أو مشروع في بالك؟ أرسل لي رسالة وسأرد عليك.",
+  },
+  footer: {
+    madeWith: "صُنع بكل",
+    love: " حب",
+    inCountry: "في باكستان",
+  },
+  errors: {
+    label: "خطأ",
+    title: "حدث خطأ ما",
+    text: "تعذّر تحميل هذه الصفحة. حاول مرة أخرى أو عُد إلى الرئيسية.",
+    reference: "المرجع: {{digest}}",
+    tryAgain: "حاول مرة أخرى",
+    notFoundTitle: "الصفحة غير موجودة",
+    notFoundText: "الصفحة التي تبحث عنها غير موجودة أو تم نقلها.",
+  },
+};
+
+export default ar;

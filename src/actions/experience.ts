@@ -23,6 +23,10 @@ function toData(v: ExperienceInput) {
     startDate: toUtcDate(v.startDate),
     endDate: v.endDate ? toUtcDate(v.endDate) : null,
     bullets: parseList(v.bullets, /\r?\n/),
+    company_ar: emptyToNull(v.company_ar),
+    role_ar: emptyToNull(v.role_ar),
+    location_ar: emptyToNull(v.location_ar),
+    bullets_ar: parseList(v.bullets_ar, /\r?\n/),
   };
 }
 

@@ -27,7 +27,7 @@ export function FormDialog({
     <>
       {trigger(() => setOpen(true))}
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-lg">
+        <DialogContent className="max-h-[90vh] overflow-y-auto sm:max-w-3xl">
           <DialogHeader>
             <DialogTitle>{title}</DialogTitle>
             {description && (

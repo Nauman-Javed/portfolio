@@ -8,40 +8,51 @@ datasource db {
 }
 
 model Profile {
-  id            String   @id @default("profile")
-  name          String
-  headline      String
-  summary       String
-  about         String
-  location      String?
-  email         String
-  phone         String?
-  imageUrl      String?
-  imagePublicId String?
-  resumeUrl     String?
-  availability  String?
-  heroLead      String   @default("I engineer")
-  heroPhrases   String[] @default(["fast interfaces", "accessible UIs", "type-safe apps", "things that ship"])
-  updatedAt     DateTime @updatedAt
+  id              String   @id @default("profile")
+  name            String
+  headline        String
+  summary         String
+  about           String
+  name_ar         String?
+  headline_ar     String?
+  summary_ar      String?
+  about_ar        String?
+  location_ar     String?
+  availability_ar String?
+  heroLead_ar     String?
+  heroPhrases_ar  String[] @default([])
+  location        String?
+  email           String
+  phone           String?
+  imageUrl        String?
+  imagePublicId   String?
+  resumeUrl       String?
+  availability    String?
+  heroLead        String   @default("I engineer")
+  heroPhrases     String[] @default(["fast interfaces", "accessible UIs", "type-safe apps", "things that ship"])
+  updatedAt       DateTime @updatedAt
 }
 
 model Project {
-  id               String         @id @default(cuid())
-  slug             String         @unique
-  title            String
-  shortDescription String
-  description      String
-  techStack        String[]
-  coverImageUrl    String
-  coverImageId     String
-  gallery          ProjectImage[]
-  liveUrl          String?
-  githubUrl        String?
-  featured         Boolean        @default(false)
-  published        Boolean        @default(true)
-  order            Int            @default(0)
-  createdAt        DateTime       @default(now())
-  updatedAt        DateTime       @updatedAt
+  id                  String         @id @default(cuid())
+  slug                String         @unique
+  title               String
+  shortDescription    String
+  description         String
+  title_ar            String?
+  shortDescription_ar String?
+  description_ar      String?
+  techStack           String[]
+  coverImageUrl       String
+  coverImageId        String
+  gallery             ProjectImage[]
+  liveUrl             String?
+  githubUrl           String?
+  featured            Boolean        @default(false)
+  published           Boolean        @default(true)
+  order               Int            @default(0)
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
 
   @@index([published, order])
 }
@@ -62,6 +73,10 @@ model Experience {
   company        String
   role           String
   employmentType String
+  company_ar     String?
+  role_ar        String?
+  location_ar    String?
+  bullets_ar     String[]  @default([])
   location       String?
   startDate      DateTime
   endDate        DateTime?
@@ -73,6 +88,7 @@ model Skill {
   id           String  @id @default(cuid())
   name         String
   category     String
+  category_ar  String?
   iconUrl      String?
   iconPublicId String?
   order        Int     @default(0)
@@ -81,12 +97,14 @@ model Skill {
 }
 
 model Education {
-  id          String @id @default(cuid())
-  institution String
-  degree      String
-  startYear   Int
-  endYear     Int?
-  order       Int    @default(0)
+  id             String  @id @default(cuid())
+  institution    String
+  degree         String
+  institution_ar String?
+  degree_ar      String?
+  startYear      Int
+  endYear        Int?
+  order          Int     @default(0)
 }
 
 model Certification {

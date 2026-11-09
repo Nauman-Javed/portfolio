@@ -1,5 +1,6 @@
 import type { MetadataRoute } from "next";
 import { getProfile, getPublishedProjects } from "@/data/queries";
+import { LOCALES, localePath } from "@/i18n/config";
 import { SITE_URL } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -14,24 +15,29 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     .filter((d): d is Date => !!d)
     .sort((a, b) => b.getTime() - a.getTime())[0];
 
+  const entry = (
+    path: string,
+    changeFrequency: "monthly",
+    priority: number,
+    lastModified?: Date,
+  ) =>
+    LOCALES.map((locale) => ({
+      url: SITE_URL + localePath(locale, path),
+      lastModified,
+      changeFrequency,
+      priority,
+      alternates: {
+        languages: Object.fromEntries(
+          LOCALES.map((l) => [l, SITE_URL + localePath(l, path)]),
+        ),
+      },
+    }));
+
   return [
-    {
-      url: SITE_URL,
-      lastModified: latest,
-      changeFrequency: "monthly",
-      priority: 1,
-    },
-    {
-      url: `${SITE_URL}/projects`,
-      lastModified: latest,
-      changeFrequency: "monthly",
-      priority: 0.8,
-    },
-    ...projects.map((p) => ({
-      url: `${SITE_URL}/projects/${p.slug}`,
-      lastModified: p.updatedAt,
-      changeFrequency: "monthly" as const,
-      priority: 0.7,
-    })),
+    ...entry("/", "monthly", 1, latest),
+    ...entry("/projects", "monthly", 0.8, latest),
+    ...projects.flatMap((p) =>
+      entry(`/projects/${p.slug}`, "monthly", 0.7, p.updatedAt),
+    ),
   ];
 }

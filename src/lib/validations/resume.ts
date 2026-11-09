@@ -23,6 +23,10 @@ export const experienceSchema = z
     startDate: dateString,
     endDate: optionalDate,
     bullets: optional(4000),
+    company_ar: optional(150),
+    role_ar: optional(150),
+    location_ar: optional(120),
+    bullets_ar: optional(4000),
   })
   .refine((v) => v.endDate === "" || v.endDate >= v.startDate, {
     message: "End date can't be before the start date",
@@ -34,6 +38,7 @@ export type ExperienceInput = z.infer<typeof experienceSchema>;
 export const skillSchema = z.object({
   name: required("Name", 60),
   category: required("Category", 60),
+  category_ar: optional(60),
   iconUrl: imageSource,
   iconPublicId: optional(300),
 });
@@ -49,6 +54,8 @@ export const educationSchema = z
   .object({
     institution: required("Institution", 200),
     degree: required("Degree", 200),
+    institution_ar: optional(200),
+    degree_ar: optional(200),
     startYear: year,
     endYear: z
       .string()

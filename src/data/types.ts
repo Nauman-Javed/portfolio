@@ -47,6 +47,7 @@ export type Skill = {
   id: string;
   name: string;
   category: string;
+  category_ar?: string | null;
   iconUrl: string | null;
   order: number;
 };

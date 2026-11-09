@@ -4,6 +4,7 @@ import { z } from "zod";
 import { fail, invalid, isNotFound, ok } from "@/lib/action-result";
 import type { ActionResult } from "@/lib/action-result";
 import { requireAdmin } from "@/lib/auth";
+import { emptyToNull } from "@/lib/validations/common";
 import { db } from "@/lib/db";
 import { setOrders } from "@/lib/reorder";
 import { invalidate, planReorder } from "@/lib/mutations";
@@ -17,6 +18,8 @@ function toData(v: EducationInput) {
   return {
     institution: v.institution,
     degree: v.degree,
+    institution_ar: emptyToNull(v.institution_ar),
+    degree_ar: emptyToNull(v.degree_ar),
     startYear: Number(v.startYear),
     endYear: v.endYear ? Number(v.endYear) : null,
   };

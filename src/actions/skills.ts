@@ -19,6 +19,7 @@ function toData(v: SkillInput) {
   return {
     name: v.name,
     category: v.category,
+    category_ar: emptyToNull(v.category_ar),
     iconUrl: emptyToNull(v.iconUrl),
     iconPublicId: emptyToNull(v.iconPublicId),
   };

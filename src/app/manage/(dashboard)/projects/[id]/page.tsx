@@ -17,7 +17,7 @@ export default async function EditProjectPage({
   return (
     <>
       <PageHeader title={project.title} description="Edit project" />
-      <div className="max-w-3xl">
+      <div className="max-w-5xl">
         <ProjectForm
           projectId={project.id}
           initial={{
@@ -25,6 +25,9 @@ export default async function EditProjectPage({
             title: project.title,
             shortDescription: project.shortDescription,
             description: project.description,
+            title_ar: project.title_ar ?? "",
+            shortDescription_ar: project.shortDescription_ar ?? "",
+            description_ar: project.description_ar ?? "",
             techStack: project.techStack.join(", "),
             coverImageUrl: project.coverImageUrl,
             coverImageId: project.coverImageId,

@@ -88,6 +88,7 @@ export function CodeEditor({
   return (
     <div
       aria-hidden="true"
+      dir="ltr"
       className="dark border-hairline bg-codebg shadow-float overflow-hidden rounded-[10px] border"
     >
       <div className="bg-topbar border-hairline flex items-center gap-4 border-b px-4">

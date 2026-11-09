@@ -1,32 +1,44 @@
-import { RiArrowRightUpLine } from "react-icons/ri";
+import { RiArrowLeftLine, RiArrowRightUpLine } from "react-icons/ri";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { SafeImage } from "@/components/safe-image";
 import { Container, ctaClass } from "@/components/public/ui";
 import { getProjectBySlug, getPublishedProjects } from "@/data/queries";
+import { LOCALES, hasLocale, localePath } from "@/i18n/config";
+import { getT } from "@/i18n/server";
+import { PROJECT_FIELDS, localize } from "@/i18n/localize";
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ locale: string; slug: string }> };
 
 export async function generateStaticParams() {
   return (await getPublishedProjects()).map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const project = await getProjectBySlug(slug);
-  if (!project) return {};
+  const { locale, slug } = await params;
+  const raw = await getProjectBySlug(slug);
+  if (!raw || !hasLocale(locale)) return {};
+  const project = localize(raw, locale, PROJECT_FIELDS);
   return {
     title: project.title,
     description: project.shortDescription,
-    alternates: { canonical: `/projects/${project.slug}` },
+    alternates: {
+      canonical: localePath(locale, `/projects/${project.slug}`),
+      languages: Object.fromEntries(
+        LOCALES.map((l) => [l, localePath(l, `/projects/${project.slug}`)]),
+      ),
+    },
   };
 }
 
 export default async function ProjectPage({ params }: Props) {
-  const { slug } = await params;
-  const project = await getProjectBySlug(slug);
-  if (!project) notFound();
+  const { locale, slug } = await params;
+  if (!hasLocale(locale)) notFound();
+  const t = getT(locale);
+  const raw = await getProjectBySlug(slug);
+  if (!raw) notFound();
+  const project = localize(raw, locale, PROJECT_FIELDS);
 
   const hasTech = project.techStack.length > 0;
   const hasLinks = !!(project.liveUrl || project.githubUrl);
@@ -35,10 +47,14 @@ export default async function ProjectPage({ params }: Props) {
     <Container className="max-w-[960px] pt-12 sm:pt-20">
       <article>
         <Link
-          href="/projects"
-          className="text-fg2 hover:text-fg mb-8 inline-flex min-h-11 items-center text-[13px] transition-colors duration-150"
+          href={localePath(locale, "/projects")}
+          className="text-fg2 hover:text-fg mb-8 inline-flex min-h-11 items-center gap-1.5 text-[13px] transition-colors duration-150"
         >
-          ← All projects
+          <RiArrowLeftLine
+            aria-hidden
+            className="inline-block size-4 rtl:-scale-x-100"
+          />
+          {t("projects.allProjects")}
         </Link>
         <h1 className="text-[clamp(32px,5vw,56px)] leading-[1.1] tracking-[-0.02em]">
           {project.title}
@@ -50,7 +66,7 @@ export default async function ProjectPage({ params }: Props) {
         <div className="border-hairline bg-band relative mt-10 aspect-16/10 overflow-hidden rounded-[10px] border">
           <SafeImage
             src={project.coverImageUrl}
-            alt={`${project.title} screenshot`}
+            alt={t("projects.screenshot", { title: project.title })}
             priority
             sizes="(min-width: 960px) 912px, 100vw"
             className="object-contain"
@@ -62,7 +78,7 @@ export default async function ProjectPage({ params }: Props) {
         >
           <div>
             <h2 className="text-fg2 mb-3 text-[11px] tracking-[0.14em] uppercase">
-              Overview
+              {t("projects.overview")}
             </h2>
             <p className="text-fg2 text-[16px] leading-[1.7]">
               {project.description}
@@ -73,7 +89,7 @@ export default async function ProjectPage({ params }: Props) {
               {hasTech && (
                 <>
                   <h2 className="text-fg2 mb-3 text-[11px] tracking-[0.14em] uppercase">
-                    Built with
+                    {t("projects.builtWith")}
                   </h2>
                   <ul className="flex flex-wrap gap-1.5">
                     {project.techStack.map((t) => (
@@ -96,12 +112,14 @@ export default async function ProjectPage({ params }: Props) {
                       rel="noopener noreferrer"
                       className={ctaClass("primary")}
                     >
-                      Live site{" "}
+                      {t("projects.liveSite")}{" "}
                       <RiArrowRightUpLine
                         aria-hidden
-                        className="inline-block size-4"
+                        className="inline-block size-4 rtl:-scale-x-100"
                       />
-                      <span className="sr-only"> (opens in a new tab)</span>
+                      <span className="sr-only">
+                        {t("common.opensInNewTab")}
+                      </span>
                     </a>
                   )}
                   {project.githubUrl && (
@@ -111,12 +129,14 @@ export default async function ProjectPage({ params }: Props) {
                       rel="noopener noreferrer"
                       className={ctaClass("secondary")}
                     >
-                      Source code{" "}
+                      {t("projects.sourceCode")}{" "}
                       <RiArrowRightUpLine
                         aria-hidden
-                        className="inline-block size-4"
+                        className="inline-block size-4 rtl:-scale-x-100"
                       />
-                      <span className="sr-only"> (opens in a new tab)</span>
+                      <span className="sr-only">
+                        {t("common.opensInNewTab")}
+                      </span>
                     </a>
                   )}
                 </div>
@@ -131,7 +151,7 @@ export default async function ProjectPage({ params }: Props) {
               id="gallery-heading"
               className="text-fg2 mb-4 text-[11px] tracking-[0.14em] uppercase"
             >
-              Gallery
+              {t("projects.gallery")}
             </h2>
             <ul className="grid gap-5 sm:grid-cols-2">
               {project.gallery.map((image) => (
@@ -141,7 +161,7 @@ export default async function ProjectPage({ params }: Props) {
                 >
                   <SafeImage
                     src={image.url}
-                    alt={`${project.title} screenshot`}
+                    alt={t("projects.screenshot", { title: project.title })}
                     sizes="(min-width: 640px) 448px, 100vw"
                     className="object-contain"
                   />

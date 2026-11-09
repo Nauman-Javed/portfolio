@@ -32,5 +32,29 @@ export function Field({
   );
 }
 
+/** Two columns: English on the left, Arabic on the right. */
+export function Bilingual({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="grid items-start gap-x-6 gap-y-4 md:grid-cols-2">
+      {children}
+    </div>
+  );
+}
+
+/** Column titles shown once at the top of a bilingual form. */
+export function BilingualHeader() {
+  return (
+    <div className="text-muted-foreground border-border grid gap-x-6 border-b pb-2 font-mono text-xs tracking-widest uppercase md:grid-cols-2">
+      <span>English</span>
+      <span lang="ar" dir="rtl" className="hidden text-right md:block">
+        العربية
+      </span>
+    </div>
+  );
+}
+
+/** Props that make an input or textarea behave as right-to-left Arabic text. */
+export const arabicInput = { dir: "rtl", lang: "ar" } as const;
+
 export const selectClass =
   "border-input dark:bg-input/30 focus-visible:border-ring focus-visible:ring-ring/50 h-8 w-full rounded-lg border bg-transparent px-2.5 text-sm outline-none focus-visible:ring-3";

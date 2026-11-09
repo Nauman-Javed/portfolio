@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input";
 import { educationSchema } from "@/lib/validations/resume";
 import type { EducationInput } from "@/lib/validations/resume";
 import { DeleteButton } from "./delete-button";
-import { Field } from "./field";
+import { arabicInput, Bilingual, BilingualHeader, Field } from "./field";
 import { FormDialog } from "./form-dialog";
 import { FormFooter } from "./form-footer";
 import { ItemRow } from "./item-row";
@@ -28,6 +28,8 @@ type EducationItem = {
   degree: string;
   startYear: number;
   endYear: number | null;
+  institution_ar: string | null;
+  degree_ar: string | null;
 };
 
 function EducationForm({
@@ -50,6 +52,8 @@ function EducationForm({
       degree: initial?.degree ?? "",
       startYear: initial ? String(initial.startYear) : "",
       endYear: initial?.endYear ? String(initial.endYear) : "",
+      institution_ar: initial?.institution_ar ?? "",
+      degree_ar: initial?.degree_ar ?? "",
     },
   });
 
@@ -67,16 +71,37 @@ function EducationForm({
 
   return (
     <form onSubmit={onSubmit} className="space-y-4" noValidate>
-      <Field label="Degree" htmlFor="degree" error={errors.degree?.message}>
-        <Input id="degree" {...register("degree")} />
-      </Field>
-      <Field
-        label="Institution"
-        htmlFor="institution"
-        error={errors.institution?.message}
-      >
-        <Input id="institution" {...register("institution")} />
-      </Field>
+      <BilingualHeader />
+      <Bilingual>
+        <Field label="Degree" htmlFor="degree" error={errors.degree?.message}>
+          <Input id="degree" {...register("degree")} />
+        </Field>
+        <Field
+          label="Degree (Arabic)"
+          htmlFor="degree_ar"
+          error={errors.degree_ar?.message}
+        >
+          <Input id="degree_ar" {...arabicInput} {...register("degree_ar")} />
+        </Field>
+        <Field
+          label="Institution"
+          htmlFor="institution"
+          error={errors.institution?.message}
+        >
+          <Input id="institution" {...register("institution")} />
+        </Field>
+        <Field
+          label="Institution (Arabic)"
+          htmlFor="institution_ar"
+          error={errors.institution_ar?.message}
+        >
+          <Input
+            id="institution_ar"
+            {...arabicInput}
+            {...register("institution_ar")}
+          />
+        </Field>
+      </Bilingual>
       <div className="grid gap-4 sm:grid-cols-2">
         <Field
           label="Start year"

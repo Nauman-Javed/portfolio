@@ -26,6 +26,14 @@ export async function updateProfile(input: unknown): Promise<ActionResult> {
     availability: emptyToNull(v.availability),
     heroLead: v.heroLead,
     heroPhrases: parseList(v.heroPhrases, /\r?\n/),
+    name_ar: emptyToNull(v.name_ar),
+    headline_ar: emptyToNull(v.headline_ar),
+    summary_ar: emptyToNull(v.summary_ar),
+    about_ar: emptyToNull(v.about_ar),
+    location_ar: emptyToNull(v.location_ar),
+    availability_ar: emptyToNull(v.availability_ar),
+    heroLead_ar: emptyToNull(v.heroLead_ar),
+    heroPhrases_ar: parseList(v.heroPhrases_ar, /\r?\n/),
   };
 
   await db.profile.upsert({

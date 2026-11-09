@@ -457,3 +457,37 @@
 .page-fade > .page-skeleton {
   animation-delay: 0.2s;
 }
+
+/* ------------------------------------------------------------- languages */
+
+/* Scripts Inter doesn't cover get their own font; others fall back to system. */
+/* The public site is set in JetBrains Mono in English (the admin keeps Inter). */
+html[data-site="public"][lang="en"] {
+  font-family:
+    var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
+}
+html[lang="ar"] {
+  font-family:
+    var(--font-arabic),
+    var(--font-inter),
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+/* The page glow sits top-right in LTR; mirror it for RTL. */
+html[dir="rtl"] body {
+  background-image: radial-gradient(
+    ellipse at 30% 0%,
+    var(--ds-glow),
+    var(--ds-canvas) 55%
+  );
+}
+
+/* Uppercase micro-labels with letter-spacing break Arabic's joined letters. */
+html[lang="ar"] * {
+  letter-spacing: 0 !important;
+}

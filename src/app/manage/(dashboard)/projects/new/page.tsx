@@ -8,7 +8,7 @@ export default async function NewProjectPage() {
   return (
     <>
       <PageHeader title="New project" />
-      <div className="max-w-3xl">
+      <div className="max-w-5xl">
         <ProjectForm />
       </div>
     </>

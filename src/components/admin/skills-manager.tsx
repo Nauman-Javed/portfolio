@@ -15,7 +15,7 @@ import { groupSkills } from "@/data/site-content";
 import { skillSchema } from "@/lib/validations/resume";
 import type { SkillInput } from "@/lib/validations/resume";
 import { DeleteButton } from "./delete-button";
-import { Field } from "./field";
+import { arabicInput, Bilingual, BilingualHeader, Field } from "./field";
 import { FormDialog } from "./form-dialog";
 import { FormFooter } from "./form-footer";
 import { ImageUploader } from "./image-uploader";
@@ -30,6 +30,7 @@ type SkillItem = {
   id: string;
   name: string;
   category: string;
+  category_ar: string | null;
   iconUrl: string | null;
   iconPublicId: string | null;
   order: number;
@@ -58,6 +59,7 @@ function SkillForm({
     defaultValues: {
       name: initial?.name ?? "",
       category: initial?.category ?? "",
+      category_ar: initial?.category_ar ?? "",
       iconUrl: initial?.iconUrl ?? "",
       iconPublicId: initial?.iconPublicId ?? "",
     },
@@ -85,23 +87,38 @@ function SkillForm({
       <Field label="Name" htmlFor="name" error={errors.name?.message}>
         <Input id="name" {...register("name")} />
       </Field>
-      <Field
-        label="Category"
-        htmlFor="category"
-        error={errors.category?.message}
-        hint="Pick an existing category or type a new one."
-      >
-        <Input
-          id="category"
-          list="skill-categories"
-          {...register("category")}
-        />
-        <datalist id="skill-categories">
-          {categories.map((c) => (
-            <option key={c} value={c} />
-          ))}
-        </datalist>
-      </Field>
+      <BilingualHeader />
+      <Bilingual>
+        <Field
+          label="Category"
+          htmlFor="category"
+          error={errors.category?.message}
+          hint="Pick an existing category or type a new one."
+        >
+          <Input
+            id="category"
+            list="skill-categories"
+            {...register("category")}
+          />
+          <datalist id="skill-categories">
+            {categories.map((c) => (
+              <option key={c} value={c} />
+            ))}
+          </datalist>
+        </Field>
+        <Field
+          label="Category (Arabic)"
+          htmlFor="category_ar"
+          error={errors.category_ar?.message}
+          hint="Use the same Arabic name for every skill in this category."
+        >
+          <Input
+            id="category_ar"
+            {...arabicInput}
+            {...register("category_ar")}
+          />
+        </Field>
+      </Bilingual>
       <Field
         label="Icon (optional)"
         htmlFor="icon"

@@ -1,4 +1,6 @@
 import type { Profile } from "@/data/types";
+import type { Locale } from "@/i18n/config";
+import { getT } from "@/i18n/server";
 import { Container, SectionHeader } from "./ui";
 
 type Stats = { years: number; projects: number; skills: number };
@@ -6,10 +8,13 @@ type Stats = { years: number; projects: number; skills: number };
 export function AboutSection({
   profile,
   stats,
+  locale,
 }: {
   profile: Profile;
   stats: Stats;
+  locale: Locale;
 }) {
+  const t = getT(locale);
   const paragraphs = profile.about
     .split(/\n{2,}/)
     .map((p) => p.trim())
@@ -18,13 +23,16 @@ export function AboutSection({
   const statItems = [
     stats.years > 0 && {
       value: `${stats.years}+`,
-      label: "Years of experience",
+      label: t("about.years"),
     },
     stats.projects > 0 && {
       value: String(stats.projects),
-      label: "Projects shipped",
+      label: t("about.projects"),
     },
-    stats.skills > 0 && { value: String(stats.skills), label: "Technologies" },
+    stats.skills > 0 && {
+      value: String(stats.skills),
+      label: t("about.technologies"),
+    },
   ].filter(Boolean) as { value: string; label: string }[];
 
   if (paragraphs.length === 0 && statItems.length === 0) return null;
@@ -32,7 +40,7 @@ export function AboutSection({
   return (
     <section id="about" className="scroll-mt-16 pt-24 sm:pt-28">
       <Container>
-        <SectionHeader title="About me" />
+        <SectionHeader title={t("about.title")} />
         <div
           className={`grid items-start gap-10 ${
             statItems.length > 0 && paragraphs.length > 0

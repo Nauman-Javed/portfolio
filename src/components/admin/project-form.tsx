@@ -11,7 +11,7 @@ import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
 import { projectSchema } from "@/lib/validations/project";
 import type { ProjectInput } from "@/lib/validations/project";
-import { Field } from "./field";
+import { arabicInput, Bilingual, BilingualHeader, Field } from "./field";
 import { FormFooter } from "./form-footer";
 import { GalleryEditor } from "./gallery-editor";
 import { ImageUploader } from "./image-uploader";
@@ -23,6 +23,9 @@ const EMPTY: ProjectInput = {
   title: "",
   shortDescription: "",
   description: "",
+  title_ar: "",
+  shortDescription_ar: "",
+  description_ar: "",
   techStack: "",
   coverImageUrl: "",
   coverImageId: "",
@@ -84,7 +87,8 @@ export function ProjectForm({
 
   return (
     <form onSubmit={onSubmit} className="space-y-5" noValidate>
-      <div className="grid gap-5 sm:grid-cols-2">
+      <BilingualHeader />
+      <Bilingual>
         <Field label="Title" htmlFor="title" error={errors.title?.message}>
           <Input
             id="title"
@@ -99,6 +103,58 @@ export function ProjectForm({
           />
         </Field>
         <Field
+          label="Title (Arabic)"
+          htmlFor="title_ar"
+          error={errors.title_ar?.message}
+        >
+          <Input id="title_ar" {...arabicInput} {...register("title_ar")} />
+        </Field>
+        <Field
+          label="Short description"
+          htmlFor="shortDescription"
+          error={errors.shortDescription?.message}
+        >
+          <Textarea
+            id="shortDescription"
+            rows={3}
+            {...register("shortDescription")}
+          />
+        </Field>
+        <Field
+          label="Short description (Arabic)"
+          htmlFor="shortDescription_ar"
+          error={errors.shortDescription_ar?.message}
+        >
+          <Textarea
+            id="shortDescription_ar"
+            rows={3}
+            {...arabicInput}
+            {...register("shortDescription_ar")}
+          />
+        </Field>
+        <Field
+          label="Description"
+          htmlFor="description"
+          error={errors.description?.message}
+          hint="Shown on the project page."
+        >
+          <Textarea id="description" rows={9} {...register("description")} />
+        </Field>
+        <Field
+          label="Description (Arabic)"
+          htmlFor="description_ar"
+          error={errors.description_ar?.message}
+        >
+          <Textarea
+            id="description_ar"
+            rows={9}
+            {...arabicInput}
+            {...register("description_ar")}
+          />
+        </Field>
+      </Bilingual>
+      <div className="grid gap-5 sm:grid-cols-2">
+        <Field
           label="Slug"
           htmlFor="slug"
           error={errors.slug?.message}
@@ -106,34 +162,15 @@ export function ProjectForm({
         >
           <Input id="slug" {...register("slug")} />
         </Field>
+        <Field
+          label="Tech stack"
+          htmlFor="techStack"
+          error={errors.techStack?.message}
+          hint="Comma separated: Next.js, TypeScript, Tailwind CSS"
+        >
+          <Input id="techStack" {...register("techStack")} />
+        </Field>
       </div>
-      <Field
-        label="Short description"
-        htmlFor="shortDescription"
-        error={errors.shortDescription?.message}
-      >
-        <Textarea
-          id="shortDescription"
-          rows={2}
-          {...register("shortDescription")}
-        />
-      </Field>
-      <Field
-        label="Description"
-        htmlFor="description"
-        error={errors.description?.message}
-        hint="Shown on the project page."
-      >
-        <Textarea id="description" rows={7} {...register("description")} />
-      </Field>
-      <Field
-        label="Tech stack"
-        htmlFor="techStack"
-        error={errors.techStack?.message}
-        hint="Comma separated: Next.js, TypeScript, Tailwind CSS"
-      >
-        <Input id="techStack" {...register("techStack")} />
-      </Field>
 
       <Field
         label="Cover image"

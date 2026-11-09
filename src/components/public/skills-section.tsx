@@ -9,6 +9,8 @@ import {
 } from "react-icons/ri";
 import { groupSkills } from "@/data/site-content";
 import type { Skill } from "@/data/types";
+import type { Locale } from "@/i18n/config";
+import { getT } from "@/i18n/server";
 import { SkillPill } from "./skill-pill";
 import { Container, SectionHeader } from "./ui";
 
@@ -22,7 +24,21 @@ function iconFor(category: string) {
   return RiCodeSSlashLine;
 }
 
-export function SkillsSection({ skills }: { skills: Skill[] }) {
+// Groups are keyed by the English category (it drives ordering and icons);
+// the Arabic name comes from any skill in the group that has one.
+function categoryLabel(category: string, items: Skill[], locale: Locale) {
+  if (locale !== "ar") return category;
+  return items.find((s) => s.category_ar?.trim())?.category_ar ?? category;
+}
+
+export function SkillsSection({
+  skills,
+  locale,
+}: {
+  skills: Skill[];
+  locale: Locale;
+}) {
+  const t = getT(locale);
   // Two columns, filled left to right in display order: Frontend | Backend,
   // Databases | Version control, then Tools & practices on its own row.
   const groups = groupSkills(skills);
@@ -30,7 +46,7 @@ export function SkillsSection({ skills }: { skills: Skill[] }) {
   return (
     <section id="skills" className="scroll-mt-16 pt-24 sm:pt-28">
       <Container>
-        <SectionHeader title="Skills by stack" />
+        <SectionHeader title={t("skills.title")} />
         <div className="grid gap-5 md:grid-cols-2">
           {groups.map(([category, items]) => {
             const Icon = iconFor(category);
@@ -44,9 +60,11 @@ export function SkillsSection({ skills }: { skills: Skill[] }) {
                     <Icon size={20} aria-hidden />
                   </span>
                   <div>
-                    <h3 className="text-[17px] leading-[1.35]">{category}</h3>
+                    <h3 className="text-[17px] leading-[1.35]">
+                      {categoryLabel(category, items, locale)}
+                    </h3>
                     <p className="text-fg3 text-xs">
-                      {items.length} {items.length === 1 ? "skill" : "skills"}
+                      {t("skills.count", { count: items.length })}
                     </p>
                   </div>
                 </div>
