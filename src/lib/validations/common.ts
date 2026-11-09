@@ -28,6 +28,12 @@ export const optionalUrl = optional(500).refine(
   "Enter a valid http(s) URL",
 );
 
+// An https URL or a site-relative /path (e.g. a file in /public).
+export const optionalLinkOrPath = optional(500).refine(
+  (v) => v === "" || (v.startsWith("/") && !v.startsWith("//")) || isHttpUrl(v),
+  "Enter an https URL or a /path",
+);
+
 export const imageSource = optional(500).refine(
   (v) => v === "" || (v.startsWith("/") && !v.startsWith("//")) || isHttpUrl(v),
   "Enter an https URL or a /path",
