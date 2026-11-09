@@ -80,7 +80,7 @@ export function MobileNav({
             <a
               href={resumeUrl}
               download="Nauman-Qureshi-Resume.pdf"
-                target="_blank"
+              target="_blank"
               rel="noopener noreferrer"
               onClick={() => setOpen(false)}
               className={`${ctaClass("primary")} mt-2`}
