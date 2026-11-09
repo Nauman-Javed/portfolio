@@ -119,7 +119,7 @@ export function Hero({
 
           <div
             aria-hidden="true"
-            className="anim-bob border-hairline bg-surface shadow-float absolute end-3 top-3 flex items-center gap-3 rounded-lg border px-4 py-3 min-[1100px]:-end-4 sm:-end-2 sm:-top-5"
+            className="anim-bob border-hairline bg-surface shadow-float absolute top-3 right-3 flex items-center gap-3 rounded-lg border px-4 py-3 min-[1100px]:-right-4 sm:-top-5 sm:-right-2"
           >
             <span className="bg-tealsoft text-teal flex size-9 items-center justify-center rounded-md">
               <RiShieldCheckLine size={18} />
