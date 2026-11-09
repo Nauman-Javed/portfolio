@@ -10,7 +10,8 @@ export const profile: Profile = {
   location: "Islamabad, Pakistan",
   email: "naumanj841@gmail.com",
   phone: null,
-  resumeUrl: null,
+  resumeUrl:
+    "https://drive.google.com/file/d/1YOOuyNfkK2_Q2zydQSHTmOpTKEaTup9-/view?usp=sharing",
   availability: "Open to new opportunities",
   heroLead: "I engineer",
   heroPhrases: [
