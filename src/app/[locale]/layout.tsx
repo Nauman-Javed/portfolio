@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { ScrollProgress } from "@/components/scroll-progress";
+import { SmoothScroll } from "@/components/smooth-scroll";
+import { ThemeSync } from "@/components/theme-sync";
 import { SiteFooter } from "@/components/public/site-footer";
 import { SiteHeader } from "@/components/public/site-header";
 import { getProfile } from "@/data/queries";
@@ -68,7 +71,10 @@ export default async function LocaleLayout({ children, params }: Props) {
       </head>
       <body className="flex min-h-full flex-col">
         <I18nProvider key={locale} locale={locale} messages={MESSAGES[locale]}>
-          <div id="top" className="flex flex-1 flex-col">
+          <ThemeSync />
+          <SmoothScroll />
+          <ScrollProgress />
+          <div id="top"className="flex flex-1 flex-col">
             <a
               href="#main"
               className="bg-teal text-onteal sr-only z-50 rounded-md px-4 py-3 text-[13px] font-medium focus:not-sr-only focus:fixed focus:start-3 focus:top-3"
